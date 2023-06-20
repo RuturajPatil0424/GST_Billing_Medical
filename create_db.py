@@ -43,6 +43,9 @@ def create_db():
 
     cur.execute("CREATE TABLE IF NOT EXISTS edittransction(no INTEGER PRIMARY KEY AUTOINCREMENT,invoice text)")
     con.commit()
+
+    cur.execute("CREATE TABLE IF NOT EXISTS invo(no INTEGER PRIMARY KEY AUTOINCREMENT,invoice text)")
+    con.commit()
     
 
 create_db()

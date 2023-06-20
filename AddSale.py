@@ -46,8 +46,11 @@ class saleClass(customtkinter.CTk):
         self.invocie_lable = customtkinter.CTkLabel(self, text="Invoice No.")
         self.invocie_lable.place(x=900, y=50)
 
-        self.invoice_entry = customtkinter.CTkEntry(self, width=150, height=30, placeholder_text="Invoice No.")
+        self.invo=StringVar()
+        self.invoice_entry = customtkinter.CTkEntry(self, width=150, height=30,textvariable=self.invo)
         self.invoice_entry.place(x=1000, y=50)
+
+        self.invoice_genrator()
 
         self.date_label = customtkinter.CTkLabel(self, text="Invoice Date")
         self.date_label.place(x=900, y=90)
@@ -789,9 +792,6 @@ class saleClass(customtkinter.CTk):
       print(ex)
 
 
-
-
-
     def add_invoice_event(self):
         self.get_party_gstin()
 
@@ -941,6 +941,7 @@ class saleClass(customtkinter.CTk):
                     ))
                 con.commit()
                 self.update_iqt()
+                self.invoice_genrator()
 
         except Exception as ex:
             print(ex)
@@ -1751,6 +1752,40 @@ class saleClass(customtkinter.CTk):
         self.totalqty()
         self.totaldesam()
         self.totaltaxam()
+
+    def invoice_genrator(self):
+
+        con = sqlite3.connect(database=r'ims.db')
+        cur = con.cursor()
+        try:
+
+                cur.execute("select invoice from invo where no=1",)
+                rows = cur.fetchall()
+                # self.productTable.delete(*self.productTable.get_children())
+                for row in rows:
+                    for i in row:
+                        invoice_zero=6-len(i)
+                        incre=int(i)+1
+                        a=1
+                        mm = "0"
+                        while a<invoice_zero:
+                            mm=mm+"0"
+                            a+=1
+                        final=f"{mm}{incre}"
+                        strfinal=str(final)
+                        print(final)
+                        self.invo.set(strfinal)
+                        self.invoice_entry.configure(textvariable=self.invo)
+                        p=1
+                        cur.execute("Select no from invo where no=?", (p,))
+                        row = cur.fetchone()
+                        cur.execute("Update invo set invoice=? where no=?", (
+                        incre,
+                        p,
+                        ))
+                        con.commit()
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
     def update_item_qty(self, name, seto):
         if name == "":
