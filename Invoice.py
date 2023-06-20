@@ -1,9 +1,11 @@
+import subprocess
 from string import capwords
 from docxtpl import DocxTemplate
 import sqlite3
 from tkinter import ttk, messagebox, StringVar
 from num2words import num2words
 import datetime
+import os
 from docx2pdf import convert
 doc = DocxTemplate("taxinvo1.docx")
 
@@ -168,7 +170,6 @@ def get_item6_data():
             for r in row:
                 item_list6.append(r)
 
-
     except Exception as ex:
         print(ex)
 
@@ -184,7 +185,6 @@ def get_item7_data():
             for r in row:
                 item_list7.append(r)
 
-
     except Exception as ex:
         print(ex)
 
@@ -199,7 +199,6 @@ def get_item8_data():
         for row in rows:
             for r in row:
                 item_list8.append(r)
-
 
     except Exception as ex:
         print(ex)
@@ -233,7 +232,6 @@ def get_item10_data():
 
                 item_list10.append(r)
 
-
     except Exception as ex:
         print(ex)
 def hsn_list():
@@ -249,8 +247,6 @@ def hsn_list():
         itmlist.append(item_list1[0])
         itmlist.append(item_list2[0])
         itmlist.append(item_list3[0])
-
-
 
     elif item_list5[0] == "":
         itmlist.append(item_list1[0])
@@ -292,7 +288,6 @@ def hsn_list():
         itmlist.append(item_list7[0])
         itmlist.append(item_list8[0])
 
-
     elif item_list10[0] == "":
         itmlist.append(item_list1[0])
         itmlist.append(item_list2[0])
@@ -321,7 +316,6 @@ def get_hsn():
 
     for i in itmlist:
 
-
       con=sqlite3.connect(database=r'ims.db')
       cur=con.cursor()
       try:
@@ -331,7 +325,6 @@ def get_hsn():
         for row in rows:
             for r in row:
                hsn_no_list.append(r)
-
 
       except Exception as ex:
         print(ex)
@@ -352,8 +345,6 @@ def wotgst(price,qty,tax,disc,total,list):
         gsttax=float(mtax)
         disca = float(disc)
 
-
-
         wodec = totalpr - (totalpr*(100/(100+gsttax)))
         it=totalpr-wodec
         rit=it/qtyy
@@ -362,13 +353,11 @@ def wotgst(price,qty,tax,disc,total,list):
 
         rwodec= round(wodec,2)
         list.insert(13,rwodec)
-        print(wodec)
-        print(rit)
 
         pwr = wodec/2
         rpwr=round(pwr,2)
         list.insert(11,rpwr)
-        print(pwr)
+
 
         if mtax == "0":
             list.insert(12,"0%")
@@ -399,8 +388,6 @@ def cgst():
     sgt=float(gst)
     cgst=sgt/2
     cgsttotal.insert(0,cgst)
-
-
 
 def addlist():
     if item_list1[0] == "":
@@ -648,7 +635,6 @@ def addlist():
         wotgst(item_list10[5],item_list10[3],item_list10[8],item_list10[7],item_list10[9],item_list10)
         cgst()
 
-
 get_partybi_data()
 get_item1_data()
 get_item2_data()
@@ -661,24 +647,17 @@ get_item8_data()
 get_item9_data()
 get_item10_data()
 
-
 get_hsn()
 addlist()
 
 totalinword=num2words(partydata_list[9])
 tta=capwords(totalinword)
 
-
-
 get_item_data()
-print(partydata_list)
-print(item_list2)
 doc.render({"company":"Cyber Tech","phone": "8830136942","nam":partydata_list[0],"partynumber":partydata_list[1],"gstin":partydata_list[2],"invoice":partydata_list[4],"date":partydata_list[5],"state":partydata_list[6],"tota":partydata_list[9],"recam":partydata_list[10],"balen":partydata_list[11],"totalqty":partydata_list[14],"totaldic":partydata_list[13],"totalgst":partydata_list[12],"cgst":cgsttotal[0],"item_list":item_list,"amtinword":tta})
-
 doc.save("new_sampleinvoice.docx")
-
-
 filename=f"invoices/{partydata_list[0]}_{partydata_list[2]}.pdf"
-print(filename)
+path=f"invoices\{partydata_list[0]}_{partydata_list[2]}.pdf"
 convert("new_sampleinvoice.docx", filename)
+subprocess.Popen([path], shell=True)
 
