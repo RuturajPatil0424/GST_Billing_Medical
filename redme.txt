@@ -1,0 +1,18 @@
+pip install customtkinter
+pip install pillow
+pip install tkcalendar
+pip install docxtpl
+pip install num2words
+pip install pytube
+pip install selenium
+pip install tkcalendar
+pip install
+pip install
+pip install
+pip install
+pip install
+pip install
+pip install
+pip install
+pip install
+pip install
