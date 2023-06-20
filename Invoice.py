@@ -680,5 +680,5 @@ doc.save("new_sampleinvoice.docx")
 
 filename=f"invoices/{partydata_list[0]}_{partydata_list[2]}.pdf"
 print(filename)
-# convert("new_sampleinvoice.docx", filename)
+convert("new_sampleinvoice.docx", filename)
 

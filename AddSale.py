@@ -5,7 +5,7 @@ import customtkinter
 from PIL import Image, ImageTk  # pip intall
 from tkcalendar import Calendar, DateEntry
 import sqlite3
-
+from subprocess import call
 class saleClass(customtkinter.CTk):
 
     def __init__(self):
@@ -943,13 +943,16 @@ class saleClass(customtkinter.CTk):
                 self.update_iqt()
                 self.invoice_genrator()
 
+
         except Exception as ex:
             print(ex)
             # messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
+    def invoice_event(self):
+        call(["python", "Invoice.py"])
     def savedata(self):
         self.add_invoice_event()
         self.add_party_event()
+        self.invoice_event()
 
     def change_appearance_mode_event(self, new_appearance_mode):
         print(new_appearance_mode)
