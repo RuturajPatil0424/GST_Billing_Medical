@@ -120,7 +120,7 @@ class saleClass(customtkinter.CTk):
         # self.table_frame = customtkinter.CTkFrame(self,width=1020,height=300 ,corner_radius=0)
         # self.table_frame.place(x=20,y=200)
 
-        UnitList = []
+
         TaxList = ["With Tax", "Without Tax"]
 
 
@@ -252,6 +252,8 @@ class saleClass(customtkinter.CTk):
 
         self.allqty=StringVar()
         self.allqty="0"
+        self.Item_unit_List = [""]
+        self.get_item_unit_list()
 
         self.total_qty_lable = customtkinter.CTkLabel(self.navigation_frame, text=self.allqty)
         self.total_qty_lable.grid(row=12, column=2, padx=5, pady=5)
@@ -259,34 +261,34 @@ class saleClass(customtkinter.CTk):
         self.unit_lable = customtkinter.CTkLabel(self.navigation_frame, text="UNIT")
         self.unit_lable.grid(row=0, column=3, padx=5, pady=5)
 
-        self.no1_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=UnitList,command=self.itemshow)
+        self.no1_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.Item_unit_List,command=self.itemshow)
         self.no1_unit_entry.grid(row=2, column=3, padx=5, pady=5)
 
-        self.no2_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=UnitList,command=self.itemshow)
+        self.no2_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.Item_unit_List,command=self.itemshow)
         self.no2_unit_entry.grid(row=3, column=3, padx=5, pady=5)
 
-        self.no3_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=UnitList,command=self.itemshow)
+        self.no3_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.Item_unit_List,command=self.itemshow)
         self.no3_unit_entry.grid(row=4, column=3, padx=5, pady=5)
 
-        self.no4_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=UnitList,command=self.itemshow)
+        self.no4_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.Item_unit_List,command=self.itemshow)
         self.no4_unit_entry.grid(row=5, column=3, padx=5, pady=5)
 
-        self.no5_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=UnitList,command=self.itemshow)
+        self.no5_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.Item_unit_List,command=self.itemshow)
         self.no5_unit_entry.grid(row=6, column=3, padx=5, pady=5)
 
-        self.no6_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=UnitList,command=self.itemshow)
+        self.no6_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.Item_unit_List,command=self.itemshow)
         self.no6_unit_entry.grid(row=7, column=3, padx=5, pady=5)
 
-        self.no7_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=UnitList,command=self.itemshow)
+        self.no7_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.Item_unit_List,command=self.itemshow)
         self.no7_unit_entry.grid(row=8, column=3, padx=5, pady=5)
 
-        self.no8_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=UnitList,command=self.itemshow)
+        self.no8_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.Item_unit_List,command=self.itemshow)
         self.no8_unit_entry.grid(row=9, column=3, padx=5, pady=5)
 
-        self.no9_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=UnitList,command=self.itemshow)
+        self.no9_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.Item_unit_List,command=self.itemshow)
         self.no9_unit_entry.grid(row=10, column=3, padx=5, pady=5)
 
-        self.no10_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=UnitList,command=self.itemshow)
+        self.no10_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.Item_unit_List,command=self.itemshow)
         self.no10_unit_entry.grid(row=11, column=3, padx=5, pady=5)
 
         self.ip1 = StringVar()
@@ -1085,9 +1087,6 @@ class saleClass(customtkinter.CTk):
         esult = recivee + (total - payed)
         result =str(esult)
         self.resultam.set(result)
-        print(recivee)
-        print(result)
-        print(payed)
 
 
 
@@ -1103,6 +1102,22 @@ class saleClass(customtkinter.CTk):
             for row in rows:
                 for i in row:
                     self.ItemList.append(i)
+
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+
+    def get_item_unit_list(self):
+        con = sqlite3.connect(database=r'ims.db')
+        cur = con.cursor()
+        try:
+
+            cur.execute("select location from itemdata")
+            rows = cur.fetchall()
+            # self.productTable.delete(*self.productTable.get_children())
+
+            for row in rows:
+                for i in row:
+                    self.Item_unit_List.append(i)
 
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
@@ -1760,17 +1775,15 @@ class saleClass(customtkinter.CTk):
                        cur.execute("select pid from itemdata where itemname=?", (name,))
                        pids = cur.fetchall()
                        for pid in pids:
-                           print(pid)
                            for p in pid:
-                               print(p)
 
-                       cur.execute("Select pid from itemdata where pid=?", (p,))
-                       row = cur.fetchone()
-                       cur.execute("Update itemdata set openqty=? where pid=?", (
-                           resualt,
-                           p,
-                         ))
-                       con.commit()
+                              cur.execute("Select pid from itemdata where pid=?", (p,))
+                              row = cur.fetchone()
+                              cur.execute("Update itemdata set openqty=? where pid=?", (
+                               resualt,
+                                p,
+                                ))
+                              con.commit()
 
           except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
