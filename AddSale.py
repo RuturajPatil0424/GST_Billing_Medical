@@ -250,39 +250,39 @@ class saleClass(customtkinter.CTk):
 
         self.no2_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq2)
         self.no2_qty_entry.grid(row=3, column=2, padx=5, pady=5)
-        self.iq2.trace('w', self.update_qtye1)
+        self.iq2.trace('w', self.update_qtye2)
 
         self.no3_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq3)
         self.no3_qty_entry.grid(row=4, column=2, padx=5, pady=5)
-        self.iq3.trace('w', self.update_qtye1)
+        self.iq3.trace('w', self.update_qtye3)
 
         self.no4_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq4)
         self.no4_qty_entry.grid(row=5, column=2, padx=5, pady=5)
-        self.iq4.trace('w', self.update_qtye1)
+        self.iq4.trace('w', self.update_qtye4)
 
         self.no5_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq5)
         self.no5_qty_entry.grid(row=6, column=2, padx=5, pady=5)
-        self.iq5.trace('w', self.update_qtye1)
+        self.iq5.trace('w', self.update_qtye5)
 
         self.no6_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq6)
         self.no6_qty_entry.grid(row=7, column=2, padx=5, pady=5)
-        self.iq6.trace('w', self.update_qtye1)
+        self.iq6.trace('w', self.update_qtye6)
 
         self.no7_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq7)
         self.no7_qty_entry.grid(row=8, column=2, padx=5, pady=5)
-        self.iq7.trace('w', self.update_qtye1)
+        self.iq7.trace('w', self.update_qtye7)
 
         self.no8_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq8)
         self.no8_qty_entry.grid(row=9, column=2, padx=5, pady=5)
-        self.iq8.trace('w', self.update_qtye1)
+        self.iq8.trace('w', self.update_qtye8)
 
         self.no9_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq9)
         self.no9_qty_entry.grid(row=10, column=2, padx=5, pady=5)
-        self.iq9.trace('w', self.update_qtye1)
+        self.iq9.trace('w', self.update_qtye9)
 
         self.no10_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq10)
         self.no10_qty_entry.grid(row=11, column=2, padx=5, pady=5)
-        self.iq10.trace('w', self.update_qtye1)
+        self.iq10.trace('w', self.update_qtye10)
 
         self.allqty=StringVar()
         self.allqty="0"
@@ -346,33 +346,43 @@ class saleClass(customtkinter.CTk):
 
         self.no1_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ip1)
         self.no1_unitprice_entry.grid(row=2, column=4, padx=5, pady=5)
+        self.ip1.trace('w',self.itprientery)
 
         self.no2_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ip2)
         self.no2_unitprice_entry.grid(row=3, column=4, padx=5, pady=5)
+        self.ip2.trace('w', self.itprientery)
 
         self.no3_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ip3)
         self.no3_unitprice_entry.grid(row=4, column=4, padx=5, pady=5)
+        self.ip3.trace('w', self.itprientery)
 
         self.no4_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ip4)
         self.no4_unitprice_entry.grid(row=5, column=4, padx=5, pady=5)
+        self.ip4.trace('w', self.itprientery)
 
         self.no5_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ip5)
         self.no5_unitprice_entry.grid(row=6, column=4, padx=5, pady=5)
+        self.ip5.trace('w', self.itprientery)
 
         self.no6_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ip6)
         self.no6_unitprice_entry.grid(row=7, column=4, padx=5, pady=5)
+        self.ip6.trace('w', self.itprientery)
 
         self.no7_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ip7)
         self.no7_unitprice_entry.grid(row=8, column=4, padx=5, pady=5)
+        self.ip7.trace('w', self.itprientery)
 
         self.no8_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ip8)
         self.no8_unitprice_entry.grid(row=9, column=4, padx=5, pady=5)
+        self.ip8.trace('w', self.itprientery)
 
         self.no9_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ip9)
         self.no9_unitprice_entry.grid(row=10, column=4, padx=5, pady=5)
+        self.ip9.trace('w', self.itprientery)
 
         self.no10_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ip10)
         self.no10_unitprice_entry.grid(row=11, column=4, padx=5, pady=5)
+        self.ip10.trace('w', self.itprientery)
 
         self.DISCOUN_lable = customtkinter.CTkLabel(self.navigation_frame, text="DISCOUNT")
         self.DISCOUN_lable.grid(row=0, column=5, padx=5, pady=5)
@@ -403,34 +413,44 @@ class saleClass(customtkinter.CTk):
 
         self.no1_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.id1)
         self.no1_dec_percentagee_entry.grid(row=2, column=5, padx=5, pady=5)
+        self.id1.trace('w', self.itprientery)
 
         self.no2_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.id2)
         self.no2_dec_percentagee_entry.grid(row=3, column=5, padx=5, pady=5)
+        self.id2.trace('w', self.itprientery)
 
         self.no3_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.id3)
         self.no3_dec_percentagee_entry.grid(row=4, column=5, padx=5, pady=5)
+        self.id3.trace('w', self.itprientery)
 
         self.no4_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.id4)
         self.no4_dec_percentagee_entry.grid(row=5, column=5, padx=5, pady=5)
+        self.id4.trace('w', self.itprientery)
 
         self.no5_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.id5)
         self.no5_dec_percentagee_entry.grid(row=6, column=5, padx=5, pady=5)
+        self.id5.trace('w', self.itprientery)
 
         self.no6_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.id6)
         self.no6_dec_percentagee_entry.grid(row=7, column=5, padx=5, pady=5)
+        self.id6.trace('w', self.itprientery)
 
         self.no7_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.id7)
         self.no7_dec_percentagee_entry.grid(row=8, column=5, padx=5, pady=5)
+        self.id7.trace('w', self.itprientery)
 
         self.no8_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.id8)
         self.no8_dec_percentagee_entry.grid(row=9, column=5, padx=5, pady=5)
+        self.id8.trace('w', self.itprientery)
 
         self.no9_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.id9)
         self.no9_dec_percentagee_entry.grid(row=10, column=5, padx=5, pady=5)
+        self.id9.trace('w', self.itprientery)
 
         self.no10_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=100,
                                                                  textvariable=self.id10)
         self.no10_dec_percentagee_entry.grid(row=11, column=5, padx=5, pady=5)
+        self.id10.trace('w', self.itprientery)
 
         self.ida1 = StringVar()
         self.ida2 = StringVar()
@@ -1109,8 +1129,6 @@ class saleClass(customtkinter.CTk):
                 for i in row:
                     seto.set(i)
 
-
-
           except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
@@ -1243,16 +1261,32 @@ class saleClass(customtkinter.CTk):
             elif str(stock) == "":
                 qaunty.set("0")
             else:
-                qaunty.set("0")
+                qaunty.set(stock)
+                messagebox.showerror("Aleart", f"Product is in stock {stock} and you want to sell qty is {qty}!", parent=self)
             self.qtty()
 
         except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+            print("Error", f"Error due to : {str(ex)}", parent=self)
 
     def qtty(self):
-        self.itpri()
-        self.secper()
-        self.itx()
+        self.itemtable()
+        self.finalamount()
+        self.totalqty()
+        self.totaldesam()
+        self.totaltaxam()
+
+    def itprientery(self,event,*args):
+            self.itemtable()
+            self.finalamount()
+            self.totalqty()
+            self.totaldesam()
+            self.totaltaxam()
+
+    def itemshow(self,event):
+        # self.iqt()
+        # self.itpri()
+        # self.secper()
+        # self.itx()
         self.itemtable()
         self.finalamount()
         self.totalqty()
@@ -1260,6 +1294,25 @@ class saleClass(customtkinter.CTk):
         self.totaltaxam()
     def update_qtye1(self,event,*args):
         self.get_item_qtyentery(self.no1_item_entry.get(), self.iq1)
+    def update_qtye2(self,event,*args):
+        self.get_item_qtyentery(self.no2_item_entry.get(), self.iq2)
+    def update_qtye3(self,event,*args):
+        self.get_item_qtyentery(self.no3_item_entry.get(), self.iq3)
+    def update_qtye4(self,event,*args):
+        self.get_item_qtyentery(self.no4_item_entry.get(), self.iq4)
+    def update_qtye5(self,event,*args):
+        self.get_item_qtyentery(self.no5_item_entry.get(), self.iq5)
+    def update_qtye6(self,event,*args):
+        self.get_item_qtyentery(self.no6_item_entry.get(), self.iq6)
+    def update_qtye7(self,event,*args):
+        self.get_item_qtyentery(self.no7_item_entry.get(), self.iq7)
+    def update_qtye8(self,event,*args):
+        self.get_item_qtyentery(self.no8_item_entry.get(), self.iq8)
+    def update_qtye9(self,event,*args):
+        self.get_item_qtyentery(self.no9_item_entry.get(), self.iq9)
+    def update_qtye10(self,event,*args):
+        self.get_item_qtyentery(self.no10_item_entry.get(), self.iq10)
+
 
     # todo: Update Qty
     def update_item_qty(self, iname, iseto):
@@ -1289,7 +1342,6 @@ class saleClass(customtkinter.CTk):
 
             cur.execute("select discount from itemdata where itemname=?", (iname,))
             rows = cur.fetchall()
-            # self.productTable.delete(*self.productTable.get_children())
 
             for row in rows:
 
@@ -1315,7 +1367,7 @@ class saleClass(customtkinter.CTk):
 
             cur.execute("select unit from itemdata where itemname=?", (iname,))
             rows = cur.fetchall()
-            # self.productTable.delete(*self.productTable.get_children())
+
 
             for row in rows:
 
@@ -1620,6 +1672,9 @@ class saleClass(customtkinter.CTk):
         self.diccc=str(rfinalamount)
         self.Totaltax_lable.configure(text=self.diccc)
 
+
+
+
     def itpri(self):
         self.get_item_price(self.no1_item_entry.get(), self.ip1)
         self.get_item_price(self.no2_item_entry.get(), self.ip2)
@@ -1704,16 +1759,7 @@ class saleClass(customtkinter.CTk):
         self.itemtable()
         self.finalamount()
 
-    def itemshow(self,event):
-        self.iqt()
-        self.itpri()
-        self.secper()
-        self.itx()
-        self.itemtable()
-        self.finalamount()
-        self.totalqty()
-        self.totaldesam()
-        self.totaltaxam()
+
 
     def get_item_name(self):
         con = sqlite3.connect(database=r'ims.db')
