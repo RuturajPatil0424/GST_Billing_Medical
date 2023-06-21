@@ -183,7 +183,7 @@ class saleClass(customtkinter.CTk):
         self.no9var = StringVar()
         self.no10var = StringVar()
 
-        self.no1_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250, values=list(self.ItemList),variable=self.no1var,command=self.itm1)
+        self.no1_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250,variable=self.no1var, values=list(self.ItemList),command=self.itm1)
         self.no1_item_entry.grid(row=2, column=1, padx=5, pady=5)
         self.no1var.trace('w',self.itemlist_update1)
 
@@ -246,33 +246,43 @@ class saleClass(customtkinter.CTk):
 
         self.no1_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq1)
         self.no1_qty_entry.grid(row=2, column=2, padx=5, pady=5)
+        self.iq1.trace('w', self.update_qtye1)
 
         self.no2_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq2)
         self.no2_qty_entry.grid(row=3, column=2, padx=5, pady=5)
+        self.iq2.trace('w', self.update_qtye1)
 
         self.no3_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq3)
         self.no3_qty_entry.grid(row=4, column=2, padx=5, pady=5)
+        self.iq3.trace('w', self.update_qtye1)
 
         self.no4_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq4)
         self.no4_qty_entry.grid(row=5, column=2, padx=5, pady=5)
+        self.iq4.trace('w', self.update_qtye1)
 
         self.no5_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq5)
         self.no5_qty_entry.grid(row=6, column=2, padx=5, pady=5)
+        self.iq5.trace('w', self.update_qtye1)
 
         self.no6_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq6)
         self.no6_qty_entry.grid(row=7, column=2, padx=5, pady=5)
+        self.iq6.trace('w', self.update_qtye1)
 
         self.no7_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq7)
         self.no7_qty_entry.grid(row=8, column=2, padx=5, pady=5)
+        self.iq7.trace('w', self.update_qtye1)
 
         self.no8_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq8)
         self.no8_qty_entry.grid(row=9, column=2, padx=5, pady=5)
+        self.iq8.trace('w', self.update_qtye1)
 
         self.no9_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq9)
         self.no9_qty_entry.grid(row=10, column=2, padx=5, pady=5)
+        self.iq9.trace('w', self.update_qtye1)
 
         self.no10_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq10)
         self.no10_qty_entry.grid(row=11, column=2, padx=5, pady=5)
+        self.iq10.trace('w', self.update_qtye1)
 
         self.allqty=StringVar()
         self.allqty="0"
@@ -1207,6 +1217,50 @@ class saleClass(customtkinter.CTk):
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
+    def get_item_qtyentery(self, iname,qaunty):
+      if iname == "":
+          qaunty.set(" ")
+
+      else:
+
+        con = sqlite3.connect(database=r'ims.db')
+        cur = con.cursor()
+        stock=0
+        qty=int(qaunty.get())
+        try:
+            cur.execute("select openqty from itemdata where itemname=?", (iname,))
+            datas = cur.fetchall()
+
+            for data in datas:
+                for d in data:
+                    print(d)
+                    if d == "":
+                        stock=0
+                    else:
+                        stock=int(d)
+            if stock >= qty:
+               qaunty.set(qty)
+            elif str(stock) == "":
+                qaunty.set("0")
+            else:
+                qaunty.set("0")
+            self.qtty()
+
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+
+    def qtty(self):
+        self.itpri()
+        self.secper()
+        self.itx()
+        self.itemtable()
+        self.finalamount()
+        self.totalqty()
+        self.totaldesam()
+        self.totaltaxam()
+    def update_qtye1(self,event,*args):
+        self.get_item_qtyentery(self.no1_item_entry.get(), self.iq1)
+
     # todo: Update Qty
     def update_item_qty(self, iname, iseto):
 
@@ -1590,6 +1644,7 @@ class saleClass(customtkinter.CTk):
         self.get_item_tax(self.no8_item_entry.get(), self.itax8)
         self.get_item_tax(self.no9_item_entry.get(), self.itax9)
         self.get_item_tax(self.no10_item_entry.get(), self.itax10)
+
 
     def iqt(self):
         self.get_item_qty(self.no1_item_entry.get(), self.iq1)
