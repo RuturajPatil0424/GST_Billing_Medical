@@ -172,37 +172,58 @@ class saleClass(customtkinter.CTk):
         self.Item_lable = customtkinter.CTkLabel(self.navigation_frame, text="ITEM")
         self.Item_lable.grid(row=0, column=1, padx=5, pady=5)
 
-        self.no1_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250, values=self.ItemList,command=self.itm1)
+        self.no1var=StringVar()
+        self.no2var = StringVar()
+        self.no3var = StringVar()
+        self.no4var = StringVar()
+        self.no5var = StringVar()
+        self.no6var = StringVar()
+        self.no7var = StringVar()
+        self.no8var = StringVar()
+        self.no9var = StringVar()
+        self.no10var = StringVar()
+
+        self.no1_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250, values=list(self.ItemList),variable=self.no1var,command=self.itm1)
         self.no1_item_entry.grid(row=2, column=1, padx=5, pady=5)
+        self.no1var.trace('w',self.itemlist_update1)
 
 
-        self.no2_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250, values=self.ItemList,command=self.itm2)
+        self.no2_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250,variable=self.no2var, values=self.ItemList,command=self.itm2)
         self.no2_item_entry.grid(row=3, column=1, padx=5, pady=5)
+        self.no2var.trace('w', self.itemlist_update2)
 
 
-        self.no3_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250, values=self.ItemList,command=self.itm3)
+        self.no3_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250,variable=self.no3var, values=self.ItemList,command=self.itm3)
         self.no3_item_entry.grid(row=4, column=1, padx=5, pady=5)
+        self.no3var.trace('w', self.itemlist_update3)
 
-        self.no4_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250, values=self.ItemList,command=self.itm4)
+        self.no4_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250,variable=self.no4var, values=self.ItemList,command=self.itm4)
         self.no4_item_entry.grid(row=5, column=1, padx=5, pady=5)
+        self.no4var.trace('w', self.itemlist_update4)
 
-        self.no5_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250, values=self.ItemList,command=self.itm5)
+        self.no5_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250,variable=self.no5var, values=self.ItemList,command=self.itm5)
         self.no5_item_entry.grid(row=6, column=1, padx=5, pady=5)
+        self.no5var.trace('w', self.itemlist_update5)
 
-        self.no6_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250, values=self.ItemList,command=self.itm6)
+        self.no6_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250,variable=self.no6var, values=self.ItemList,command=self.itm6)
         self.no6_item_entry.grid(row=7, column=1, padx=5, pady=5)
+        self.no6var.trace('w', self.itemlist_update6)
 
-        self.no7_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250, values=self.ItemList,command=self.itm7)
+        self.no7_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250,variable=self.no7var, values=self.ItemList,command=self.itm7)
         self.no7_item_entry.grid(row=8, column=1, padx=5, pady=5)
+        self.no7var.trace('w', self.itemlist_update7)
 
-        self.no8_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250, values=self.ItemList,command=self.itm8)
+        self.no8_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250,variable=self.no8var, values=self.ItemList,command=self.itm8)
         self.no8_item_entry.grid(row=9, column=1, padx=5, pady=5)
+        self.no8var.trace('w', self.itemlist_update8)
 
-        self.no9_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250, values=self.ItemList,command=self.itm9)
+        self.no9_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250,variable=self.no9var, values=self.ItemList,command=self.itm9)
         self.no9_item_entry.grid(row=10, column=1, padx=5, pady=5)
+        self.no9var.trace('w', self.itemlist_update9)
 
-        self.no10_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250, values=self.ItemList,command=self.itm10)
+        self.no10_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250,variable=self.no10var, values=self.ItemList,command=self.itm10)
         self.no10_item_entry.grid(row=11, column=1, padx=5, pady=5)
+        self.no10var.trace('w', self.itemlist_update10)
 
         self.Total_lable = customtkinter.CTkLabel(self.navigation_frame, text="Total")
         self.Total_lable.grid(row=12, column=1, padx=5, pady=5)
@@ -1094,22 +1115,6 @@ class saleClass(customtkinter.CTk):
 
 
 
-    def get_item_name(self):
-        con = sqlite3.connect(database=r'ims.db')
-        cur = con.cursor()
-        try:
-
-            cur.execute("select itemname from itemdata")
-            rows = cur.fetchall()
-            # self.productTable.delete(*self.productTable.get_children())
-
-            for row in rows:
-                for i in row:
-                    self.ItemList.append(i)
-
-        except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
     def get_item_unit_list(self):
         con = sqlite3.connect(database=r'ims.db')
         cur = con.cursor()
@@ -1629,6 +1634,61 @@ class saleClass(customtkinter.CTk):
         self.totaldesam()
         self.totaltaxam()
 
+    def get_item_name(self):
+        con = sqlite3.connect(database=r'ims.db')
+        cur = con.cursor()
+        try:
+
+            cur.execute("select itemname from itemdata")
+            rows = cur.fetchall()
+            # self.productTable.delete(*self.productTable.get_children())
+            self.ItemList.clear()
+            for row in rows:
+                for i in row:
+                    self.ItemList.append(i)
+
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+
+    def itemlist_update1(self,event,*args):
+        self.update_combobox(self.no1_item_entry,self.itm1)
+    def itemlist_update2(self,event,*args):
+        self.update_combobox(self.no2_item_entry,self.itm2)
+    def itemlist_update3(self,event,*args):
+        self.update_combobox(self.no3_item_entry,self.itm3)
+    def itemlist_update4(self,event,*args):
+        self.update_combobox(self.no4_item_entry,self.itm4)
+    def itemlist_update5(self,event,*args):
+        self.update_combobox(self.no5_item_entry,self.itm5)
+    def itemlist_update6(self,event,*args):
+        self.update_combobox(self.no6_item_entry,self.itm6)
+    def itemlist_update7(self,event,*args):
+        self.update_combobox(self.no7_item_entry,self.itm7)
+    def itemlist_update8(self,event,*args):
+        self.update_combobox(self.no8_item_entry,self.itm8)
+    def itemlist_update9(self,event,*args):
+        self.update_combobox(self.no9_item_entry,self.itm9)
+    def itemlist_update10(self,event,*args):
+        self.update_combobox(self.no10_item_entry,self.itm10)
+    def update_combobox(self,entery,method):
+        type=entery.get()
+        self.ItemList.clear()
+        con = sqlite3.connect(database=r'ims.db')
+        cur = con.cursor()
+        try:
+            cur.execute("select itemname from itemdata")
+            rows = cur.fetchall()
+            for items in rows:
+              for i in items:
+                if type.lower() in i:
+                  self.ItemList.append(i)
+
+            entery.configure(values=self.ItemList)
+        except Exception as ex:
+              messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+
+
+
     def itm1(self,event):
         self.get_item_qty(self.no1_item_entry.get(), self.iq1)
         self.get_item_price(self.no1_item_entry.get(), self.ip1)
@@ -1640,6 +1700,7 @@ class saleClass(customtkinter.CTk):
         self.totalqty()
         self.totaldesam()
         self.totaltaxam()
+        self.get_item_name()
 
     def itm2(self,event):
         self.get_item_qty(self.no2_item_entry.get(), self.iq2)
@@ -1839,6 +1900,8 @@ class saleClass(customtkinter.CTk):
         self.update_item_qty(self.no10_item_entry.get(), self.iq10)
 
 
+
+        
     def refrance(self,event):
         if self.Payment_type_entry.get() == "Cheque":
            self.Cheque_entry.place(x=50, y=790)
