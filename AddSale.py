@@ -1159,21 +1159,50 @@ class saleClass(customtkinter.CTk):
 
         con = sqlite3.connect(database=r'ims.db')
         cur = con.cursor()
+        stock=0
         try:
+            cur.execute("select openqty from itemdata where itemname=?", (iname,))
+            datas = cur.fetchall()
+            # self.productTable.delete(*self.productTable.get_children())
+
+            for data in datas:
+                for d in data:
+                    print(d)
+                    if d == "":
+                        stock=0
+                    else:
+                        stock=int(d)
 
             cur.execute("select minqty from itemdata where itemname=?", (iname,))
             rows = cur.fetchall()
             # self.productTable.delete(*self.productTable.get_children())
-
+            print(stock)
             for row in rows:
 
                 for i in row:
                     if i == "":
-                        i = 1
-                        iseto.set(i)
+                        if str(stock) >= "":
+                            if stock >= 1:
+                              iseto.set("1")
+                            else:
+                               iseto.set("0")
+                               messagebox.showerror("Aleart", f"Product is out of stock!", parent=self)
 
+                        elif stock >= 1:
+                          i = 1
+                          iseto.set(str(i))
+                        elif stock == 0:
+                            iseto.set("0")
+                            messagebox.showerror("Aleart", f"Product is in stock {stock} and minum sell qty is {i}!", parent=self)
                     else:
-                        iseto.set(i)
+                        if stock == 0:
+                          iseto.set(str(i))
+                          messagebox.showerror("Aleart", f"Product is out of stock!", parent=self)
+                        elif stock >= int(i):
+                          iseto.set(str(i))
+                        else:
+                            iseto.set(stock)
+                            messagebox.showerror("Aleart", f"Product is in stock {stock} and minum sell qty is {i}!", parent=self)
 
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
@@ -1191,9 +1220,6 @@ class saleClass(customtkinter.CTk):
                 (
             ))
             con.commit()
-
-
-
 
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
@@ -1670,6 +1696,7 @@ class saleClass(customtkinter.CTk):
         self.update_combobox(self.no9_item_entry,self.itm9)
     def itemlist_update10(self,event,*args):
         self.update_combobox(self.no10_item_entry,self.itm10)
+
     def update_combobox(self,entery,method):
         type=entery.get()
         self.ItemList.clear()
@@ -1684,6 +1711,7 @@ class saleClass(customtkinter.CTk):
                   self.ItemList.append(i)
 
             entery.configure(values=self.ItemList)
+            self.get_item_name()
         except Exception as ex:
               messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
@@ -1700,7 +1728,7 @@ class saleClass(customtkinter.CTk):
         self.totalqty()
         self.totaldesam()
         self.totaltaxam()
-        self.get_item_name()
+
 
     def itm2(self,event):
         self.get_item_qty(self.no2_item_entry.get(), self.iq2)
