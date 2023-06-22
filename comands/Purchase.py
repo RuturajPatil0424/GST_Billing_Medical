@@ -1218,83 +1218,84 @@ class saleClass(customtkinter.CTk):
         con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         stock=0
-        try:
-            cur.execute("select openqty from itemdata where itemname=?", (iname,))
-            datas = cur.fetchall()
-            # self.productTable.delete(*self.productTable.get_children())
+        iseto.set("1")
+        # try:
+        #     cur.execute("select openqty from itemdata where itemname=?", (iname,))
+        #     datas = cur.fetchall()
+        #     # self.productTable.delete(*self.productTable.get_children())
+        #
+        #     for data in datas:
+        #         for d in data:
+        #             if d == "":
+        #                 stock=0
+        #             else:
+        #                 stock=int(d)
+        #
+        #     cur.execute("select minqty from itemdata where itemname=?", (iname,))
+        #     rows = cur.fetchall()
+        #
+        #     for row in rows:
+        #
+        #         for i in row:
+        #             if i == "":
+        #                 if str(stock) >= "":
+        #                     if stock >= 1:
+        #                       iseto.set("1")
+        #                     else:
+        #                        iseto.set("0")
+        #                        messagebox.showerror("Aleart", f"Product is out of stock!", parent=self)
+        #
+        #                 elif stock >= 1:
+        #                   i = 1
+        #                   iseto.set(str(i))
+        #                 elif stock == 0:
+        #                     iseto.set("0")
+        #                     messagebox.showerror("Aleart", f"Product is in stock {stock} and minum sell qty is {i}!", parent=self)
+        #             else:
+        #                 if stock == 0:
+        #                   iseto.set(str(i))
+        #                   messagebox.showerror("Aleart", f"Product is out of stock!", parent=self)
+        #                 elif stock >= int(i):
+        #                   iseto.set(str(i))
+        #                 else:
+        #                     iseto.set(stock)
+        #                     messagebox.showerror("Aleart", f"Product is in stock {stock} and minum sell qty is {i}!", parent=self)
+        #
+        # except Exception as ex:
+        #     messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
-            for data in datas:
-                for d in data:
-                    if d == "":
-                        stock=0
-                    else:
-                        stock=int(d)
-
-            cur.execute("select minqty from itemdata where itemname=?", (iname,))
-            rows = cur.fetchall()
-
-            for row in rows:
-
-                for i in row:
-                    if i == "":
-                        if str(stock) >= "":
-                            if stock >= 1:
-                              iseto.set("1")
-                            else:
-                               iseto.set("0")
-                               messagebox.showerror("Aleart", f"Product is out of stock!", parent=self)
-
-                        elif stock >= 1:
-                          i = 1
-                          iseto.set(str(i))
-                        elif stock == 0:
-                            iseto.set("0")
-                            messagebox.showerror("Aleart", f"Product is in stock {stock} and minum sell qty is {i}!", parent=self)
-                    else:
-                        if stock == 0:
-                          iseto.set(str(i))
-                          messagebox.showerror("Aleart", f"Product is out of stock!", parent=self)
-                        elif stock >= int(i):
-                          iseto.set(str(i))
-                        else:
-                            iseto.set(stock)
-                            messagebox.showerror("Aleart", f"Product is in stock {stock} and minum sell qty is {i}!", parent=self)
-
-        except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
-    def get_item_qtyentery(self, iname,qaunty):
-      if iname == "":
-          qaunty.set(" ")
-
-      else:
-
-        con = sqlite3.connect(database=r'../DataBase/ims.db')
-        cur = con.cursor()
-        stock=0
-        qty=int(qaunty.get())
-        try:
-            cur.execute("select openqty from itemdata where itemname=?", (iname,))
-            datas = cur.fetchall()
-
-            for data in datas:
-                for d in data:
-
-                    if d == "":
-                        stock=0
-                    else:
-                        stock=int(d)
-            if stock >= qty:
-               qaunty.set(qty)
-            elif str(stock) == "":
-                qaunty.set("0")
-            else:
-                qaunty.set(stock)
-                messagebox.showerror("Aleart", f"Product is in stock {stock} and you want to sell qty is {qty}!", parent=self)
-            self.qtty()
-
-        except Exception as ex:
-            print("Error", f"Error due to : {str(ex)}", parent=self)
+    # def get_item_qtyentery(self, iname,qaunty):
+      # if iname == "":
+      #     qaunty.set(" ")
+      #
+      # else:
+      #
+      #   con = sqlite3.connect(database=r'../DataBase/ims.db')
+      #   cur = con.cursor()
+      #   stock=0
+      #   qty=int(qaunty.get())
+      #   try:
+      #       cur.execute("select openqty from itemdata where itemname=?", (iname,))
+      #       datas = cur.fetchall()
+      #
+      #       for data in datas:
+      #           for d in data:
+      #
+      #               if d == "":
+      #                   stock=0
+      #               else:
+      #                   stock=int(d)
+      #       if stock >= qty:
+      #          qaunty.set(qty)
+      #       elif str(stock) == "":
+      #           qaunty.set("0")
+      #       else:
+      #           qaunty.set(stock)
+      #           messagebox.showerror("Aleart", f"Product is in stock {stock} and you want to sell qty is {qty}!", parent=self)
+      #       self.qtty()
+      #
+      #   except Exception as ex:
+      #       print("Error", f"Error due to : {str(ex)}", parent=self)
 
     def qtty(self):
         self.itemtable()
@@ -1321,25 +1322,35 @@ class saleClass(customtkinter.CTk):
         self.totaldesam()
         self.totaltaxam()
     def update_qtye1(self,event,*args):
-        self.get_item_qtyentery(self.no1_item_entry.get(), self.iq1)
+        self.qtty()
+        # self.get_item_qtyentery(self.no1_item_entry.get(), self.iq1)
     def update_qtye2(self,event,*args):
-        self.get_item_qtyentery(self.no2_item_entry.get(), self.iq2)
+        self.qtty()
+        # self.get_item_qtyentery(self.no2_item_entry.get(), self.iq2)
     def update_qtye3(self,event,*args):
-        self.get_item_qtyentery(self.no3_item_entry.get(), self.iq3)
+        self.qtty()
+        #self.get_item_qtyentery(self.no3_item_entry.get(), self.iq3)
     def update_qtye4(self,event,*args):
-        self.get_item_qtyentery(self.no4_item_entry.get(), self.iq4)
+        self.qtty()
+        #self.get_item_qtyentery(self.no4_item_entry.get(), self.iq4)
     def update_qtye5(self,event,*args):
-        self.get_item_qtyentery(self.no5_item_entry.get(), self.iq5)
+        self.qtty()
+        #self.get_item_qtyentery(self.no5_item_entry.get(), self.iq5)
     def update_qtye6(self,event,*args):
-        self.get_item_qtyentery(self.no6_item_entry.get(), self.iq6)
+        self.qtty()
+        #self.get_item_qtyentery(self.no6_item_entry.get(), self.iq6)
     def update_qtye7(self,event,*args):
-        self.get_item_qtyentery(self.no7_item_entry.get(), self.iq7)
+        self.qtty()
+        #self.get_item_qtyentery(self.no7_item_entry.get(), self.iq7)
     def update_qtye8(self,event,*args):
-        self.get_item_qtyentery(self.no8_item_entry.get(), self.iq8)
+        self.qtty()
+        #self.get_item_qtyentery(self.no8_item_entry.get(), self.iq8)
     def update_qtye9(self,event,*args):
-        self.get_item_qtyentery(self.no9_item_entry.get(), self.iq9)
+        self.qtty()
+        #self.get_item_qtyentery(self.no9_item_entry.get(), self.iq9)
     def update_qtye10(self,event,*args):
-        self.get_item_qtyentery(self.no10_item_entry.get(), self.iq10)
+        self.qtty()
+        #self.get_item_qtyentery(self.no10_item_entry.get(), self.iq10)
 
 
     # # todo: Update Qty
