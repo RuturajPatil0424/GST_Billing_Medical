@@ -1186,10 +1186,9 @@ class saleClass(customtkinter.CTk):
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
     def get_item_tax(self, iname, iseto):
-        print(iname)
         if iname.get() == "":
             iseto.insert(0, "None")
-            # self.no1_tax_percentagee_entry.configure(values=iseto)
+
 
         else:
           con = sqlite3.connect(database=r'ims.db')
@@ -1203,7 +1202,6 @@ class saleClass(customtkinter.CTk):
             for row in rows:
                 for i in row:
                     iseto.insert(0, i)
-
 
 
           except Exception as ex:
@@ -1224,8 +1222,6 @@ class saleClass(customtkinter.CTk):
             # self.productTable.delete(*self.productTable.get_children())
 
             for data in datas:
-                for d in data:
-                    print(d)
                     if d == "":
                         stock=0
                     else:
@@ -1234,7 +1230,6 @@ class saleClass(customtkinter.CTk):
             cur.execute("select minqty from itemdata where itemname=?", (iname,))
             rows = cur.fetchall()
             # self.productTable.delete(*self.productTable.get_children())
-            print(stock)
             for row in rows:
 
                 for i in row:
@@ -1281,7 +1276,6 @@ class saleClass(customtkinter.CTk):
 
             for data in datas:
                 for d in data:
-                    print(d)
                     if d == "":
                         stock=0
                     else:
@@ -1439,12 +1433,10 @@ class saleClass(customtkinter.CTk):
                     decq = decf.replace(" ", "0")
                     disca = float(decq)
 
-
                     #find gst
                     withbase = itemprice - (itemprice*(100/(100+gsttax)))
                     it=itemprice-withbase
                     rit=round(it,2)
-                    print(rit)
 
                     #add discount
                     dicam=rit*disca/100
@@ -1852,7 +1844,6 @@ class saleClass(customtkinter.CTk):
         self.Partynames.clear()
         self.Partynames.append("")
         name=self.Party_var.get()
-        print(name)
         con = sqlite3.connect(database=r'ims.db')
         cur = con.cursor()
         try:
@@ -1865,7 +1856,6 @@ class saleClass(customtkinter.CTk):
 
                     m=str(i)
                     if name.lower() in m.lower():
-                        print(i)
                         self.Partynames.append(i)
             self.partyname_entry.configure(values=self.Partynames)
 
@@ -1878,7 +1868,7 @@ class saleClass(customtkinter.CTk):
         self.get_item_price(self.no1_item_entry.get(), self.ip1)
         self.get_item_tax(self.no1_item_entry, self.itax1)
         self.get_item_dec(self.no1_item_entry.get(), self.id1)
-        self.itx()
+        # self.itx()
         self.itemgstbill(self.no1_qty_entry.get(), self.no1_unitprice_entry.get(), self.no1_dec_percentagee_entry.get(),
                          self.ida1, self.tax_unit_box, self.no1_tax_percentagee_entry.get(), self.ita1, self.iam1)
         self.finalamount()
@@ -2022,7 +2012,6 @@ class saleClass(customtkinter.CTk):
                             a+=1
                         final=f"{mm}{self.incre}"
                         strfinal=str(final)
-                        print(final)
                         self.invo.set(strfinal)
                         self.invoice_entry.configure(textvariable=self.invo)
 
@@ -2062,9 +2051,7 @@ class saleClass(customtkinter.CTk):
                   b=seto.get()
                   for row in rows:
                      for i in row:
-                       print(i)
                        resualt=int(i)-int(b)
-                       print(resualt)
                        cur.execute("select pid from itemdata where itemname=?", (name,))
                        pids = cur.fetchall()
                        for pid in pids:

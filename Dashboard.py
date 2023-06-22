@@ -2048,17 +2048,17 @@ class App(customtkinter.CTk):
 
 
     def addparty_event(self):
-        call(["python", "AddParty.py"])
+        call(["python", "comands/AddParty.py"])
     def additem_event(self):
-        call(["python", "AddItem.py"])
+        call(["python", "comands/AddItem.py"])
     def addsale_event(self):
-        call(["python", "AddSale.py"])
+        call(["python", "comands/AddSale.py"])
     def addestimate_event(self):
-        call(["python", "Estimate.py"])
+        call(["python", "comands/Estimate.py"])
     def addpurchase_event(self):
-        call(["python", "Purchase.py"])
+        call(["python", "comands/Purchase.py"])
     def editparty_event(self):
-        call(["python", "EditParty.py"])
+        call(["python", "comands/EditParty.py"])
 
     def select_frame_by_name(self, name):
         # set button color for selected button
@@ -2695,7 +2695,7 @@ class App(customtkinter.CTk):
             self.sale_paidamount_mlist.append(a)
         for m in self.sale_totalamount_list:
             for k in m:
-             b=int(k)
+             b=float(k)
              self.sale_totalamount_mlist.append(b)
         sumpaid=sum(self.sale_paidamount_mlist)
         sumtotal = sum(self.sale_totalamount_mlist)
