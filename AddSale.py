@@ -92,21 +92,23 @@ class saleClass(customtkinter.CTk):
         # self.roundoff.set("0")
         # self.totalam.set("0")
 
-
         self.roundoff_entry = customtkinter.CTkEntry(self, width=150, height=30, textvariable=self.roundoff)
         self.roundoff_entry.place(x=1000, y=750)
+        self.roundoff.trace('w',self.amountupdate)
 
         self.Total_lable = customtkinter.CTkLabel(self, text="Total")
         self.Total_lable.place(x=900, y=790)
 
         self.Total_entry = customtkinter.CTkEntry(self, width=150, height=30, textvariable=self.totalam)
         self.Total_entry.place(x=1000, y=790)
+        self.totalam.trace('w', self.amountupdate)
 
         self.Received_lable = customtkinter.CTkLabel(self, text="Received")
         self.Received_lable.place(x=900, y=840)
 
         self.Received_entry = customtkinter.CTkEntry(self, width=150, height=30, textvariable=self.recvam)
         self.Received_entry.place(x=1000, y=840)
+        self.recvam.trace('w', self.amountupdate)
 
         self.Balance_lable = customtkinter.CTkLabel(self, text="Balance")
         self.Balance_lable.place(x=900, y=880)
@@ -117,7 +119,7 @@ class saleClass(customtkinter.CTk):
         self.Balance_entry = customtkinter.CTkLabel(self, text=self.balence)
         self.Balance_entry.place(x=1070, y=880)
 
-        self.savebtn = customtkinter.CTkButton(self, command=self.savedata, width=80, text="Save",
+        self.savebtn = customtkinter.CTkButton(self, command=self.savedata, width=80, text="Sell",
                                                font=customtkinter.CTkFont(size=16))
         self.savebtn.place(x=1100, y=950)
 
@@ -1583,7 +1585,6 @@ class saleClass(customtkinter.CTk):
         sitam9=self.no9_qty_entry.get()
         sitam10=self.no10_qty_entry.get()
 
-
         itam1=sitam1.replace(" ","0")
         itam2=sitam2.replace(" ","0")
         itam3=sitam3.replace(" ","0")
@@ -2092,9 +2093,10 @@ class saleClass(customtkinter.CTk):
         self.update_item_qty(self.no9_item_entry.get(), self.iq9)
         self.update_item_qty(self.no10_item_entry.get(), self.iq10)
 
+    def amountupdate(self,*args):
+        self.finalamount()
 
 
-        
     def refrance(self,event):
         if self.Payment_type_entry.get() == "Cheque":
            self.Cheque_entry.place(x=50, y=790)
