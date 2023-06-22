@@ -11,7 +11,7 @@ class saleClass(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
-        self.geometry("1920x1080+130")
+        self.geometry("1920x1080+-10+-3")
         self.title("GST Management System | Developed By Ruturaj Patil")
         # self.config(bg="white")
         self.focus_force()
@@ -62,14 +62,15 @@ class saleClass(customtkinter.CTk):
         self.ste_lable = customtkinter.CTkLabel(self, text="State of Supply")
         self.ste_lable.place(x=900, y=130)
 
-        self.state_menu = customtkinter.CTkOptionMenu(self, width=150, height=30, dynamic_resizing=False,
-                                                      values=["None", "Andhra Pradesh", "Arunachal Pradesh", "Assam",
+        self.statelist=["None", "Andhra Pradesh", "Arunachal Pradesh", "Assam",
                                                               "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana",
                                                               "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala",
                                                               "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya",
                                                               "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan",
                                                               "Sikkim", "Tamil Nadu", "Telangana", "Tripura",
-                                                              "Uttar Pradesh", "Uttarakhand", "West Bengal"])
+                                                              "Uttar Pradesh", "Uttarakhand", "West Bengal"]
+        self.state_menu = customtkinter.CTkOptionMenu(self, width=150, height=30, dynamic_resizing=False,
+                                                      values=self.statelist)
         self.state_menu.place(x=1000, y=130)
 
         self.Payment_type_lable = customtkinter.CTkLabel(self, font=customtkinter.CTkFont(size=15), text="Payment Type")
@@ -463,34 +464,34 @@ class saleClass(customtkinter.CTk):
         self.ida9 = StringVar()
         self.ida10 = StringVar()
 
-        self.no1_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida1)
+        self.no1_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida1,state="readonly")
         self.no1_dec_amount_entry.grid(row=2, column=6, padx=5, pady=5)
 
-        self.no2_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida2)
+        self.no2_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida2,state="readonly")
         self.no2_dec_amount_entry.grid(row=3, column=6, padx=5, pady=5)
 
-        self.no3_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida3)
+        self.no3_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida3,state="readonly")
         self.no3_dec_amount_entry.grid(row=4, column=6, padx=5, pady=5)
 
-        self.no4_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida4)
+        self.no4_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida4,state="readonly")
         self.no4_dec_amount_entry.grid(row=5, column=6, padx=5, pady=5)
 
-        self.no5_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida5)
+        self.no5_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida5,state="readonly")
         self.no5_dec_amount_entry.grid(row=6, column=6, padx=5, pady=5)
 
-        self.no6_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida6)
+        self.no6_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida6,state="readonly")
         self.no6_dec_amount_entry.grid(row=7, column=6, padx=5, pady=5)
 
-        self.no7_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida7)
+        self.no7_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida7,state="readonly")
         self.no7_dec_amount_entry.grid(row=8, column=6, padx=5, pady=5)
 
-        self.no8_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida8)
+        self.no8_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida8,state="readonly")
         self.no8_dec_amount_entry.grid(row=9, column=6, padx=5, pady=5)
 
-        self.no9_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida9)
+        self.no9_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida9,state="readonly")
         self.no9_dec_amount_entry.grid(row=10, column=6, padx=5, pady=5)
 
-        self.no10_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida10)
+        self.no10_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida10,state="readonly")
         self.no10_dec_amount_entry.grid(row=11, column=6, padx=5, pady=5)
 
 
@@ -665,10 +666,10 @@ class saleClass(customtkinter.CTk):
 
         self.get_party_data()
 
-
-
-        self.partyname_entry = customtkinter.CTkComboBox(self, width=200, height=40, values=self.Partynames,command=self.party)
+        self.Party_var=StringVar()
+        self.partyname_entry = customtkinter.CTkComboBox(self, width=200, height=40, variable=self.Party_var,values=self.Partynames,command=self.party)
         self.partyname_entry.place(x=50, y=120)
+        self.Party_var.trace('w',self.updateparty)
 
         self.get_party_gstin()
         self.get_party_number()
@@ -1002,8 +1003,10 @@ class saleClass(customtkinter.CTk):
         call(["python", "Invoice.py"])
     def savedata(self):
         self.add_invoice_event()
+        self.invoice_updator()
         self.add_party_event()
         self.invoice_event()
+
 
     def change_appearance_mode_event(self, new_appearance_mode):
         print(new_appearance_mode)
@@ -1037,7 +1040,6 @@ class saleClass(customtkinter.CTk):
 
             cur.execute("select gstin from partydata where partyname=?", (self.partyname_entry.get(),))
             rows = cur.fetchall()
-            # self.productTable.delete(*self.productTable.get_children())
 
             for row in rows:
                 for i in row:
@@ -1049,6 +1051,28 @@ class saleClass(customtkinter.CTk):
 
          self.get_party_payamount()
          self.get_party_reciveamount()
+
+    def get_party_state(self):
+
+        if self.partyname_entry.get() == "":
+            self.state_menu.set("None")
+        else:
+         con = sqlite3.connect(database=r'ims.db')
+         cur = con.cursor()
+         try:
+
+            cur.execute("select state from partydata where partyname=?", (self.partyname_entry.get(),))
+            rows = cur.fetchall()
+
+            for row in rows:
+                for i in row:
+                    self.state_menu.set(i)
+                    self.statelist.insert(0,i)
+                    self.state_menu.configure(values=self.statelist)
+
+
+         except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
     def get_party_payamount(self):
 
@@ -1082,7 +1106,7 @@ class saleClass(customtkinter.CTk):
 
             cur.execute("select paybalence from partydata where partyname=?", (self.partyname_entry.get(),))
             rows = cur.fetchall()
-            # self.productTable.delete(*self.productTable.get_children())
+
 
             for row in rows:
                 for i in row:
@@ -1160,20 +1184,24 @@ class saleClass(customtkinter.CTk):
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
     def get_item_tax(self, iname, iseto):
-        if iname == "":
+        print(iname)
+        if iname.get() == "":
             iseto.insert(0, "None")
+            # self.no1_tax_percentagee_entry.configure(values=iseto)
+
         else:
           con = sqlite3.connect(database=r'ims.db')
           cur = con.cursor()
           try:
 
-            cur.execute("select gsttax from itemdata where itemname=?", (iname,))
+            cur.execute("select gsttax from itemdata where itemname=?", (iname.get(),))
             rows = cur.fetchall()
             # self.productTable.delete(*self.productTable.get_children())
-
+            m=StringVar()
             for row in rows:
                 for i in row:
                     iseto.insert(0, i)
+
 
 
           except Exception as ex:
@@ -1532,13 +1560,13 @@ class saleClass(customtkinter.CTk):
             self.roundoff.set("0")
             self.fi=finalamount
             self.Total_amount_lable.configure(text=self.fi)
-            ro=round(finalamount,2)
+            ro=finalamount
             self.totalam.set(ro)
 
             a=self.Received_entry.get()
             m=int(a)
             res=finalamount-m
-            rres=round(res)
+            rres=res
             self.balence=rres
             self.Balance_entry.configure(text=self.balence)
 
@@ -1689,16 +1717,16 @@ class saleClass(customtkinter.CTk):
 
     def itx(self):
 
-        self.get_item_tax(self.no1_item_entry.get(), self.itax1)
-        self.get_item_tax(self.no2_item_entry.get(), self.itax2)
-        self.get_item_tax(self.no3_item_entry.get(), self.itax3)
-        self.get_item_tax(self.no4_item_entry.get(), self.itax4)
-        self.get_item_tax(self.no5_item_entry.get(), self.itax5)
-        self.get_item_tax(self.no6_item_entry.get(), self.itax6)
-        self.get_item_tax(self.no7_item_entry.get(), self.itax7)
-        self.get_item_tax(self.no8_item_entry.get(), self.itax8)
-        self.get_item_tax(self.no9_item_entry.get(), self.itax9)
-        self.get_item_tax(self.no10_item_entry.get(), self.itax10)
+        self.get_item_tax(self.no1_item_entry, self.itax1)
+        self.get_item_tax(self.no2_item_entry, self.itax2)
+        self.get_item_tax(self.no3_item_entry, self.itax3)
+        self.get_item_tax(self.no4_item_entry, self.itax4)
+        self.get_item_tax(self.no5_item_entry, self.itax5)
+        self.get_item_tax(self.no6_item_entry, self.itax6)
+        self.get_item_tax(self.no7_item_entry, self.itax7)
+        self.get_item_tax(self.no8_item_entry, self.itax8)
+        self.get_item_tax(self.no9_item_entry, self.itax9)
+        self.get_item_tax(self.no10_item_entry, self.itax10)
 
 
     def iqt(self):
@@ -1751,6 +1779,7 @@ class saleClass(customtkinter.CTk):
         self.get_party_data()
         self.get_party_number()
         self.get_party_gstin()
+        self.get_party_state()
 
     def show(self,event):
         self.itpri()
@@ -1801,6 +1830,7 @@ class saleClass(customtkinter.CTk):
     def update_combobox(self,entery,method):
         type=entery.get()
         self.ItemList.clear()
+        self.ItemList.append("")
         con = sqlite3.connect(database=r'ims.db')
         cur = con.cursor()
         try:
@@ -1808,7 +1838,8 @@ class saleClass(customtkinter.CTk):
             rows = cur.fetchall()
             for items in rows:
               for i in items:
-                if type.lower() in i:
+                m=str(i)
+                if type.lower() in m.lower():
                   self.ItemList.append(i)
 
             entery.configure(values=self.ItemList)
@@ -1816,13 +1847,37 @@ class saleClass(customtkinter.CTk):
         except Exception as ex:
               messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
+    def updateparty(self,*args):
+        self.Partynames.clear()
+        self.Partynames.append("")
+        name=self.Party_var.get()
+        print(name)
+        con = sqlite3.connect(database=r'ims.db')
+        cur = con.cursor()
+        try:
+
+            cur.execute("select partyname from partydata")
+            rows = cur.fetchall()
+
+            for row in rows:
+                for i in row:
+
+                    m=str(i)
+                    if name.lower() in m.lower():
+                        print(i)
+                        self.Partynames.append(i)
+            self.partyname_entry.configure(values=self.Partynames)
+
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
 
     def itm1(self,event):
         self.get_item_qty(self.no1_item_entry.get(), self.iq1)
         self.get_item_price(self.no1_item_entry.get(), self.ip1)
-        self.get_item_tax(self.no2_item_entry.get(), self.itax2)
+        self.get_item_tax(self.no1_item_entry, self.itax1)
         self.get_item_dec(self.no1_item_entry.get(), self.id1)
+        self.itx()
         self.itemgstbill(self.no1_qty_entry.get(), self.no1_unitprice_entry.get(), self.no1_dec_percentagee_entry.get(),
                          self.ida1, self.tax_unit_box, self.no1_tax_percentagee_entry.get(), self.ita1, self.iam1)
         self.finalamount()
@@ -1834,7 +1889,7 @@ class saleClass(customtkinter.CTk):
     def itm2(self,event):
         self.get_item_qty(self.no2_item_entry.get(), self.iq2)
         self.get_item_price(self.no2_item_entry.get(), self.ip2)
-        self.get_item_tax(self.no2_item_entry.get(), self.itax2)
+        self.get_item_tax(self.no2_item_entry, self.itax2)
         self.get_item_dec(self.no2_item_entry.get(), self.id2)
         self.itemgstbill(self.no2_qty_entry.get(), self.no2_unitprice_entry.get(), self.no2_dec_percentagee_entry.get(),
                          self.ida2, self.tax_unit_box, self.no2_tax_percentagee_entry.get(), self.ita2, self.iam2)
@@ -1846,7 +1901,7 @@ class saleClass(customtkinter.CTk):
     def itm3(self,event):
         self.get_item_qty(self.no3_item_entry.get(), self.iq3)
         self.get_item_price(self.no3_item_entry.get(), self.ip3)
-        self.get_item_tax(self.no2_item_entry.get(), self.itax2)
+        self.get_item_tax(self.no3_item_entry, self.itax3)
         self.get_item_dec(self.no3_item_entry.get(), self.id3)
         self.itemgstbill(self.no3_qty_entry.get(), self.no3_unitprice_entry.get(), self.no3_dec_percentagee_entry.get(),
                          self.ida3, self.tax_unit_box, self.no3_tax_percentagee_entry.get(), self.ita3, self.iam3)
@@ -1858,7 +1913,7 @@ class saleClass(customtkinter.CTk):
     def itm4(self,event):
         self.get_item_qty(self.no4_item_entry.get(), self.iq4)
         self.get_item_price(self.no4_item_entry.get(), self.ip4)
-        self.get_item_tax(self.no2_item_entry.get(), self.itax2)
+        self.get_item_tax(self.no4_item_entry, self.itax4)
         self.get_item_dec(self.no4_item_entry.get(), self.id4)
         self.itemgstbill(self.no4_qty_entry.get(), self.no4_unitprice_entry.get(), self.no4_dec_percentagee_entry.get(),
                          self.ida4, self.tax_unit_box, self.no4_tax_percentagee_entry.get(), self.ita4, self.iam4)
@@ -1870,7 +1925,7 @@ class saleClass(customtkinter.CTk):
     def itm5(self,event):
         self.get_item_qty(self.no5_item_entry.get(), self.iq5)
         self.get_item_price(self.no5_item_entry.get(), self.ip5)
-        self.get_item_tax(self.no2_item_entry.get(), self.itax2)
+        self.get_item_tax(self.no5_item_entry, self.itax5)
         self.get_item_dec(self.no5_item_entry.get(), self.id5)
         self.itemgstbill(self.no5_qty_entry.get(), self.no5_unitprice_entry.get(), self.no5_dec_percentagee_entry.get(),
                          self.ida5, self.tax_unit_box, self.no5_tax_percentagee_entry.get(), self.ita5, self.iam5)
@@ -1882,7 +1937,7 @@ class saleClass(customtkinter.CTk):
     def itm6(self,event):
         self.get_item_qty(self.no6_item_entry.get(), self.iq6)
         self.get_item_price(self.no6_item_entry.get(), self.ip6)
-        self.get_item_tax(self.no2_item_entry.get(), self.itax2)
+        self.get_item_tax(self.no6_item_entry, self.itax6)
         self.get_item_dec(self.no6_item_entry.get(), self.id6)
         self.itemgstbill(self.no6_qty_entry.get(), self.no6_unitprice_entry.get(), self.no6_dec_percentagee_entry.get(),
                          self.ida6, self.tax_unit_box, self.no6_tax_percentagee_entry.get(), self.ita6, self.iam6)
@@ -1894,7 +1949,7 @@ class saleClass(customtkinter.CTk):
     def itm7(self,event):
         self.get_item_qty(self.no7_item_entry.get(), self.iq7)
         self.get_item_price(self.no7_item_entry.get(), self.ip7)
-        self.get_item_tax(self.no2_item_entry.get(), self.itax2)
+        self.get_item_tax(self.no7_item_entry, self.itax7)
         self.get_item_dec(self.no7_item_entry.get(), self.id7)
         self.itemgstbill(self.no7_qty_entry.get(), self.no7_unitprice_entry.get(), self.no7_dec_percentagee_entry.get(),
                          self.ida7, self.tax_unit_box, self.no7_tax_percentagee_entry.get(), self.ita7, self.iam7)
@@ -1906,7 +1961,7 @@ class saleClass(customtkinter.CTk):
     def itm8(self,event):
         self.get_item_qty(self.no8_item_entry.get(), self.iq8)
         self.get_item_price(self.no8_item_entry.get(), self.ip8)
-        self.get_item_tax(self.no2_item_entry.get(), self.itax2)
+        self.get_item_tax(self.no8_item_entry, self.itax8)
         self.get_item_dec(self.no8_item_entry.get(), self.id8)
         self.itemgstbill(self.no8_qty_entry.get(), self.no8_unitprice_entry.get(), self.no8_dec_percentagee_entry.get(),
                          self.ida8, self.tax_unit_box, self.no8_tax_percentagee_entry.get(), self.ita8, self.iam8)
@@ -1918,7 +1973,7 @@ class saleClass(customtkinter.CTk):
     def itm9(self,event):
         self.get_item_qty(self.no9_item_entry.get(), self.iq9)
         self.get_item_price(self.no9_item_entry.get(), self.ip9)
-        self.get_item_tax(self.no2_item_entry.get(), self.itax2)
+        self.get_item_tax(self.no9_item_entry, self.itax9)
         self.get_item_dec(self.no9_item_entry.get(), self.id9)
         self.itemgstbill(self.no9_qty_entry.get(), self.no9_unitprice_entry.get(), self.no9_dec_percentagee_entry.get(),
                          self.ida9, self.tax_unit_box, self.no9_tax_percentagee_entry.get(), self.ita9, self.iam9)
@@ -1930,7 +1985,7 @@ class saleClass(customtkinter.CTk):
     def itm10(self,event):
         self.get_item_qty(self.no10_item_entry.get(), self.iq10)
         self.get_item_price(self.no10_item_entry.get(), self.ip10)
-        self.get_item_tax(self.no2_item_entry.get(), self.itax2)
+        self.get_item_tax(self.no10_item_entry, self.itax10)
         self.get_item_dec(self.no10_item_entry.get(), self.id10)
         self.itemgstbill(self.no10_qty_entry.get(), self.no10_unitprice_entry.get(), self.no10_dec_percentagee_entry.get(),
                          self.ida10, self.tax_unit_box, self.no10_tax_percentagee_entry.get(), self.ita10, self.iam10)
@@ -1958,25 +2013,34 @@ class saleClass(customtkinter.CTk):
                 for row in rows:
                     for i in row:
                         invoice_zero=6-len(i)
-                        incre=int(i)+1
+                        self.incre=int(i)+1
                         a=1
                         mm = "0"
                         while a<invoice_zero:
                             mm=mm+"0"
                             a+=1
-                        final=f"{mm}{incre}"
+                        final=f"{mm}{self.incre}"
                         strfinal=str(final)
                         print(final)
                         self.invo.set(strfinal)
                         self.invoice_entry.configure(textvariable=self.invo)
-                        p=1
-                        cur.execute("Select no from invo where no=?", (p,))
-                        row = cur.fetchone()
-                        cur.execute("Update invo set invoice=? where no=?", (
-                        incre,
-                        p,
-                        ))
-                        con.commit()
+
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+
+    def invoice_updator(self):
+        p = 1
+        con = sqlite3.connect(database=r'ims.db')
+        cur = con.cursor()
+        try:
+
+            cur.execute("Select no from invo where no=?", (p,))
+            row = cur.fetchone()
+            cur.execute("Update invo set invoice=? where no=?", (
+                self.incre,
+                p,
+            ))
+            con.commit()
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
