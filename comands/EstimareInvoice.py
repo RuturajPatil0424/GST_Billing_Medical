@@ -83,7 +83,6 @@ def get_item1_data():
     con=sqlite3.connect(database=r'../DataBase/ims.db')
     cur=con.cursor()
     try:
-
         cur.execute("select item1name,qty1,unit1,unitprice1,dec1,desamount1,tax1,amount1 from estimateinvogstsale where sid=1")
         rows=cur.fetchall()
 
@@ -106,7 +105,6 @@ def get_item2_data():
             for r in row:
                 item_list2.append(r)
 
-
     except Exception as ex:
         print(ex)
 
@@ -122,7 +120,6 @@ def get_item3_data():
             for r in row:
                 item_list3.append(r)
 
-
     except Exception as ex:
         print(ex)
 
@@ -137,7 +134,6 @@ def get_item4_data():
         for row in rows:
             for r in row:
                 item_list4.append(r)
-
 
     except Exception as ex:
         print(ex)

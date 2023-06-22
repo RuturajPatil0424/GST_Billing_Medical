@@ -830,15 +830,14 @@ class saleClass(customtkinter.CTk):
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
     def add_amount(self):
      pay=float(self.resultam.get())
-     bill=float(self.balence)
-     rwsult=pay+bill
+     rwsult=pay
+
      try:
         con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
 
-        cur.execute(f"Select paybalence from partydata where gstin={self.gstin_entry.get()}")
-        cur.execute(
-            "Update partydata set paybalence=?",(
+        cur.execute(f"Select paybalence from partydata where pid={self.gstin_entry.get()}")
+        cur.execute(f"Update partydata set paybalence=? where pid={self.gstin_entry.get()}",(
              rwsult,
             ))
         con.commit()
@@ -1086,7 +1085,7 @@ class saleClass(customtkinter.CTk):
          cur = con.cursor()
          try:
 
-            cur.execute("select recivebalence from partydata where partyname=?", (self.partyname_entry.get(),))
+            cur.execute("select paybalence from partydata where partyname=?", (self.partyname_entry.get(),))
             rows = cur.fetchall()
             # self.productTable.delete(*self.productTable.get_children())
 
@@ -1107,7 +1106,7 @@ class saleClass(customtkinter.CTk):
          cur = con.cursor()
          try:
 
-            cur.execute("select paybalence from partydata where partyname=?", (self.partyname_entry.get(),))
+            cur.execute("select recivebalence from partydata where partyname=?", (self.partyname_entry.get(),))
             rows = cur.fetchall()
 
 
@@ -1164,6 +1163,9 @@ class saleClass(customtkinter.CTk):
         recivee = float(self.reciveamount.get())
         payed = int(self.Received_entry.get())
         total = float(self.totalam.get())
+        print(recivee)
+        print(payed)
+        print(total)
         esult = recivee + (total - payed)
         result =str(esult)
         self.resultam.set(result)
@@ -1495,7 +1497,7 @@ class saleClass(customtkinter.CTk):
             self.totalam.set(ro)
 
             a=self.Received_entry.get()
-            m=int(a)
+            m=float(a)
             res=finalamount-m
             rres=res
             self.balence=rres
