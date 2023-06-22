@@ -117,6 +117,10 @@ no10_amount_entry=""
 estimate_invoice=""
 estimate_invoice_list=[]
 estimate_total_invoice_list=[]
+
+def start():
+  getdata()
+
 def getinvoice():
         con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
@@ -126,9 +130,8 @@ def getinvoice():
             rows=cur.fetchall()
             for row in rows:
               for r in row:
-                estimate_invoice=r
+                return r
 
-            getdata()
         except Exception as ex:
             print(ex)
 
@@ -161,7 +164,7 @@ def datastore():
   phonenumber_entry=estimate_invoice_list[1]
   gstin_entry=estimate_invoice_list[2]
   crstete=estimate_invoice_list[3]
-  invoice_entry=estimate_invoice_list[4]
+  invoice_entry=getinvoice()
   date_entry=estimate_invoice_list[5]
   state_menu=estimate_invoice_list[6]
   Payment_type_entry=estimate_invoice_list[7]
@@ -280,6 +283,7 @@ def datastore():
 
   inv0= invoice_genrator()
   for i in inv0:
+    print(i)
     invoice_entry=i
 
   invoice_updator(invoice_entry)
@@ -585,6 +589,7 @@ def invoice_genrator():
 def invoice_updator(data):
   p = 1
   incre=data.replace("0","")
+  print(incre)
   con = sqlite3.connect(database=r'../DataBase/ims.db')
   cur = con.cursor()
   try:
@@ -673,4 +678,4 @@ def get_amount(recivee,payedd,totall,gstin):
         except Exception as ex:
           print(ex)
 
-getinvoice()
+start()
