@@ -684,7 +684,7 @@ class saleClass(customtkinter.CTk):
         self.get_party_gstin()
         self.get_amount()
 
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         try:
             if self.partyname_entry.get() == "":
@@ -831,7 +831,7 @@ class saleClass(customtkinter.CTk):
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
     def add_amount(self):
      try:
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
 
         cur.execute(f"Select recivebalence from partydata where gstin={self.gstin_entry.get()}")
@@ -850,7 +850,7 @@ class saleClass(customtkinter.CTk):
         self.get_party_gstin()
 
 
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         try:
             if self.partyname_entry.get() == "":
@@ -1015,7 +1015,7 @@ class saleClass(customtkinter.CTk):
 
     def get_party_data(self):
 
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         try:
 
@@ -1036,7 +1036,7 @@ class saleClass(customtkinter.CTk):
         if self.partyname_entry.get() == "":
             self.gstin.set("")
         else:
-         con = sqlite3.connect(database=r'ims.db')
+         con = sqlite3.connect(database=r'../DataBase/ims.db')
          cur = con.cursor()
          try:
 
@@ -1059,7 +1059,7 @@ class saleClass(customtkinter.CTk):
         if self.partyname_entry.get() == "":
             self.state_menu.set("None")
         else:
-         con = sqlite3.connect(database=r'ims.db')
+         con = sqlite3.connect(database=r'../DataBase/ims.db')
          cur = con.cursor()
          try:
 
@@ -1081,7 +1081,7 @@ class saleClass(customtkinter.CTk):
         if self.partyname_entry.get() == "":
             self.gstin.set("")
         else:
-         con = sqlite3.connect(database=r'ims.db')
+         con = sqlite3.connect(database=r'../DataBase/ims.db')
          cur = con.cursor()
          try:
 
@@ -1102,7 +1102,7 @@ class saleClass(customtkinter.CTk):
         if self.partyname_entry.get() == "":
             self.gstin.set("")
         else:
-         con = sqlite3.connect(database=r'ims.db')
+         con = sqlite3.connect(database=r'../DataBase/ims.db')
          cur = con.cursor()
          try:
 
@@ -1122,7 +1122,7 @@ class saleClass(customtkinter.CTk):
         if self.partyname_entry.get() == "":
             self.partynumber.set("")
         else:
-          con = sqlite3.connect(database=r'ims.db')
+          con = sqlite3.connect(database=r'../DataBase/ims.db')
           cur = con.cursor()
           try:
 
@@ -1143,7 +1143,7 @@ class saleClass(customtkinter.CTk):
             seto.set("")
         else:
 
-          con = sqlite3.connect(database=r'ims.db')
+          con = sqlite3.connect(database=r'../DataBase/ims.db')
           cur = con.cursor()
           try:
 
@@ -1170,7 +1170,7 @@ class saleClass(customtkinter.CTk):
 
 
     def get_item_unit_list(self):
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         try:
 
@@ -1191,7 +1191,7 @@ class saleClass(customtkinter.CTk):
 
 
         else:
-          con = sqlite3.connect(database=r'ims.db')
+          con = sqlite3.connect(database=r'../DataBase/ims.db')
           cur = con.cursor()
           try:
 
@@ -1213,7 +1213,7 @@ class saleClass(customtkinter.CTk):
 
       else:
 
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         stock=0
         try:
@@ -1267,7 +1267,7 @@ class saleClass(customtkinter.CTk):
 
       else:
 
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         stock=0
         qty=int(qaunty.get())
@@ -1343,7 +1343,7 @@ class saleClass(customtkinter.CTk):
     # todo: Update Qty
     def update_item_qty(self, iname, iseto):
 
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         try:
 
@@ -1362,7 +1362,7 @@ class saleClass(customtkinter.CTk):
       if iname == "":
             iseto.set(" ")
       else:
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         try:
 
@@ -1387,7 +1387,7 @@ class saleClass(customtkinter.CTk):
       if iname == "":
           iseto.insert(0, "")
       else:
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         try:
 
@@ -1788,7 +1788,7 @@ class saleClass(customtkinter.CTk):
 
 
     def get_item_name(self):
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         try:
 
@@ -1828,7 +1828,7 @@ class saleClass(customtkinter.CTk):
         type=entery.get()
         self.ItemList.clear()
         self.ItemList.append("")
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         try:
             cur.execute("select itemname from itemdata")
@@ -1849,7 +1849,7 @@ class saleClass(customtkinter.CTk):
         self.Partynames.append("")
         name=self.Party_var.get()
 
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         try:
 
@@ -2000,7 +2000,7 @@ class saleClass(customtkinter.CTk):
 
     def invoice_genrator(self):
 
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         try:
 
@@ -2026,7 +2026,7 @@ class saleClass(customtkinter.CTk):
 
     def invoice_updator(self):
         p = 1
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         try:
 
@@ -2045,7 +2045,7 @@ class saleClass(customtkinter.CTk):
             seto.set("")
         else:
 
-          con = sqlite3.connect(database=r'ims.db')
+          con = sqlite3.connect(database=r'../DataBase/ims.db')
           cur = con.cursor()
           try:
               if seto=="":
