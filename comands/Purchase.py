@@ -700,14 +700,13 @@ class saleClass(customtkinter.CTk):
             elif self.no1_item_entry.get() == "None":
                 print("Please select at list one item!")
             else:
-                cur.execute("Select * from gstsale")
+                cur.execute("Select * from gstpurchase")
 
                 if self.cash_switch.get() == 1:
                     crstete = "Credit"
                 else:
                     crstete = "Cash"
-                cur.execute(
-                    "Insert into gstpurchase (partyname,phonenumber,gstin,cashorcr,invoiceno,invoicedate,steteofsuply,paymentype,refreceno,total,received,balance,item1name,qty1,unit1,unitprice1,dec1,desamount1,tax1,gstamount1,amount1,item2name,qty2,unit2,unitprice2,dec2,desamount2,tax2,gstamount2,amount2,item3name,qty3,unit3,unitprice3,dec3,desamount3,tax3,gstamount3,amount3,item4name,qty4,unit4,unitprice4,dec4,desamount4,tax4,gstamount4,amount4,item5name,qty5,unit5,unitprice5,dec5,desamount5,tax5,gstamount5,amount5,item6name,qty6,unit6,unitprice6,dec6,desamount6,tax6,gstamount6,amount6,item7name,qty7,unit7,unitprice7,dec7,desamount7,tax7,gstamount7,amount7,item8name,qty8,unit8,unitprice8,dec8,desamount8,tax8,gstamount8,amount8,item9name,qty9,unit9,unitprice9,dec9,desamount9,tax9,gstamount9,amount9,item10name,qty10,unit10,unitprice10,dec10,desamount10,tax10,gstamount10,amount10) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                cur.execute("Insert into gstpurchase (partyname,phonenumber,gstin,cashorcr,invoiceno,invoicedate,steteofsuply,paymentype,refreceno,total,received,balance,item1name,qty1,unit1,unitprice1,dec1,desamount1,tax1,gstamount1,amount1,item2name,qty2,unit2,unitprice2,dec2,desamount2,tax2,gstamount2,amount2,item3name,qty3,unit3,unitprice3,dec3,desamount3,tax3,gstamount3,amount3,item4name,qty4,unit4,unitprice4,dec4,desamount4,tax4,gstamount4,amount4,item5name,qty5,unit5,unitprice5,dec5,desamount5,tax5,gstamount5,amount5,item6name,qty6,unit6,unitprice6,dec6,desamount6,tax6,gstamount6,amount6,item7name,qty7,unit7,unitprice7,dec7,desamount7,tax7,gstamount7,amount7,item8name,qty8,unit8,unitprice8,dec8,desamount8,tax8,gstamount8,amount8,item9name,qty9,unit9,unitprice9,dec9,desamount9,tax9,gstamount9,amount9,item10name,qty10,unit10,unitprice10,dec10,desamount10,tax10,gstamount10,amount10) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     (
 
                         self.partyname_entry.get(),
@@ -1004,7 +1003,7 @@ class saleClass(customtkinter.CTk):
             print(ex)
             # messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
     def invoice_event(self):
-        call(["python", "Invoice.py"])
+        call(["python", "purachseinvo.py"])
     def savedata(self):
         self.add_invoice_event()
         self.invoice_updator()
@@ -1217,85 +1216,8 @@ class saleClass(customtkinter.CTk):
 
         con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
-        stock=0
         iseto.set("1")
-        # try:
-        #     cur.execute("select openqty from itemdata where itemname=?", (iname,))
-        #     datas = cur.fetchall()
-        #     # self.productTable.delete(*self.productTable.get_children())
-        #
-        #     for data in datas:
-        #         for d in data:
-        #             if d == "":
-        #                 stock=0
-        #             else:
-        #                 stock=int(d)
-        #
-        #     cur.execute("select minqty from itemdata where itemname=?", (iname,))
-        #     rows = cur.fetchall()
-        #
-        #     for row in rows:
-        #
-        #         for i in row:
-        #             if i == "":
-        #                 if str(stock) >= "":
-        #                     if stock >= 1:
-        #                       iseto.set("1")
-        #                     else:
-        #                        iseto.set("0")
-        #                        messagebox.showerror("Aleart", f"Product is out of stock!", parent=self)
-        #
-        #                 elif stock >= 1:
-        #                   i = 1
-        #                   iseto.set(str(i))
-        #                 elif stock == 0:
-        #                     iseto.set("0")
-        #                     messagebox.showerror("Aleart", f"Product is in stock {stock} and minum sell qty is {i}!", parent=self)
-        #             else:
-        #                 if stock == 0:
-        #                   iseto.set(str(i))
-        #                   messagebox.showerror("Aleart", f"Product is out of stock!", parent=self)
-        #                 elif stock >= int(i):
-        #                   iseto.set(str(i))
-        #                 else:
-        #                     iseto.set(stock)
-        #                     messagebox.showerror("Aleart", f"Product is in stock {stock} and minum sell qty is {i}!", parent=self)
-        #
-        # except Exception as ex:
-        #     messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
-    # def get_item_qtyentery(self, iname,qaunty):
-      # if iname == "":
-      #     qaunty.set(" ")
-      #
-      # else:
-      #
-      #   con = sqlite3.connect(database=r'../DataBase/ims.db')
-      #   cur = con.cursor()
-      #   stock=0
-      #   qty=int(qaunty.get())
-      #   try:
-      #       cur.execute("select openqty from itemdata where itemname=?", (iname,))
-      #       datas = cur.fetchall()
-      #
-      #       for data in datas:
-      #           for d in data:
-      #
-      #               if d == "":
-      #                   stock=0
-      #               else:
-      #                   stock=int(d)
-      #       if stock >= qty:
-      #          qaunty.set(qty)
-      #       elif str(stock) == "":
-      #           qaunty.set("0")
-      #       else:
-      #           qaunty.set(stock)
-      #           messagebox.showerror("Aleart", f"Product is in stock {stock} and you want to sell qty is {qty}!", parent=self)
-      #       self.qtty()
-      #
-      #   except Exception as ex:
-      #       print("Error", f"Error due to : {str(ex)}", parent=self)
 
     def qtty(self):
         self.itemtable()
@@ -1312,10 +1234,6 @@ class saleClass(customtkinter.CTk):
             self.totaltaxam()
 
     def itemshow(self,event):
-        # self.iqt()
-        # self.itpri()
-        # self.secper()
-        # self.itx()
         self.itemtable()
         self.finalamount()
         self.totalqty()
@@ -1426,13 +1344,14 @@ class saleClass(customtkinter.CTk):
 
 
        else:
+        try:
 
-        price = int(price)
-        q=qty.replace(" ","")
-        qty = int(q)
-        itemprice = qty * price
+         price = int(price)
+         q=qty.replace(" ","")
+         qty = int(q)
+         itemprice = qty * price
 
-        if "0" in tax or "0.25" in tax or "3" in tax or "5" in tax or "12" in tax or "18" in tax or "28" in tax or "None" in tax:
+         if "0" in tax or "0.25" in tax or "3" in tax or "5" in tax or "12" in tax or "18" in tax or "28" in tax or "None" in tax:
 
             rtax=tax.replace("IGST@","")
             rtax=rtax.replace("GST@","")
@@ -1534,7 +1453,8 @@ class saleClass(customtkinter.CTk):
 
                     finalamount=dicam+withbase
                     amount.set(finalamount)
-
+        except Exception as e:
+            print(e)
     def finalamount(self):
 
 
@@ -1653,22 +1573,26 @@ class saleClass(customtkinter.CTk):
         itam8=sitam8.replace(" ","0")
         itam9=sitam9.replace(" ","0")
         itam10=sitam10.replace(" ","0")
+        try:
+          item1=float(itam1)
+          item2=float(itam2)
+          item3=float(itam3)
+          item4=float(itam4)
+          item5=float(itam5)
+          item6=float(itam6)
+          item7=float(itam7)
+          item8=float(itam8)
+          item9=float(itam9)
+          item10=float(itam10)
 
-        item1=float(itam1)
-        item2=float(itam2)
-        item3=float(itam3)
-        item4=float(itam4)
-        item5=float(itam5)
-        item6=float(itam6)
-        item7=float(itam7)
-        item8=float(itam8)
-        item9=float(itam9)
-        item10=float(itam10)
 
-        finalamount=(item1+item2+item3+item4+item5+item6+item7+item8+item9+item10)
+          finalamount=(item1+item2+item3+item4+item5+item6+item7+item8+item9+item10)
 
-        self.kk=str(finalamount)
-        self.Totaldic_lable.configure(text=self.kk)
+          self.kk=str(finalamount)
+          self.Totaldic_lable.configure(text=self.kk)
+
+        except Exception as e:
+         print(e)
 
     def totaltaxam(self):
 
@@ -1694,21 +1618,24 @@ class saleClass(customtkinter.CTk):
         itam9=sitam9.replace(" ","0")
         itam10=sitam10.replace(" ","0")
 
-        item1=float(itam1)
-        item2=float(itam2)
-        item3=float(itam3)
-        item4=float(itam4)
-        item5=float(itam5)
-        item6=float(itam6)
-        item7=float(itam7)
-        item8=float(itam8)
-        item9=float(itam9)
-        item10=float(itam10)
+        try:
+          item1=float(itam1)
+          item2=float(itam2)
+          item3=float(itam3)
+          item4=float(itam4)
+          item5=float(itam5)
+          item6=float(itam6)
+          item7=float(itam7)
+          item8=float(itam8)
+          item9=float(itam9)
+          item10=float(itam10)
 
-        finalamount=(item1+item2+item3+item4+item5+item6+item7+item8+item9+item10)
-        rfinalamount=round(finalamount,2)
-        self.diccc=str(rfinalamount)
-        self.Totaltax_lable.configure(text=self.diccc)
+          finalamount=(item1+item2+item3+item4+item5+item6+item7+item8+item9+item10)
+          rfinalamount=round(finalamount,2)
+          self.diccc=str(rfinalamount)
+          self.Totaltax_lable.configure(text=self.diccc)
+        except Exception as e:
+          print(e)
 
 
 
