@@ -706,7 +706,7 @@ class saleClass(customtkinter.CTk):
                     crstete = "Credit"
                 else:
                     crstete = "Cash"
-                cur.execute("Insert into sale (partyname,phonenumber,gstin,cashorcr,invoiceno,invoicedate,steteofsuply,paymentype,refreceno,total,received,balance,item1name,qty1,unit1,unitprice1,dec1,desamount1,amount1,item2name,qty2,unit2,unitprice2,dec2,desamount2,amount2,item3name,qty3,unit3,unitprice3,dec3,desamount3,amount3,item4name,qty4,unit4,unitprice4,dec4,desamount4,amount4,item5name,qty5,unit5,unitprice5,dec5,desamount5,amount5,item6name,qty6,unit6,unitprice6,dec6,desamount6,amount6,item7name,qty7,unit7,unitprice7,dec7,desamount7,amount7,item8name,qty8,unit8,unitprice8,dec8,desamount8,amount8,item9name,qty9,unit9,unitprice9,dec9,desamount9,amount9,item10name,qty10,unit10,unitprice10,dec10,desamount10,amount10) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                cur.execute("Insert into sale (partyname,phonenumber,gstin,cashorcr,invoiceno,invoicedate,steteofsuply,paymentype,refreceno,total,received,balance,item1name,qty1,unit1,unitprice1,dec1,desamount1,amount1,item2name,qty2,unit2,unitprice2,dec2,desamount2,amount2,item3name,qty3,unit3,unitprice3,dec3,desamount3,amount3,item4name,qty4,unit4,unitprice4,dec4,desamount4,amount4,item5name,qty5,unit5,unitprice5,dec5,desamount5,amount5,item6name,qty6,unit6,unitprice6,dec6,desamount6,amount6,item7name,qty7,unit7,unitprice7,dec7,desamount7,amount7,item8name,qty8,unit8,unitprice8,dec8,desamount8,amount8,item9name,qty9,unit9,unitprice9,dec9,desamount9,amount9,item10name,qty10,unit10,unitprice10,dec10,desamount10,amount10) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     (
 
                         self.partyname_entry.get(),
@@ -828,7 +828,6 @@ class saleClass(customtkinter.CTk):
     def add_invoice_event(self):
         self.get_party_gstin()
 
-
         con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         try:
@@ -846,19 +845,12 @@ class saleClass(customtkinter.CTk):
                 messagebox.showerror("Error", "Please select at list one item!", parent=self)
             else:
                 cur.execute("Select * from invosale where sid=1")
-
-                if self.cash_switch.get() == 1:
-                    crstete = "Credit"
-                else:
-                    crstete = "Cash"
-                cur.execute(
-                    "Update invosale set partyname=?,phonenumber=?,gstin=?,cashorcr=?,invoiceno=?,invoicedate=?,steteofsuply=?,paymentype=?,refreceno=?,total=?,received=?,balance=?,totaltac=?,totaldec=?,totalqty=?,item1name=?,qty1=?,unit1=?,unitprice1=?,dec1=?,desamount1=?,amount1=?,item2name=?,qty2=?,unit2=?,unitprice2=?,dec2=?,desamount2=?,amount2=?,item3name=?,qty3=?,unit3=?,unitprice3=?,dec3=?,desamount3=?,amount3=?,item4name=?,qty4=?,unit4=?,unitprice4=?,dec4=?,desamount4=?,amount4=?,item5name=?,qty5=?,unit5=?,unitprice5=?,dec5=?,desamount5=?,amount5=?,item6name=?,qty6=?,unit6=?,unitprice6=?,dec6=?,desamount6=?,amount6=?,item7name=?,qty7=?,unit7=?,unitprice7=?,dec7=?,desamount7=?,amount7=?,item8name=?,qty8=?,unit8=?,unitprice8=?,dec8=?,desamount8=?,amount8=?,item9name=?,qty9=?,unit9=?,unitprice9=?,dec9=?,desamount9=?,amount9=?,item10name=?,qty10=?,unit10=?,unitprice10=?,dec10=?,desamount10=?,amount10=?",
+                cur.execute("Update invosale set partyname=?,phonenumber=?,gstin=?,invoiceno=?,invoicedate=?,steteofsuply=?,paymentype=?,refreceno=?,total=?,received=?,balance=?,totaltac=?,totaldec=?,totalqty=?,item1name=?,qty1=?,unit1=?,unitprice1=?,dec1=?,desamount1=?,amount1=?,item2name=?,qty2=?,unit2=?,unitprice2=?,dec2=?,desamount2=?,amount2=?,item3name=?,qty3=?,unit3=?,unitprice3=?,dec3=?,desamount3=?,amount3=?,item4name=?,qty4=?,unit4=?,unitprice4=?,dec4=?,desamount4=?,amount4=?,item5name=?,qty5=?,unit5=?,unitprice5=?,dec5=?,desamount5=?,amount5=?,item6name=?,qty6=?,unit6=?,unitprice6=?,dec6=?,desamount6=?,amount6=?,item7name=?,qty7=?,unit7=?,unitprice7=?,dec7=?,desamount7=?,amount7=?,item8name=?,qty8=?,unit8=?,unitprice8=?,dec8=?,desamount8=?,amount8=?,item9name=?,qty9=?,unit9=?,unitprice9=?,dec9=?,desamount9=?,amount9=?,item10name=?,qty10=?,unit10=?,unitprice10=?,dec10=?,desamount10=?,amount10=?",
                     (
 
                         self.partyname_entry.get(),
                         self.phonenumber_entry.get(),
                         self.gstin_entry.get(),
-                        crstete,
                         self.invoice_entry.get(),
                         self.date_entry.get(),
                         self.state_menu.get(),
@@ -953,7 +945,7 @@ class saleClass(customtkinter.CTk):
 
                     ))
                 con.commit()
-                self.update_iqt()
+                # self.update_iqt()
                 self.invoice_genrator()
 
 
@@ -961,7 +953,7 @@ class saleClass(customtkinter.CTk):
             print(ex)
             # messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
     def invoice_event(self):
-        call(["python", "Invoice.py"])
+        call(["python", "saleinvocee.py"])
     def savedata(self):
         self.add_invoice_event()
         self.invoice_updator()
@@ -1258,14 +1250,14 @@ class saleClass(customtkinter.CTk):
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        # self.totaltaxam()
+        # #self.totaltaxam()
 
     def itprientery(self,event,*args):
             self.itemtable()
             self.finalamount()
             self.totalqty()
             self.totaldesam()
-            # self.totaltaxam()
+            # #self.totaltaxam()
 
     def itemshow(self,event):
         # self.iqt()
@@ -1276,7 +1268,7 @@ class saleClass(customtkinter.CTk):
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        # self.totaltaxam()
+        # #self.totaltaxam()
     def update_qtye1(self,event,*args):
         self.get_item_qtyentery(self.no1_item_entry.get(), self.iq1)
     def update_qtye2(self,event,*args):
@@ -1685,7 +1677,6 @@ class saleClass(customtkinter.CTk):
 
             cur.execute("select itemname from itemdata")
             rows = cur.fetchall()
-            # self.productTable.delete(*self.productTable.get_children())
             self.ItemList.clear()
             for row in rows:
                 for i in row:
@@ -1767,11 +1758,11 @@ class saleClass(customtkinter.CTk):
         self.get_item_dec(self.no1_item_entry.get(), self.id1)
         # self.itx()
         self.itemgstbill(self.no1_qty_entry.get(), self.no1_unitprice_entry.get(), self.no1_dec_percentagee_entry.get(),
-                         self.ida1, self.tax_unit_box, self.no1_tax_percentagee_entry.get(), self.ita1, self.iam1)
+                         self.ida1,self.iam1)
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        self.totaltaxam()
+        #self.totaltaxam()
 
 
     def itm2(self,event):
@@ -1784,7 +1775,7 @@ class saleClass(customtkinter.CTk):
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        self.totaltaxam()
+        #self.totaltaxam()
 
     def itm3(self,event):
         self.get_item_qty(self.no3_item_entry.get(), self.iq3)
@@ -1796,7 +1787,7 @@ class saleClass(customtkinter.CTk):
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        self.totaltaxam()
+        #self.totaltaxam()
 
     def itm4(self,event):
         self.get_item_qty(self.no4_item_entry.get(), self.iq4)
@@ -1804,11 +1795,11 @@ class saleClass(customtkinter.CTk):
         # self.get_item_tax(self.no4_item_entry, self.itax4)
         self.get_item_dec(self.no4_item_entry.get(), self.id4)
         self.itemgstbill(self.no4_qty_entry.get(), self.no4_unitprice_entry.get(), self.no4_dec_percentagee_entry.get(),
-                         self.ida4, self.tax_unit_box, self.no4_tax_percentagee_entry.get(), self.ita4, self.iam4)
+                         self.ida4, self.iam4)
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        self.totaltaxam()
+        #self.totaltaxam()
 
     def itm5(self,event):
         self.get_item_qty(self.no5_item_entry.get(), self.iq5)
@@ -1816,11 +1807,11 @@ class saleClass(customtkinter.CTk):
         # self.get_item_tax(self.no5_item_entry, self.itax5)
         self.get_item_dec(self.no5_item_entry.get(), self.id5)
         self.itemgstbill(self.no5_qty_entry.get(), self.no5_unitprice_entry.get(), self.no5_dec_percentagee_entry.get(),
-                         self.ida5, self.tax_unit_box, self.no5_tax_percentagee_entry.get(), self.ita5, self.iam5)
+                         self.ida5, self.iam5)
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        self.totaltaxam()
+        #self.totaltaxam()
 
     def itm6(self,event):
         self.get_item_qty(self.no6_item_entry.get(), self.iq6)
@@ -1828,11 +1819,11 @@ class saleClass(customtkinter.CTk):
         # self.get_item_tax(self.no6_item_entry, self.itax6)
         self.get_item_dec(self.no6_item_entry.get(), self.id6)
         self.itemgstbill(self.no6_qty_entry.get(), self.no6_unitprice_entry.get(), self.no6_dec_percentagee_entry.get(),
-                         self.ida6, self.tax_unit_box, self.no6_tax_percentagee_entry.get(), self.ita6, self.iam6)
+                         self.ida6, self.iam6)
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        self.totaltaxam()
+        #self.totaltaxam()
 
     def itm7(self,event):
         self.get_item_qty(self.no7_item_entry.get(), self.iq7)
@@ -1840,11 +1831,11 @@ class saleClass(customtkinter.CTk):
         # self.get_item_tax(self.no7_item_entry, self.itax7)
         self.get_item_dec(self.no7_item_entry.get(), self.id7)
         self.itemgstbill(self.no7_qty_entry.get(), self.no7_unitprice_entry.get(), self.no7_dec_percentagee_entry.get(),
-                         self.ida7, self.tax_unit_box, self.no7_tax_percentagee_entry.get(), self.ita7, self.iam7)
+                         self.ida7, self.iam7)
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        self.totaltaxam()
+        #self.totaltaxam()
 
     def itm8(self,event):
         self.get_item_qty(self.no8_item_entry.get(), self.iq8)
@@ -1852,11 +1843,11 @@ class saleClass(customtkinter.CTk):
         # self.get_item_tax(self.no8_item_entry, self.itax8)
         self.get_item_dec(self.no8_item_entry.get(), self.id8)
         self.itemgstbill(self.no8_qty_entry.get(), self.no8_unitprice_entry.get(), self.no8_dec_percentagee_entry.get(),
-                         self.ida8, self.tax_unit_box, self.no8_tax_percentagee_entry.get(), self.ita8, self.iam8)
+                         self.ida8, self.iam8)
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        self.totaltaxam()
+        #self.totaltaxam()
 
     def itm9(self,event):
         self.get_item_qty(self.no9_item_entry.get(), self.iq9)
@@ -1864,11 +1855,11 @@ class saleClass(customtkinter.CTk):
         # self.get_item_tax(self.no9_item_entry, self.itax9)
         self.get_item_dec(self.no9_item_entry.get(), self.id9)
         self.itemgstbill(self.no9_qty_entry.get(), self.no9_unitprice_entry.get(), self.no9_dec_percentagee_entry.get(),
-                         self.ida9, self.tax_unit_box, self.no9_tax_percentagee_entry.get(), self.ita9, self.iam9)
+                         self.ida9, self.iam9)
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        self.totaltaxam()
+        #self.totaltaxam()
 
     def itm10(self,event):
         self.get_item_qty(self.no10_item_entry.get(), self.iq10)
@@ -1876,18 +1867,18 @@ class saleClass(customtkinter.CTk):
         # self.get_item_tax(self.no10_item_entry, self.itax10)
         self.get_item_dec(self.no10_item_entry.get(), self.id10)
         self.itemgstbill(self.no10_qty_entry.get(), self.no10_unitprice_entry.get(), self.no10_dec_percentagee_entry.get(),
-                         self.ida10, self.tax_unit_box, self.no10_tax_percentagee_entry.get(), self.ita10, self.iam10)
+                         self.ida10, self.iam10)
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        self.totaltaxam()
+        #self.totaltaxam()
 
-    def tax(self,event):
-        self.itemtable()
-        self.finalamount()
-        self.totalqty()
-        self.totaldesam()
-        self.totaltaxam()
+    # def tax(self,event):
+    #     self.itemtable()
+    #     self.finalamount()
+    #     self.totalqty()
+    #     self.totaldesam()
+    #     self.totaltaxam()
 
     def invoice_genrator(self):
 
