@@ -2215,7 +2215,7 @@ class App(customtkinter.CTk):
         customtkinter.set_widget_scaling(new_scaling_float)
 
     def totalrecive(self):
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
             cur.execute("select recivebalence from partydata ",)
@@ -2229,7 +2229,7 @@ class App(customtkinter.CTk):
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
     def totalpay(self):
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
             cur.execute("select paybalence from partydata ",)
@@ -2243,7 +2243,7 @@ class App(customtkinter.CTk):
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
     def totalsael(self):
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
             cur.execute("select total from gstsale ", )
@@ -2272,7 +2272,7 @@ class App(customtkinter.CTk):
         f = self.productTable.focus()
         content = (self.productTable.item(f))
         row = content['values']
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
             cur.execute(
@@ -2297,7 +2297,7 @@ class App(customtkinter.CTk):
 
         gst = self.partygstin.get()
         rgst = gst.replace("GSTIN : ", "")
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
             cur.execute("select invoiceno,invoicedate,paymentype,total,received,refreceno from gstsale where gstin=?",
@@ -2316,7 +2316,7 @@ class App(customtkinter.CTk):
         ssk=select.replace("Name","partyname")
         ssm=ssk.replace("GSTIN","gstin")
         sss = ssm.replace("Phone No.", "phonenumber")
-        con=sqlite3.connect(database=r'ims.db')
+        con=sqlite3.connect(database=r'DataBase/ims.db')
         cur=con.cursor()
         try:
             if self.parties_search.get()=="Select":
@@ -2343,7 +2343,7 @@ class App(customtkinter.CTk):
         ssm=ssk.replace("Date","invoicedate")
         ssmk = ssm.replace("Cheque No.", "refreceno")
         sss = ssmk.replace("Payment Type", "paymentype")
-        con=sqlite3.connect(database=r'ims.db')
+        con=sqlite3.connect(database=r'DataBase/ims.db')
         cur=con.cursor()
         try:
             if self.party_trans_search.get()=="Select":
@@ -2370,7 +2370,7 @@ class App(customtkinter.CTk):
         row = content['values']
         invo = row[0]
         try:
-            con = sqlite3.connect(database=r'ims.db')
+            con = sqlite3.connect(database=r'DataBase/ims.db')
             cur = con.cursor()
 
             cur.execute("Select invoice from edittransction where no=1")
@@ -2384,7 +2384,7 @@ class App(customtkinter.CTk):
             print(ex)
 
     def show(self):
-      con = sqlite3.connect(database=r'ims.db')
+      con = sqlite3.connect(database=r'DataBase/ims.db')
       cur = con.cursor()
       try:
         cur.execute("select partyname,gstin,paybalence,recivebalence from partydata")
@@ -2412,7 +2412,7 @@ class App(customtkinter.CTk):
 
 
     def itemshow(self):
-      con = sqlite3.connect(database=r'ims.db')
+      con = sqlite3.connect(database=r'DataBase/ims.db')
       cur = con.cursor()
       try:
         cur.execute("select itemname,hsn,itemcode,openqty from itemdata")
@@ -2428,7 +2428,7 @@ class App(customtkinter.CTk):
         f = self.itemTable.focus()
         content = (self.itemTable.item(f))
         row = content['values']
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
 
@@ -2464,7 +2464,7 @@ class App(customtkinter.CTk):
         ssk=select.replace("Name","itemname")
         ssm=ssk.replace("HSN","hsn")
         sss = ssm.replace("Item Code", "itemcode")
-        con=sqlite3.connect(database=r'ims.db')
+        con=sqlite3.connect(database=r'DataBase/ims.db')
         cur=con.cursor()
         try:
             if self.item_search.get()=="Select":
@@ -2489,7 +2489,7 @@ class App(customtkinter.CTk):
                "item9name", "item10name"]
 
         select = self.itemname.get()
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         self.itemtransictionTable.delete(*self.itemtransictionTable.get_children())
         for i in lis:
@@ -2513,7 +2513,7 @@ class App(customtkinter.CTk):
         select = self.itemname.get()
         lis = ["item1name", "item2name", "item3name", "item4name", "item5name", "item6name", "item7name", "item8name",
                "item9name", "item10name"]
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         for i in lis:
           try:
@@ -2550,7 +2550,7 @@ class App(customtkinter.CTk):
         ssk=select.replace("Name","partyname")
         ssm=ssk.replace("GSTIN","gstin")
         sss = ssm.replace("Phone No.", "phonenumber")
-        con=sqlite3.connect(database=r'ims.db')
+        con=sqlite3.connect(database=r'DataBase/ims.db')
         cur=con.cursor()
         try:
             if self.purches_search.get()=="Select":
@@ -2571,7 +2571,7 @@ class App(customtkinter.CTk):
            messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=self)
 
     def purshow(self):
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
             cur.execute("select partyname,gstin,paybalence,recivebalence from partydata")
@@ -2597,7 +2597,7 @@ class App(customtkinter.CTk):
         f = self.purchesTable.focus()
         content = (self.purchesTable.item(f))
         row = content['values']
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
             cur.execute(
@@ -2624,7 +2624,7 @@ class App(customtkinter.CTk):
         ssm = ssk.replace("Date", "invoicedate")
         ssmk = ssm.replace("Cheque No.", "refreceno")
         sss = ssmk.replace("Payment Type", "paymentype")
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
             if self.purches_pur_search.get() == "Select":
@@ -2649,7 +2649,7 @@ class App(customtkinter.CTk):
 
         gst = self.purchesgstin.get()
         rgst = gst.replace("GSTIN : ", "")
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
             cur.execute("select invoiceno,invoicedate,paymentype,total,received,refreceno from gstsale where gstin=?",
@@ -2665,7 +2665,7 @@ class App(customtkinter.CTk):
 
     def getsaletotalamount(self):
 
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
             cur.execute("select received from gstsale ",)
@@ -2708,7 +2708,7 @@ class App(customtkinter.CTk):
         self.sale_detail_total_amount_lable.configure(text=self.sale_totalamount)
 
     def saletrans(self):
-            con = sqlite3.connect(database=r'ims.db')
+            con = sqlite3.connect(database=r'DataBase/ims.db')
             cur = con.cursor()
             try:
                 cur.execute("select invoicedate,invoiceno,partyname,paymentype,total,received,refreceno from gstsale")
@@ -2726,7 +2726,7 @@ class App(customtkinter.CTk):
         ssmk = ssm.replace("Cheque No.", "refreceno")
         ssml = ssmk.replace("Name", "partyname")
         sss = ssml.replace("Payment Type", "paymentype")
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
             if self.sale_pur_search.get() == "Select":
@@ -2754,7 +2754,7 @@ class App(customtkinter.CTk):
 
 
     def saleestimatetrans(self):
-            con = sqlite3.connect(database=r'ims.db')
+            con = sqlite3.connect(database=r'DataBase/ims.db')
             cur = con.cursor()
             try:
                 cur.execute("select invoicedate,invoiceno,partyname,paymentype,total,received,refreceno from estimate")
@@ -2772,7 +2772,7 @@ class App(customtkinter.CTk):
         ssmk = ssm.replace("Cheque No.", "refreceno")
         ssml = ssmk.replace("Name", "partyname")
         sss = ssml.replace("Payment Type", "paymentype")
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
             if self.sale_estimate_pur_search.get() == "Select":
@@ -2800,7 +2800,7 @@ class App(customtkinter.CTk):
 
 
     def salepaymentintrans(self):
-            con = sqlite3.connect(database=r'ims.db')
+            con = sqlite3.connect(database=r'DataBase/ims.db')
             cur = con.cursor()
             try:
                 cur.execute("select  partyname,phonenumber,emailid,recivebalence,billaddress,gstin from salepaymentin")
@@ -2818,7 +2818,7 @@ class App(customtkinter.CTk):
         ssl = ssm.replace("Invoice", "add2")
         ssjh = ssl.replace("Date.", "date")
         sss = ssjh.replace("Phone No.", "phonenumber")
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
             if self.sale_payment_search.get() == "Select":
