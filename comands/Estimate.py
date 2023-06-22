@@ -625,7 +625,7 @@ class EstimateClass(customtkinter.CTk):
         self.get_party_gstin()
         self.get_amount()
 
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         try:
             if self.partyname_entry.get() == "":
@@ -772,7 +772,7 @@ class EstimateClass(customtkinter.CTk):
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
     def add_amount(self):
      try:
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
 
         cur.execute(f"Select recivebalence from partydata where gstin={self.gstin_entry.get()}")
@@ -794,7 +794,7 @@ class EstimateClass(customtkinter.CTk):
         self.get_party_gstin()
 
 
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         try:
             if self.partyname_entry.get() == "":
@@ -952,7 +952,7 @@ class EstimateClass(customtkinter.CTk):
 
     def get_party_data(self):
 
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         try:
 
@@ -973,7 +973,7 @@ class EstimateClass(customtkinter.CTk):
         if self.partyname_entry.get() == "":
             self.gstin.set("")
         else:
-         con = sqlite3.connect(database=r'ims.db')
+         con = sqlite3.connect(database=r'../DataBase/ims.db')
          cur = con.cursor()
          try:
 
@@ -997,7 +997,7 @@ class EstimateClass(customtkinter.CTk):
         if self.partyname_entry.get() == "":
             self.gstin.set("")
         else:
-         con = sqlite3.connect(database=r'ims.db')
+         con = sqlite3.connect(database=r'../DataBase/ims.db')
          cur = con.cursor()
          try:
 
@@ -1018,7 +1018,7 @@ class EstimateClass(customtkinter.CTk):
         if self.partyname_entry.get() == "":
             self.gstin.set("")
         else:
-         con = sqlite3.connect(database=r'ims.db')
+         con = sqlite3.connect(database=r'../DataBase/ims.db')
          cur = con.cursor()
          try:
 
@@ -1038,7 +1038,7 @@ class EstimateClass(customtkinter.CTk):
         if self.partyname_entry.get() == "":
             self.partynumber.set("")
         else:
-          con = sqlite3.connect(database=r'ims.db')
+          con = sqlite3.connect(database=r'../DataBase/ims.db')
           cur = con.cursor()
           try:
 
@@ -1059,7 +1059,7 @@ class EstimateClass(customtkinter.CTk):
             seto.set("")
         else:
 
-          con = sqlite3.connect(database=r'ims.db')
+          con = sqlite3.connect(database=r'../DataBase/ims.db')
           cur = con.cursor()
           try:
 
@@ -1091,7 +1091,7 @@ class EstimateClass(customtkinter.CTk):
 
 
     def get_item_name(self):
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         try:
 
@@ -1110,7 +1110,7 @@ class EstimateClass(customtkinter.CTk):
         if iname == "":
             iseto.insert(0, "None")
         else:
-          con = sqlite3.connect(database=r'ims.db')
+          con = sqlite3.connect(database=r'../DataBase/ims.db')
           cur = con.cursor()
           try:
 
@@ -1132,7 +1132,7 @@ class EstimateClass(customtkinter.CTk):
 
       else:
 
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         try:
 
@@ -1156,7 +1156,7 @@ class EstimateClass(customtkinter.CTk):
     # todo: Update Qty
     def update_item_qty(self, iname, iseto):
 
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         try:
 
@@ -1178,7 +1178,7 @@ class EstimateClass(customtkinter.CTk):
       if iname == "":
             iseto.set(" ")
       else:
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         try:
 
@@ -1204,7 +1204,7 @@ class EstimateClass(customtkinter.CTk):
       if iname == "":
           iseto.insert(0, "")
       else:
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         try:
 

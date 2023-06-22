@@ -31,7 +31,7 @@ cgsttotal=[]
 
 
 def get_party_data():
-        con=sqlite3.connect(database=r'ims.db')
+        con=sqlite3.connect(database=r'../DataBase/ims.db')
         cur=con.cursor()
         try:
 
@@ -46,7 +46,7 @@ def get_party_data():
             # messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=s)
 
 def get_item_data():
-    con=sqlite3.connect(database=r'ims.db')
+    con=sqlite3.connect(database=r'../DataBase/ims.db')
     cur=con.cursor()
     try:
 
@@ -63,7 +63,7 @@ def get_item_data():
 
 
 def get_partybi_data():
-    con=sqlite3.connect(database=r'ims.db')
+    con=sqlite3.connect(database=r'../DataBase/ims.db')
     cur=con.cursor()
     try:
 
@@ -80,7 +80,7 @@ def get_partybi_data():
 
 
 def get_item1_data():
-    con=sqlite3.connect(database=r'ims.db')
+    con=sqlite3.connect(database=r'../DataBase/ims.db')
     cur=con.cursor()
     try:
 
@@ -95,7 +95,7 @@ def get_item1_data():
     except Exception as ex:
         print(ex)
 def get_item2_data():
-    con=sqlite3.connect(database=r'ims.db')
+    con=sqlite3.connect(database=r'../DataBase/ims.db')
     cur=con.cursor()
     try:
 
@@ -111,7 +111,7 @@ def get_item2_data():
         print(ex)
 
 def get_item3_data():
-    con=sqlite3.connect(database=r'ims.db')
+    con=sqlite3.connect(database=r'../DataBase/ims.db')
     cur=con.cursor()
     try:
 
@@ -127,7 +127,7 @@ def get_item3_data():
         print(ex)
 
 def get_item4_data():
-    con=sqlite3.connect(database=r'ims.db')
+    con=sqlite3.connect(database=r'../DataBase/ims.db')
     cur=con.cursor()
     try:
 
@@ -143,7 +143,7 @@ def get_item4_data():
         print(ex)
 
 def get_item5_data():
-    con=sqlite3.connect(database=r'ims.db')
+    con=sqlite3.connect(database=r'../DataBase/ims.db')
     cur=con.cursor()
     try:
 
@@ -159,7 +159,7 @@ def get_item5_data():
         print(ex)
 
 def get_item6_data():
-    con=sqlite3.connect(database=r'ims.db')
+    con=sqlite3.connect(database=r'../DataBase/ims.db')
     cur=con.cursor()
     try:
 
@@ -174,7 +174,7 @@ def get_item6_data():
         print(ex)
 
 def get_item7_data():
-    con=sqlite3.connect(database=r'ims.db')
+    con=sqlite3.connect(database=r'../DataBase/ims.db')
     cur=con.cursor()
     try:
 
@@ -189,7 +189,7 @@ def get_item7_data():
         print(ex)
 
 def get_item8_data():
-    con=sqlite3.connect(database=r'ims.db')
+    con=sqlite3.connect(database=r'../DataBase/ims.db')
     cur=con.cursor()
     try:
 
@@ -204,7 +204,7 @@ def get_item8_data():
         print(ex)
 
 def get_item9_data():
-    con=sqlite3.connect(database=r'ims.db')
+    con=sqlite3.connect(database=r'../DataBase/ims.db')
     cur=con.cursor()
     try:
 
@@ -220,7 +220,7 @@ def get_item9_data():
         print(ex)
 
 def get_item10_data():
-    con=sqlite3.connect(database=r'ims.db')
+    con=sqlite3.connect(database=r'../DataBase/ims.db')
     cur=con.cursor()
     try:
 
@@ -316,7 +316,7 @@ def get_hsn():
 
     for i in itmlist:
 
-      con=sqlite3.connect(database=r'ims.db')
+      con=sqlite3.connect(database=r'../DataBase/ims.db')
       cur=con.cursor()
       try:
 
@@ -656,8 +656,8 @@ tta=capwords(totalinword)
 get_item_data()
 doc.render({"company":"Cyber Tech","phone": "8830136942","nam":partydata_list[0],"partynumber":partydata_list[1],"gstin":partydata_list[2],"invoice":partydata_list[4],"date":partydata_list[5],"state":partydata_list[6],"tota":partydata_list[9],"recam":partydata_list[10],"balen":partydata_list[11],"totalqty":partydata_list[14],"totaldic":partydata_list[13],"totalgst":partydata_list[12],"cgst":cgsttotal[0],"item_list":item_list,"amtinword":tta})
 doc.save("new_sampleinvoice.docx")
-filename=f"invoices/{partydata_list[0]}_{partydata_list[2]}.pdf"
-path=f"invoices\{partydata_list[0]}_{partydata_list[2]}.pdf"
+filename=f"../invoices/{partydata_list[0]}_{partydata_list[2]}.pdf"
+path=f"..\invoices\{partydata_list[0]}_{partydata_list[2]}.pdf"
 convert("new_sampleinvoice.docx", filename)
 subprocess.Popen([path], shell=True)
 

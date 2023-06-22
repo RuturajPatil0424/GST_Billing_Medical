@@ -157,7 +157,7 @@ class itemClass(customtkinter.CTk):
 
 
     def add_item_event(self):
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         try:
             if self.code_entry.get() == "":
@@ -197,7 +197,7 @@ class itemClass(customtkinter.CTk):
             messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=self)
 
     def update(self):
-        con=sqlite3.connect(database=r'ims.db')
+        con=sqlite3.connect(database=r'../DataBase/ims.db')
         cur=con.cursor()
         try:
             if self.code_entry.get()=="":

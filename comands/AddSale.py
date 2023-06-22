@@ -1340,22 +1340,22 @@ class saleClass(customtkinter.CTk):
         self.get_item_qtyentery(self.no10_item_entry.get(), self.iq10)
 
 
-    # todo: Update Qty
-    def update_item_qty(self, iname, iseto):
-
-        con = sqlite3.connect(database=r'../DataBase/ims.db')
-        cur = con.cursor()
-        try:
-
-            cur.execute("select minqty from itemdata where itemname=?", (iname,))
-            rows = cur.fetchall()
-            cur.execute("Update itemdata set minqty=?",
-                (
-            ))
-            con.commit()
-
-        except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    # # todo: Update Qty
+    # def update_item_qty(self, iname, iseto):
+    #
+    #     con = sqlite3.connect(database=r'../DataBase/ims.db')
+    #     cur = con.cursor()
+    #     try:
+    #
+    #         cur.execute("select minqty from itemdata where itemname=?", (iname,))
+    #         rows = cur.fetchall()
+    #         cur.execute("Update itemdata set minqty=?",
+    #             (
+    #         ))
+    #         con.commit()
+    #
+    #     except Exception as ex:
+    #         messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
 
     def get_item_dec(self, iname, iseto):

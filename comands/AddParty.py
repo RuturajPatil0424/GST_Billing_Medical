@@ -109,7 +109,7 @@ class supplierClass(customtkinter.CTk):
 
     def add_party_event(self):
         print(self.state_menu.get())
-        con = sqlite3.connect(database=r'ims.db')
+        con = sqlite3.connect(database=r'../DataBase/ims.db')
         cur = con.cursor()
         try:
             if self.gstn_entry.get() == "":
