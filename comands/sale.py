@@ -1144,27 +1144,27 @@ class saleClass(customtkinter.CTk):
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
-    def get_item_tax(self, iname, iseto):
-        if iname.get() == "":
-            iseto.insert(0, "None")
-
-
-        else:
-          con = sqlite3.connect(database=r'../DataBase/ims.db')
-          cur = con.cursor()
-          try:
-
-            cur.execute("select gsttax from itemdata where itemname=?", (iname.get(),))
-            rows = cur.fetchall()
-            # self.productTable.delete(*self.productTable.get_children())
-            m=StringVar()
-            for row in rows:
-                for i in row:
-                    iseto.insert(0, i)
-
-
-          except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    # def get_item_tax(self, iname, iseto):
+    #     if iname.get() == "":
+    #         iseto.insert(0, "None")
+    #
+    #
+    #     else:
+    #       con = sqlite3.connect(database=r'../DataBase/ims.db')
+    #       cur = con.cursor()
+    #       try:
+    #
+    #         cur.execute("select gsttax from itemdata where itemname=?", (iname.get(),))
+    #         rows = cur.fetchall()
+    #         # self.productTable.delete(*self.productTable.get_children())
+    #         m=StringVar()
+    #         for row in rows:
+    #             for i in row:
+    #                 iseto.insert(0, i)
+    #
+    #
+    #       except Exception as ex:
+    #         messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
     def get_item_qty(self, iname, iseto):
       if iname == "":
@@ -1258,14 +1258,14 @@ class saleClass(customtkinter.CTk):
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        self.totaltaxam()
+        # self.totaltaxam()
 
     def itprientery(self,event,*args):
             self.itemtable()
             self.finalamount()
             self.totalqty()
             self.totaldesam()
-            self.totaltaxam()
+            # self.totaltaxam()
 
     def itemshow(self,event):
         # self.iqt()
@@ -1276,7 +1276,7 @@ class saleClass(customtkinter.CTk):
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        self.totaltaxam()
+        # self.totaltaxam()
     def update_qtye1(self,event,*args):
         self.get_item_qtyentery(self.no1_item_entry.get(), self.iq1)
     def update_qtye2(self,event,*args):
@@ -1364,10 +1364,9 @@ class saleClass(customtkinter.CTk):
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
-    def itemgstbill(self, qty, price, disc, discamo, wtax, tax, taxamout, amount):
+    def itemgstbill(self, qty, price, disc, discamo, amount):
        if qty == " " and disc ==" ":
            discamo.set(" ")
-           taxamout.set(" ")
            amount.set("0")
 
 
@@ -1378,108 +1377,41 @@ class saleClass(customtkinter.CTk):
         qty = int(q)
         itemprice = qty * price
 
-        if "0" in tax or "0.25" in tax or "3" in tax or "5" in tax or "12" in tax or "18" in tax or "28" in tax or "None" in tax:
 
-            rtax=tax.replace("IGST@","")
-            rtax=rtax.replace("GST@","")
-            rtax=rtax.replace("GST@","")
-            ktax=rtax.replace("%","")
-            mtax=ktax.replace("None","0")
-            gsttax=float(mtax)
-
-
-            if wtax.get() == "With Tax":
-                if "%" in disc:
+        if "%" in disc:
                     decf = disc.replace("%", "")
                     decq = decf.replace(" ", "0")
                     disca = float(decq)
 
-
-                    #find gst
-                    withbase = itemprice - (itemprice*(100/(100+gsttax)))
-                    it=itemprice-withbase
-                    rit=round(it,2)
-
-
                     #add discount
-                    dicam=rit*disca/100
+                    dicam=itemprice*disca/100
                     rdicam=round(dicam,2)
                     discamo.set(rdicam)
-                    decrem=rit-rdicam
+                    decrem=itemprice-rdicam
                     rdecrem=round(decrem,2)
 
-                    #add gst
-                    withotrem = rdecrem * gsttax / 100
-                    rwithotrem=round(withotrem,2)
-                    taxamout.set(rwithotrem)
-
-                    finalamount=rdecrem+rwithotrem
+                    finalamount=rdecrem
                     rfinalamount=round(finalamount,2)
                     amount.set(rfinalamount)
 
-
-
-
-                else:
+        else:
                     disc.replace(" ","0")
                     disca = float(disc)
 
-                    #find gst
-                    withbase = itemprice - (itemprice*(100/(100+gsttax)))
-                    it=itemprice-withbase
-                    rit=round(it,2)
-
-
                     #add discount
-                    dicam=rit-disca
-                    rr=rit-dicam
+                    dicam=itemprice-disca
+                    rr=itemprice-dicam
                     rdicam=round(dicam,2)
 
                     discamo.set(rr)
 
-                    #add gst
-                    withotrem = rdicam * gsttax / 100
-                    rwithotrem=round(withotrem,2)
-                    taxamout.set(rwithotrem)
-
-                    finalamount=rdicam+rwithotrem
+                    finalamount=rdicam
                     rfinalamount=round(finalamount,2)
                     amount.set(rfinalamount)
 
 
 
-            elif wtax.get() == "Without Tax":
-                if "%" in disc:
-                    decf = disc.replace("%", "")
-                    decq = decf.replace(" ", "")
-                    disca = float(decq)
 
-                    dicam=itemprice*disca/100
-                    discamo.set(dicam)
-                    decrem=itemprice-dicam
-
-                    withbase = (decrem * gsttax) / 100
-                    rwithbase = round(withbase,2)
-                    taxamout.set(rwithbase)
-
-                    finalamount=decrem+withbase
-                    amount.set(finalamount)
-                else:
-                    decf = disc.replace("%", "")
-                    decq = decf.replace(" ", "")
-                    disca = float(decq)
-
-                    dicam=itemprice-disca
-
-                    decrem=itemprice-dicam
-                    discamo.set(decrem)
-
-                    withbase = (dicam * gsttax) / 100
-                    rwithbase = round(withbase,2)
-                    taxamout.set(rwithbase)
-
-                    finalamount=dicam+withbase
-                    amount.set(finalamount)
 
     def finalamount(self):
 
@@ -1616,45 +1548,45 @@ class saleClass(customtkinter.CTk):
         self.kk=str(finalamount)
         self.Totaldic_lable.configure(text=self.kk)
 
-    def totaltaxam(self):
-
-        sitam1=self.no1_tax_amount_entry.get()
-        sitam2=self.no2_tax_amount_entry.get()
-        sitam3=self.no3_tax_amount_entry.get()
-        sitam4=self.no4_tax_amount_entry.get()
-        sitam5=self.no5_tax_amount_entry.get()
-        sitam6=self.no6_tax_amount_entry.get()
-        sitam7=self.no7_tax_amount_entry.get()
-        sitam8=self.no8_tax_amount_entry.get()
-        sitam9=self.no9_tax_amount_entry.get()
-        sitam10=self.no10_tax_amount_entry.get()
-
-        itam1=sitam1.replace(" ","0")
-        itam2=sitam2.replace(" ","0")
-        itam3=sitam3.replace(" ","0")
-        itam4=sitam4.replace(" ","0")
-        itam5=sitam5.replace(" ","0")
-        itam6=sitam6.replace(" ","0")
-        itam7=sitam7.replace(" ","0")
-        itam8=sitam8.replace(" ","0")
-        itam9=sitam9.replace(" ","0")
-        itam10=sitam10.replace(" ","0")
-
-        item1=float(itam1)
-        item2=float(itam2)
-        item3=float(itam3)
-        item4=float(itam4)
-        item5=float(itam5)
-        item6=float(itam6)
-        item7=float(itam7)
-        item8=float(itam8)
-        item9=float(itam9)
-        item10=float(itam10)
-
-        finalamount=(item1+item2+item3+item4+item5+item6+item7+item8+item9+item10)
-        rfinalamount=round(finalamount,2)
-        self.diccc=str(rfinalamount)
-        self.Totaltax_lable.configure(text=self.diccc)
+    # def totaltaxam(self):
+    #
+    #     sitam1=self.no1_tax_amount_entry.get()
+    #     sitam2=self.no2_tax_amount_entry.get()
+    #     sitam3=self.no3_tax_amount_entry.get()
+    #     sitam4=self.no4_tax_amount_entry.get()
+    #     sitam5=self.no5_tax_amount_entry.get()
+    #     sitam6=self.no6_tax_amount_entry.get()
+    #     sitam7=self.no7_tax_amount_entry.get()
+    #     sitam8=self.no8_tax_amount_entry.get()
+    #     sitam9=self.no9_tax_amount_entry.get()
+    #     sitam10=self.no10_tax_amount_entry.get()
+    #
+    #     itam1=sitam1.replace(" ","0")
+    #     itam2=sitam2.replace(" ","0")
+    #     itam3=sitam3.replace(" ","0")
+    #     itam4=sitam4.replace(" ","0")
+    #     itam5=sitam5.replace(" ","0")
+    #     itam6=sitam6.replace(" ","0")
+    #     itam7=sitam7.replace(" ","0")
+    #     itam8=sitam8.replace(" ","0")
+    #     itam9=sitam9.replace(" ","0")
+    #     itam10=sitam10.replace(" ","0")
+    #
+    #     item1=float(itam1)
+    #     item2=float(itam2)
+    #     item3=float(itam3)
+    #     item4=float(itam4)
+    #     item5=float(itam5)
+    #     item6=float(itam6)
+    #     item7=float(itam7)
+    #     item8=float(itam8)
+    #     item9=float(itam9)
+    #     item10=float(itam10)
+    #
+    #     finalamount=(item1+item2+item3+item4+item5+item6+item7+item8+item9+item10)
+    #     rfinalamount=round(finalamount,2)
+    #     self.diccc=str(rfinalamount)
+    #     self.Totaltax_lable.configure(text=self.diccc)
 
 
 
@@ -1671,18 +1603,18 @@ class saleClass(customtkinter.CTk):
         self.get_item_price(self.no9_item_entry.get(), self.ip9)
         self.get_item_price(self.no10_item_entry.get(), self.ip10)
 
-    def itx(self):
-
-        self.get_item_tax(self.no1_item_entry, self.itax1)
-        self.get_item_tax(self.no2_item_entry, self.itax2)
-        self.get_item_tax(self.no3_item_entry, self.itax3)
-        self.get_item_tax(self.no4_item_entry, self.itax4)
-        self.get_item_tax(self.no5_item_entry, self.itax5)
-        self.get_item_tax(self.no6_item_entry, self.itax6)
-        self.get_item_tax(self.no7_item_entry, self.itax7)
-        self.get_item_tax(self.no8_item_entry, self.itax8)
-        self.get_item_tax(self.no9_item_entry, self.itax9)
-        self.get_item_tax(self.no10_item_entry, self.itax10)
+    # def itx(self):
+    #
+    #     self.get_item_tax(self.no1_item_entry, self.itax1)
+    #     self.get_item_tax(self.no2_item_entry, self.itax2)
+    #     self.get_item_tax(self.no3_item_entry, self.itax3)
+    #     self.get_item_tax(self.no4_item_entry, self.itax4)
+    #     self.get_item_tax(self.no5_item_entry, self.itax5)
+    #     self.get_item_tax(self.no6_item_entry, self.itax6)
+    #     self.get_item_tax(self.no7_item_entry, self.itax7)
+    #     self.get_item_tax(self.no8_item_entry, self.itax8)
+    #     self.get_item_tax(self.no9_item_entry, self.itax9)
+    #     self.get_item_tax(self.no10_item_entry, self.itax10)
 
 
     def iqt(self):
@@ -1711,25 +1643,25 @@ class saleClass(customtkinter.CTk):
 
     def itemtable(self):
         self.itemgstbill(self.no1_qty_entry.get(), self.no1_unitprice_entry.get(), self.no1_dec_percentagee_entry.get(),
-                         self.ida1, self.tax_unit_box, self.no1_tax_percentagee_entry.get(), self.ita1, self.iam1)
+                         self.ida1,  self.iam1)
         self.itemgstbill(self.no2_qty_entry.get(), self.no2_unitprice_entry.get(), self.no2_dec_percentagee_entry.get(),
-                         self.ida2, self.tax_unit_box, self.no2_tax_percentagee_entry.get(), self.ita2, self.iam2)
+                         self.ida2,  self.iam2)
         self.itemgstbill(self.no3_qty_entry.get(), self.no3_unitprice_entry.get(), self.no3_dec_percentagee_entry.get(),
-                         self.ida3, self.tax_unit_box, self.no3_tax_percentagee_entry.get(), self.ita3, self.iam3)
+                         self.ida3, self.iam3)
         self.itemgstbill(self.no4_qty_entry.get(), self.no4_unitprice_entry.get(), self.no4_dec_percentagee_entry.get(),
-                         self.ida4, self.tax_unit_box, self.no4_tax_percentagee_entry.get(), self.ita4, self.iam4)
+                         self.ida4,  self.iam4)
         self.itemgstbill(self.no5_qty_entry.get(), self.no5_unitprice_entry.get(), self.no5_dec_percentagee_entry.get(),
-                         self.ida5, self.tax_unit_box, self.no5_tax_percentagee_entry.get(), self.ita5, self.iam5)
+                         self.ida5, self.iam5)
         self.itemgstbill(self.no6_qty_entry.get(), self.no6_unitprice_entry.get(), self.no6_dec_percentagee_entry.get(),
-                         self.ida6, self.tax_unit_box, self.no6_tax_percentagee_entry.get(), self.ita6, self.iam6)
+                         self.ida6,  self.iam6)
         self.itemgstbill(self.no7_qty_entry.get(), self.no7_unitprice_entry.get(), self.no7_dec_percentagee_entry.get(),
-                         self.ida7, self.tax_unit_box, self.no7_tax_percentagee_entry.get(), self.ita7, self.iam7)
+                         self.ida7,  self.iam7)
         self.itemgstbill(self.no8_qty_entry.get(), self.no8_unitprice_entry.get(), self.no8_dec_percentagee_entry.get(),
-                         self.ida8, self.tax_unit_box, self.no8_tax_percentagee_entry.get(), self.ita8, self.iam8)
+                         self.ida8,  self.iam8)
         self.itemgstbill(self.no9_qty_entry.get(), self.no9_unitprice_entry.get(), self.no9_dec_percentagee_entry.get(),
-                         self.ida9, self.tax_unit_box, self.no9_tax_percentagee_entry.get(), self.ita9, self.iam9)
+                         self.ida9,  self.iam9)
         self.itemgstbill(self.no10_qty_entry.get(), self.no10_unitprice_entry.get(), self.no10_dec_percentagee_entry.get(),
-                         self.ida10, self.tax_unit_box, self.no10_tax_percentagee_entry.get(), self.ita10, self.iam10)
+                         self.ida10, self.iam10)
 
     def party(self,event):
         self.get_party_data()
@@ -1739,7 +1671,7 @@ class saleClass(customtkinter.CTk):
 
     def show(self,event):
         self.itpri()
-        self.itx()
+        # self.itx()
         self.get_party_data()
         self.itemtable()
         self.finalamount()
@@ -1831,7 +1763,7 @@ class saleClass(customtkinter.CTk):
     def itm1(self,event):
         self.get_item_qty(self.no1_item_entry.get(), self.iq1)
         self.get_item_price(self.no1_item_entry.get(), self.ip1)
-        self.get_item_tax(self.no1_item_entry, self.itax1)
+        # self.get_item_tax(self.no1_item_entry, self.itax1)
         self.get_item_dec(self.no1_item_entry.get(), self.id1)
         # self.itx()
         self.itemgstbill(self.no1_qty_entry.get(), self.no1_unitprice_entry.get(), self.no1_dec_percentagee_entry.get(),
@@ -1845,7 +1777,7 @@ class saleClass(customtkinter.CTk):
     def itm2(self,event):
         self.get_item_qty(self.no2_item_entry.get(), self.iq2)
         self.get_item_price(self.no2_item_entry.get(), self.ip2)
-        self.get_item_tax(self.no2_item_entry, self.itax2)
+        # self.get_item_tax(self.no2_item_entry, self.itax2)
         self.get_item_dec(self.no2_item_entry.get(), self.id2)
         self.itemgstbill(self.no2_qty_entry.get(), self.no2_unitprice_entry.get(), self.no2_dec_percentagee_entry.get(),
                          self.ida2, self.tax_unit_box, self.no2_tax_percentagee_entry.get(), self.ita2, self.iam2)
@@ -1857,7 +1789,7 @@ class saleClass(customtkinter.CTk):
     def itm3(self,event):
         self.get_item_qty(self.no3_item_entry.get(), self.iq3)
         self.get_item_price(self.no3_item_entry.get(), self.ip3)
-        self.get_item_tax(self.no3_item_entry, self.itax3)
+        # self.get_item_tax(self.no3_item_entry, self.itax3)
         self.get_item_dec(self.no3_item_entry.get(), self.id3)
         self.itemgstbill(self.no3_qty_entry.get(), self.no3_unitprice_entry.get(), self.no3_dec_percentagee_entry.get(),
                          self.ida3, self.tax_unit_box, self.no3_tax_percentagee_entry.get(), self.ita3, self.iam3)
@@ -1869,7 +1801,7 @@ class saleClass(customtkinter.CTk):
     def itm4(self,event):
         self.get_item_qty(self.no4_item_entry.get(), self.iq4)
         self.get_item_price(self.no4_item_entry.get(), self.ip4)
-        self.get_item_tax(self.no4_item_entry, self.itax4)
+        # self.get_item_tax(self.no4_item_entry, self.itax4)
         self.get_item_dec(self.no4_item_entry.get(), self.id4)
         self.itemgstbill(self.no4_qty_entry.get(), self.no4_unitprice_entry.get(), self.no4_dec_percentagee_entry.get(),
                          self.ida4, self.tax_unit_box, self.no4_tax_percentagee_entry.get(), self.ita4, self.iam4)
@@ -1881,7 +1813,7 @@ class saleClass(customtkinter.CTk):
     def itm5(self,event):
         self.get_item_qty(self.no5_item_entry.get(), self.iq5)
         self.get_item_price(self.no5_item_entry.get(), self.ip5)
-        self.get_item_tax(self.no5_item_entry, self.itax5)
+        # self.get_item_tax(self.no5_item_entry, self.itax5)
         self.get_item_dec(self.no5_item_entry.get(), self.id5)
         self.itemgstbill(self.no5_qty_entry.get(), self.no5_unitprice_entry.get(), self.no5_dec_percentagee_entry.get(),
                          self.ida5, self.tax_unit_box, self.no5_tax_percentagee_entry.get(), self.ita5, self.iam5)
@@ -1893,7 +1825,7 @@ class saleClass(customtkinter.CTk):
     def itm6(self,event):
         self.get_item_qty(self.no6_item_entry.get(), self.iq6)
         self.get_item_price(self.no6_item_entry.get(), self.ip6)
-        self.get_item_tax(self.no6_item_entry, self.itax6)
+        # self.get_item_tax(self.no6_item_entry, self.itax6)
         self.get_item_dec(self.no6_item_entry.get(), self.id6)
         self.itemgstbill(self.no6_qty_entry.get(), self.no6_unitprice_entry.get(), self.no6_dec_percentagee_entry.get(),
                          self.ida6, self.tax_unit_box, self.no6_tax_percentagee_entry.get(), self.ita6, self.iam6)
@@ -1905,7 +1837,7 @@ class saleClass(customtkinter.CTk):
     def itm7(self,event):
         self.get_item_qty(self.no7_item_entry.get(), self.iq7)
         self.get_item_price(self.no7_item_entry.get(), self.ip7)
-        self.get_item_tax(self.no7_item_entry, self.itax7)
+        # self.get_item_tax(self.no7_item_entry, self.itax7)
         self.get_item_dec(self.no7_item_entry.get(), self.id7)
         self.itemgstbill(self.no7_qty_entry.get(), self.no7_unitprice_entry.get(), self.no7_dec_percentagee_entry.get(),
                          self.ida7, self.tax_unit_box, self.no7_tax_percentagee_entry.get(), self.ita7, self.iam7)
@@ -1917,7 +1849,7 @@ class saleClass(customtkinter.CTk):
     def itm8(self,event):
         self.get_item_qty(self.no8_item_entry.get(), self.iq8)
         self.get_item_price(self.no8_item_entry.get(), self.ip8)
-        self.get_item_tax(self.no8_item_entry, self.itax8)
+        # self.get_item_tax(self.no8_item_entry, self.itax8)
         self.get_item_dec(self.no8_item_entry.get(), self.id8)
         self.itemgstbill(self.no8_qty_entry.get(), self.no8_unitprice_entry.get(), self.no8_dec_percentagee_entry.get(),
                          self.ida8, self.tax_unit_box, self.no8_tax_percentagee_entry.get(), self.ita8, self.iam8)
@@ -1929,7 +1861,7 @@ class saleClass(customtkinter.CTk):
     def itm9(self,event):
         self.get_item_qty(self.no9_item_entry.get(), self.iq9)
         self.get_item_price(self.no9_item_entry.get(), self.ip9)
-        self.get_item_tax(self.no9_item_entry, self.itax9)
+        # self.get_item_tax(self.no9_item_entry, self.itax9)
         self.get_item_dec(self.no9_item_entry.get(), self.id9)
         self.itemgstbill(self.no9_qty_entry.get(), self.no9_unitprice_entry.get(), self.no9_dec_percentagee_entry.get(),
                          self.ida9, self.tax_unit_box, self.no9_tax_percentagee_entry.get(), self.ita9, self.iam9)
@@ -1941,7 +1873,7 @@ class saleClass(customtkinter.CTk):
     def itm10(self,event):
         self.get_item_qty(self.no10_item_entry.get(), self.iq10)
         self.get_item_price(self.no10_item_entry.get(), self.ip10)
-        self.get_item_tax(self.no10_item_entry, self.itax10)
+        # self.get_item_tax(self.no10_item_entry, self.itax10)
         self.get_item_dec(self.no10_item_entry.get(), self.id10)
         self.itemgstbill(self.no10_qty_entry.get(), self.no10_unitprice_entry.get(), self.no10_dec_percentagee_entry.get(),
                          self.ida10, self.tax_unit_box, self.no10_tax_percentagee_entry.get(), self.ita10, self.iam10)
@@ -1963,7 +1895,7 @@ class saleClass(customtkinter.CTk):
         cur = con.cursor()
         try:
 
-                cur.execute("select invoice from invo where no=1",)
+                cur.execute("select invoice from invosalenon where no=1",)
                 rows = cur.fetchall()
                 # self.productTable.delete(*self.productTable.get_children())
                 for row in rows:
@@ -1989,9 +1921,9 @@ class saleClass(customtkinter.CTk):
         cur = con.cursor()
         try:
 
-            cur.execute("Select no from invo where no=?", (p,))
+            cur.execute("Select no from invosalenon where no=?", (p,))
             row = cur.fetchone()
-            cur.execute("Update invo set invoice=? where no=?", (
+            cur.execute("Update invosalenon set invoice=? where no=?", (
                 self.incre,
                 p,
             ))
