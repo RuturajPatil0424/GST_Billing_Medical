@@ -1186,7 +1186,6 @@ class saleClass(customtkinter.CTk):
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
     def get_item_tax(self, iname, iseto):
-        print(iname)
         if iname.get() == "":
             iseto.insert(0, "None")
 
@@ -1224,7 +1223,6 @@ class saleClass(customtkinter.CTk):
 
             for data in datas:
                 for d in data:
-                    print(d)
                     if d == "":
                         stock=0
                     else:
@@ -1232,8 +1230,7 @@ class saleClass(customtkinter.CTk):
 
             cur.execute("select minqty from itemdata where itemname=?", (iname,))
             rows = cur.fetchall()
-            # self.productTable.delete(*self.productTable.get_children())
-            print(stock)
+
             for row in rows:
 
                 for i in row:
@@ -1280,7 +1277,7 @@ class saleClass(customtkinter.CTk):
 
             for data in datas:
                 for d in data:
-                    print(d)
+
                     if d == "":
                         stock=0
                     else:
@@ -1443,7 +1440,7 @@ class saleClass(customtkinter.CTk):
                     withbase = itemprice - (itemprice*(100/(100+gsttax)))
                     it=itemprice-withbase
                     rit=round(it,2)
-                    print(rit)
+
 
                     #add discount
                     dicam=rit*disca/100
@@ -1851,7 +1848,7 @@ class saleClass(customtkinter.CTk):
         self.Partynames.clear()
         self.Partynames.append("")
         name=self.Party_var.get()
-        print(name)
+
         con = sqlite3.connect(database=r'ims.db')
         cur = con.cursor()
         try:
@@ -1864,7 +1861,7 @@ class saleClass(customtkinter.CTk):
 
                     m=str(i)
                     if name.lower() in m.lower():
-                        print(i)
+
                         self.Partynames.append(i)
             self.partyname_entry.configure(values=self.Partynames)
 
@@ -2021,7 +2018,6 @@ class saleClass(customtkinter.CTk):
                             a+=1
                         final=f"{mm}{self.incre}"
                         strfinal=str(final)
-                        print(final)
                         self.invo.set(strfinal)
                         self.invoice_entry.configure(textvariable=self.invo)
 
@@ -2061,9 +2057,7 @@ class saleClass(customtkinter.CTk):
                   b=seto.get()
                   for row in rows:
                      for i in row:
-                       print(i)
                        resualt=int(i)-int(b)
-                       print(resualt)
                        cur.execute("select pid from itemdata where itemname=?", (name,))
                        pids = cur.fetchall()
                        for pid in pids:
