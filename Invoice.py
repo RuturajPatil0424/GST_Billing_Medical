@@ -7,7 +7,7 @@ from num2words import num2words
 import datetime
 import os
 from docx2pdf import convert
-doc = DocxTemplate("estimateinvo1.docx")
+doc = DocxTemplate("taxinvo1.docx")
 
 item_list = []
 party_list = []
@@ -31,11 +31,11 @@ cgsttotal=[]
 
 
 def get_party_data():
-        con=sqlite3.connect(database=r'../DataBase/ims.db')
+        con=sqlite3.connect(database=r'DataBase/ims.db')
         cur=con.cursor()
         try:
 
-            cur.execute("select pid,name,price,qty,status from estimateinvogstsale ")
+            cur.execute("select pid,name,price,qty,status from invogstsale ")
             rows=cur.fetchall()
             for row in rows:
                 item_list.insert(row)
@@ -46,11 +46,11 @@ def get_party_data():
             # messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=s)
 
 def get_item_data():
-    con=sqlite3.connect(database=r'../DataBase/ims.db')
+    con=sqlite3.connect(database=r'DataBase/ims.db')
     cur=con.cursor()
     try:
 
-        cur.execute("select partyname,phonenumber,gstin,cashorcr,invoiceno,invoicedate,steteofsuply,paymentype,refreceno,total,received,balance,item1name,qty1,unit1,unitprice1,dec1,desamount1,tax1,gstamount1,amount1,item2name,qty2,unit2,unitprice2,dec2,desamount2,tax2,gstamount2,amount2,item3name,qty3,unit3,unitprice3,dec3,desamount3,tax3,gstamount3,amount3,item4name,qty4,unit4,unitprice4,dec4,desamount4,tax4,gstamount4,amount4,item5name,qty5,unit5,unitprice5,dec5,desamount5,tax5,gstamount5,amount5,item6name,qty6,unit6,unitprice6,dec6,desamount6,tax6,gstamount6,amount6,item7name,qty7,unit7,unitprice7,dec7,desamount7,tax7,gstamount7,amount7,item8name,qty8,unit8,unitprice8,dec8,desamount8,tax8,gstamount8,amount8,item9name,qty9,unit9,unitprice9,dec9,desamount9,tax9,gstamount9,amount9,item10name,qty10,unit10,unitprice10,dec10,desamount10,tax10,gstamount10,amount10 from estimateinvogstsale where sid=1")
+        cur.execute("select partyname,phonenumber,gstin,cashorcr,invoiceno,invoicedate,steteofsuply,paymentype,refreceno,total,received,balance,item1name,qty1,unit1,unitprice1,dec1,desamount1,tax1,gstamount1,amount1,item2name,qty2,unit2,unitprice2,dec2,desamount2,tax2,gstamount2,amount2,item3name,qty3,unit3,unitprice3,dec3,desamount3,tax3,gstamount3,amount3,item4name,qty4,unit4,unitprice4,dec4,desamount4,tax4,gstamount4,amount4,item5name,qty5,unit5,unitprice5,dec5,desamount5,tax5,gstamount5,amount5,item6name,qty6,unit6,unitprice6,dec6,desamount6,tax6,gstamount6,amount6,item7name,qty7,unit7,unitprice7,dec7,desamount7,tax7,gstamount7,amount7,item8name,qty8,unit8,unitprice8,dec8,desamount8,tax8,gstamount8,amount8,item9name,qty9,unit9,unitprice9,dec9,desamount9,tax9,gstamount9,amount9,item10name,qty10,unit10,unitprice10,dec10,desamount10,tax10,gstamount10,amount10 from invogstsale where sid=1")
         rows=cur.fetchall()
 
         for row in rows:
@@ -63,11 +63,11 @@ def get_item_data():
 
 
 def get_partybi_data():
-    con=sqlite3.connect(database=r'../DataBase/ims.db')
+    con=sqlite3.connect(database=r'DataBase/ims.db')
     cur=con.cursor()
     try:
 
-        cur.execute("select partyname,phonenumber,gstin,cashorcr,invoiceno,invoicedate,steteofsuply,paymentype,refreceno,total,received,balance,totaltac,totaldec,totalqty from estimateinvogstsale where sid=1")
+        cur.execute("select partyname,phonenumber,gstin,cashorcr,invoiceno,invoicedate,steteofsuply,paymentype,refreceno,total,received,balance,totaltac,totaldec,totalqty from invogstsale where sid=1")
         rows=cur.fetchall()
 
         for row in rows:
@@ -80,10 +80,11 @@ def get_partybi_data():
 
 
 def get_item1_data():
-    con=sqlite3.connect(database=r'../DataBase/ims.db')
+    con=sqlite3.connect(database=r'DataBase/ims.db')
     cur=con.cursor()
     try:
-        cur.execute("select item1name,qty1,unit1,unitprice1,dec1,desamount1,tax1,amount1 from estimateinvogstsale where sid=1")
+
+        cur.execute("select item1name,qty1,unit1,unitprice1,dec1,desamount1,tax1,amount1 from invogstsale where sid=1")
         rows=cur.fetchall()
 
         for row in rows:
@@ -94,56 +95,59 @@ def get_item1_data():
     except Exception as ex:
         print(ex)
 def get_item2_data():
-    con=sqlite3.connect(database=r'../DataBase/ims.db')
+    con=sqlite3.connect(database=r'DataBase/ims.db')
     cur=con.cursor()
     try:
 
-        cur.execute("select item2name,qty2,unit2,unitprice2,dec2,desamount2,tax2,amount2 from estimateinvogstsale where sid=1")
+        cur.execute("select item2name,qty2,unit2,unitprice2,dec2,desamount2,tax2,amount2 from invogstsale where sid=1")
         rows=cur.fetchall()
 
         for row in rows:
             for r in row:
                 item_list2.append(r)
 
+
     except Exception as ex:
         print(ex)
 
 def get_item3_data():
-    con=sqlite3.connect(database=r'../DataBase/ims.db')
+    con=sqlite3.connect(database=r'DataBase/ims.db')
     cur=con.cursor()
     try:
 
-        cur.execute("select item3name,qty3,unit3,unitprice3,dec3,desamount3,tax3,amount3 from estimateinvogstsale where sid=1")
+        cur.execute("select item3name,qty3,unit3,unitprice3,dec3,desamount3,tax3,amount3 from invogstsale where sid=1")
         rows=cur.fetchall()
 
         for row in rows:
             for r in row:
                 item_list3.append(r)
 
+
     except Exception as ex:
         print(ex)
 
 def get_item4_data():
-    con=sqlite3.connect(database=r'../DataBase/ims.db')
+    con=sqlite3.connect(database=r'DataBase/ims.db')
     cur=con.cursor()
     try:
 
-        cur.execute("select item4name,qty4,unit4,unitprice4,dec4,desamount4,tax4,amount4 from estimateinvogstsale where sid=1")
+        cur.execute("select item4name,qty4,unit4,unitprice4,dec4,desamount4,tax4,amount4 from invogstsale where sid=1")
         rows=cur.fetchall()
 
         for row in rows:
             for r in row:
                 item_list4.append(r)
 
+
     except Exception as ex:
         print(ex)
 
 def get_item5_data():
-    con=sqlite3.connect(database=r'../DataBase/ims.db')
+    con=sqlite3.connect(database=r'DataBase/ims.db')
     cur=con.cursor()
     try:
 
-        cur.execute("select item5name,qty5,unit5,unitprice5,dec5,desamount5,tax5,amount5 from estimateinvogstsale where sid=1")
+        cur.execute("select item5name,qty5,unit5,unitprice5,dec5,desamount5,tax5,amount5 from invogstsale where sid=1")
         rows=cur.fetchall()
 
         for row in rows:
@@ -155,11 +159,11 @@ def get_item5_data():
         print(ex)
 
 def get_item6_data():
-    con=sqlite3.connect(database=r'../DataBase/ims.db')
+    con=sqlite3.connect(database=r'DataBase/ims.db')
     cur=con.cursor()
     try:
 
-        cur.execute("select item6name,qty6,unit6,unitprice6,dec6,desamount6,tax6,amount6 from estimateinvogstsale where sid=1")
+        cur.execute("select item6name,qty6,unit6,unitprice6,dec6,desamount6,tax6,amount6 from invogstsale where sid=1")
         rows=cur.fetchall()
 
         for row in rows:
@@ -170,11 +174,11 @@ def get_item6_data():
         print(ex)
 
 def get_item7_data():
-    con=sqlite3.connect(database=r'../DataBase/ims.db')
+    con=sqlite3.connect(database=r'DataBase/ims.db')
     cur=con.cursor()
     try:
 
-        cur.execute("select item7name,qty7,unit7,unitprice7,dec7,desamount7,tax7,amount7 from estimateinvogstsale where sid=1")
+        cur.execute("select item7name,qty7,unit7,unitprice7,dec7,desamount7,tax7,amount7 from invogstsale where sid=1")
         rows=cur.fetchall()
 
         for row in rows:
@@ -185,11 +189,11 @@ def get_item7_data():
         print(ex)
 
 def get_item8_data():
-    con=sqlite3.connect(database=r'../DataBase/ims.db')
+    con=sqlite3.connect(database=r'DataBase/ims.db')
     cur=con.cursor()
     try:
 
-        cur.execute("select item8name,qty8,unit8,unitprice8,dec8,desamount8,tax8,amount8 from estimateinvogstsale where sid=1")
+        cur.execute("select item8name,qty8,unit8,unitprice8,dec8,desamount8,tax8,amount8 from invogstsale where sid=1")
         rows=cur.fetchall()
 
         for row in rows:
@@ -200,11 +204,11 @@ def get_item8_data():
         print(ex)
 
 def get_item9_data():
-    con=sqlite3.connect(database=r'../DataBase/ims.db')
+    con=sqlite3.connect(database=r'DataBase/ims.db')
     cur=con.cursor()
     try:
 
-        cur.execute("select item9name,qty9,unit9,unitprice9,dec9,desamount9,tax9,amount9 from estimateinvogstsale where sid=1")
+        cur.execute("select item9name,qty9,unit9,unitprice9,dec9,desamount9,tax9,amount9 from invogstsale where sid=1")
         rows=cur.fetchall()
 
         for row in rows:
@@ -216,11 +220,11 @@ def get_item9_data():
         print(ex)
 
 def get_item10_data():
-    con=sqlite3.connect(database=r'../DataBase/ims.db')
+    con=sqlite3.connect(database=r'DataBase/ims.db')
     cur=con.cursor()
     try:
 
-        cur.execute("select item10name,qty10,unit10,unitprice10,dec10,desamount10,tax10,amount10 from estimateinvogstsale where sid=1")
+        cur.execute("select item10name,qty10,unit10,unitprice10,dec10,desamount10,tax10,amount10 from invogstsale where sid=1")
         rows=cur.fetchall()
 
         for row in rows:
@@ -312,7 +316,7 @@ def get_hsn():
 
     for i in itmlist:
 
-      con=sqlite3.connect(database=r'../DataBase/ims.db')
+      con=sqlite3.connect(database=r'DataBase/ims.db')
       cur=con.cursor()
       try:
 
@@ -651,9 +655,9 @@ tta=capwords(totalinword)
 
 get_item_data()
 doc.render({"company":"Cyber Tech","phone": "8830136942","nam":partydata_list[0],"partynumber":partydata_list[1],"gstin":partydata_list[2],"invoice":partydata_list[4],"date":partydata_list[5],"state":partydata_list[6],"tota":partydata_list[9],"recam":partydata_list[10],"balen":partydata_list[11],"totalqty":partydata_list[14],"totaldic":partydata_list[13],"totalgst":partydata_list[12],"cgst":cgsttotal[0],"item_list":item_list,"amtinword":tta})
-doc.save("new_estimateinvoice.docx")
-filename=f"../EstimateInvoice/{partydata_list[0]}_{partydata_list[2]}.pdf"
-path=f"..\EstimateInvoice\{partydata_list[0]}_{partydata_list[2]}.pdf"
-convert("new_estimateinvoice.docx", filename)
+doc.save("new_sampleinvoice.docx")
+filename=f"../invoices/{partydata_list[0]}_{partydata_list[2]}.pdf"
+path=f"..\invoices\{partydata_list[0]}_{partydata_list[2]}.pdf"
+convert("new_sampleinvoice.docx", filename)
 subprocess.Popen([path], shell=True)
 

@@ -1123,7 +1123,7 @@ class App(customtkinter.CTk):
         self.saletransictionTable.column("cheqno", width=150,anchor="center")
 
         self.saletransictionTable.pack(fill=BOTH, expand=1)
-        self.saletransictionTable.bind("<ButtonRelease-1>", self.saletrans)
+        self.saletransictionTable.bind("<ButtonRelease-1>",self.saletrans)
 
         self.saletrans()
 
@@ -2048,17 +2048,19 @@ class App(customtkinter.CTk):
 
 
     def addparty_event(self):
-        call(["python", "comands/AddParty.py"])
+        call(["python", "AddParty.py"])
+
     def additem_event(self):
-        call(["python", "comands/AddItem.py"])
+        call(["python", "AddItem.py"])
     def addsale_event(self):
-        call(["python", "comands/AddSale.py"])
+        call(["python", "AddSale.py"])
+        # os.system('python AddSale.py')
     def addestimate_event(self):
-        call(["python", "comands/Estimate.py"])
+        call(["python", "Estimate.py"])
     def addpurchase_event(self):
-        call(["python", "comands/Purchase.py"])
+        call(["python", "Purchase.py"])
     def editparty_event(self):
-        call(["python", "comands/EditParty.py"])
+        call(["python", "EditParty.py"])
 
     def select_frame_by_name(self, name):
         # set button color for selected button
@@ -2261,6 +2263,9 @@ class App(customtkinter.CTk):
         op("Calculator")
     def caluclattotalsale(self,list1,list2,variable):
         for r in list1:
+          if r == "":
+             pass
+          else:
             a= float(r)
             list2.append(a)
         result=sum(list2)
@@ -2691,12 +2696,18 @@ class App(customtkinter.CTk):
         self.getsaletotalamount()
         for i in self.sale_paidamount_list:
            for k in i:
-            a=int(k)
-            self.sale_paidamount_mlist.append(a)
+             if k == "":
+                 pass
+             else:
+              a=int(k)
+              self.sale_paidamount_mlist.append(a)
         for m in self.sale_totalamount_list:
             for k in m:
-             b=float(k)
-             self.sale_totalamount_mlist.append(b)
+             if k == "":
+                 pass
+             else:
+               b=float(k)
+               self.sale_totalamount_mlist.append(b)
         sumpaid=sum(self.sale_paidamount_mlist)
         sumtotal = sum(self.sale_totalamount_mlist)
         recive=sumtotal-sumpaid
@@ -2757,7 +2768,7 @@ class App(customtkinter.CTk):
             con = sqlite3.connect(database=r'DataBase/ims.db')
             cur = con.cursor()
             try:
-                cur.execute("select invoicedate,invoiceno,partyname,paymentype,total,received,refreceno from estimate")
+                cur.execute("select invoicedate,invoiceno,partyname,paymentype,total,received,refreceno from estimategstsale")
                 rows = cur.fetchall()
                 self.sale_estimatetransictionTable.delete(*self.sale_estimatetransictionTable.get_children())
                 for row in rows:
@@ -2781,7 +2792,7 @@ class App(customtkinter.CTk):
                 messagebox.showerror("Error", "Search input should be required", parent=self)
             else:
                 cur.execute(
-                    "select invoicedate,invoiceno,partyname,paymentype,total,received,refreceno from estimate where " + sss + " LIKE '%" + self.Var_sale_estimate_searchtxt.get() + "%'")
+                    "select invoicedate,invoiceno,partyname,paymentype,total,received,refreceno from estimategstsale where " + sss + " LIKE '%" + self.Var_sale_estimate_searchtxt.get() + "%'")
                 rows = cur.fetchall()
                 if len(rows) != 0:
                     self.sale_estimatetransictionTable.delete(*self.sale_estimatetransictionTable.get_children())

@@ -8,9 +8,8 @@ from bs4 import BeautifulSoup
 from time import sleep
 from selenium import webdriver
 import pandas as pd
-from Body.Say import say
 import pathlib
-from Body.Listen import Command
+
 
 
 scriptDirectory = pathlib.Path().absolute()
@@ -40,7 +39,7 @@ def WhatsappSender(Name):
     sleep(5)
     try:
         driver.find_element(by=By.XPATH,value='/html/body/div[1]/div/div/div[5]/div/footer/div[1]/div/span[2]/div/div[2]/div[2]/button').click()
-        say("Message Sent")
+        # say("Message Sent")
 
     except:
         print("Invalid Number")
@@ -65,4 +64,5 @@ def whatsapp(Data):
         Namen = str(Namen).replace("a", "")
         Namen = str(Namen).replace(" ", "")
         WhatsappSender(Namen)
+
 

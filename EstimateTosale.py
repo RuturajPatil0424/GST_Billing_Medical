@@ -122,7 +122,7 @@ def start():
   getdata()
 
 def getinvoice():
-        con = sqlite3.connect(database=r'../DataBase/ims.db')
+        con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
 
@@ -137,7 +137,7 @@ def getinvoice():
 
 
 def getdata():
-  con = sqlite3.connect(database=r'../DataBase/ims.db')
+  con = sqlite3.connect(database=r'DataBase/ims.db')
   cur = con.cursor()
   try:
 
@@ -288,7 +288,7 @@ def datastore():
 
   invoice_updator(invoice_entry)
 
-  con = sqlite3.connect(database=r'../DataBase/ims.db')
+  con = sqlite3.connect(database=r'DataBase/ims.db')
   cur = con.cursor()
   try:
       cur.execute(
@@ -414,7 +414,7 @@ def datastore():
   except Exception as ex:
       print("Error", f"Error due to : {str(ex)}")
 
-  con = sqlite3.connect(database=r'../DataBase/ims.db')
+  con = sqlite3.connect(database=r'DataBase/ims.db')
   cur = con.cursor()
   try:
    cur.execute("Select * from invogstsale where sid=1")
@@ -561,7 +561,7 @@ def invoice_event():
   call(["python", "Invoice.py"])
 
 def invoice_genrator():
-  con = sqlite3.connect(database=r'../DataBase/ims.db')
+  con = sqlite3.connect(database=r'DataBase/ims.db')
   cur = con.cursor()
   try:
 
@@ -590,7 +590,7 @@ def invoice_updator(data):
   p = 1
   incre=data.replace("0","")
   print(incre)
-  con = sqlite3.connect(database=r'../DataBase/ims.db')
+  con = sqlite3.connect(database=r'DataBase/ims.db')
   cur = con.cursor()
   try:
 
@@ -609,7 +609,7 @@ def update_item_qty(name, seto):
             pass
         else:
 
-          con = sqlite3.connect(database=r'../DataBase/ims.db')
+          con = sqlite3.connect(database=r'DataBase/ims.db')
           cur = con.cursor()
           try:
               if seto=="":
@@ -641,7 +641,7 @@ def update_item_qty(name, seto):
 
 def get_party_payamount(partyname):
 
-    con = sqlite3.connect(database=r'../DataBase/ims.db')
+    con = sqlite3.connect(database=r'DataBase/ims.db')
     cur = con.cursor()
     try:
 
@@ -665,7 +665,7 @@ def get_amount(recivee,payedd,totall,gstin):
         result =str(esult)
 
         try:
-          con = sqlite3.connect(database=r'../DataBase/ims.db')
+          con = sqlite3.connect(database=r'DataBase/ims.db')
           cur = con.cursor()
 
           cur.execute(f"Select recivebalence from partydata where gstin={gstin}")

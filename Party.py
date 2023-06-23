@@ -83,7 +83,7 @@ class supplierClass:
     #============================================================================================================================================
 
     def add(self):
-        con=sqlite3.connect(database=r'../DataBase/ims.db')
+        con=sqlite3.connect(database=r'DataBase/ims.db')
         cur=con.cursor()
         try:
             if self.var_sup_invoice.get()=="":
@@ -108,7 +108,7 @@ class supplierClass:
             messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=self.root)
 
     def show(self):
-        con=sqlite3.connect(database=r'../DataBase/ims.db')
+        con=sqlite3.connect(database=r'DataBase/ims.db')
         cur=con.cursor()
         try:
             cur.execute("select * from supplier")
@@ -131,7 +131,7 @@ class supplierClass:
 
 
     def update(self):
-        con=sqlite3.connect(database=r'../DataBase/ims.db')
+        con=sqlite3.connect(database=r'DataBase/ims.db')
         cur=con.cursor()
         try:
             if self.var_sup_invoice.get()=="":
@@ -156,7 +156,7 @@ class supplierClass:
             messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=self.root)
 
     def delete(self):
-        con=sqlite3.connect(database=r'../DataBase/ims.db')
+        con=sqlite3.connect(database=r'DataBase/ims.db')
         cur=con.cursor()
         try:
             if self.var_sup_invoice.get()=="":
@@ -186,7 +186,7 @@ class supplierClass:
 
 
     def search(self):
-        con=sqlite3.connect(database=r'../DataBase/ims.db')
+        con=sqlite3.connect(database=r'DataBase/ims.db')
         cur=con.cursor()
         try:
 
