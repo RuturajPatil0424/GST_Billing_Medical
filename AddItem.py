@@ -17,6 +17,7 @@ class itemClass(customtkinter.CTk):
 
         #==============================================================
 
+        self.get_appearance_mode_event()
         self.addpartleble = customtkinter.CTkLabel(self, text="Add Item",font=customtkinter.CTkFont(size=25))
         self.addpartleble.place(x=320,y=20)
 
@@ -150,23 +151,29 @@ class itemClass(customtkinter.CTk):
         self.add3_entry = customtkinter.CTkEntry(self.tabview.tab("Manufacturing"), width=200, height=40, placeholder_text="Manufacturing 3")
         self.add3_entry.place(x=490,y=30)
 
-        self.get_appearance_mode_event()
-
 
     def add_item_event(self):
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
-            if self.code_entry.get() == "":
-                messagebox.showerror("Error", "GSTIN must be required" , parent=self)
+            if self.itemname_entry.get() == "":
+                messagebox.showerror("Error", "Item name must be required!" , parent=self)
+            elif self.hsn_entry.get() == "":
+                messagebox.showerror("Error", "HSN must be required!" , parent=self)
+            elif self.saleprice_entry.get() == "":
+                messagebox.showerror("Error", "Sale price must be required!" , parent=self)
+            elif self.purchesprice_entry.get() == "":
+                messagebox.showerror("Error", "Purches price must be required!" , parent=self)
+            elif self.opingqty_entry.get() == "":
+                messagebox.showerror("Error", "Oping Qty must be required!" , parent=self)
             else:
-                cur.execute("Select * from itemdata where pid=?",(self.code_entry.get(),))
+                cur.execute("Select * from itemdata where pid=?",(self.hsn_entry.get(),))
                 row=cur.fetchone()
                 if row!=None:
                     messagebox.showerror("Error","This GSTIN no. already assigned, try different",parent=self)
                 else :
                     cur.execute("Insert into itemdata (pid,itemname,hsn,category,itemcode,saleprice,tax1,discount,dicst,wholesaleprice,tax2,minqty,purchesprice,gsttax,openqty,atprice,date,minstockmanten,location,unit) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(
-                        self.code_entry.get(),
+                        self.hsn_entry.get(),
                         self.itemname_entry.get(),
                         self.hsn_entry.get(),
                         self.categoryr_entry.get(),
@@ -197,16 +204,23 @@ class itemClass(customtkinter.CTk):
         con=sqlite3.connect(database=r'DataBase/ims.db')
         cur=con.cursor()
         try:
-            if self.code_entry.get()=="":
-                messagebox.showerror("Error","Please select product from list",parent=self)
+            if self.itemname_entry.get() == "":
+                messagebox.showerror("Error", "Item name must be required!", parent=self)
+            elif self.hsn_entry.get() == "":
+                messagebox.showerror("Error", "HSN must be required!", parent=self)
+            elif self.saleprice_entry.get() == "":
+                messagebox.showerror("Error", "Sale price must be required!", parent=self)
+            elif self.purchesprice_entry.get() == "":
+                messagebox.showerror("Error", "Purches price must be required!", parent=self)
+            elif self.opingqty_entry.get() == "":
+                messagebox.showerror("Error", "Oping Qty must be required!", parent=self)
             else:
-                cur.execute("Select * from itemdata where pid=?",(self.code_entry.get(),))
+                cur.execute("Select * from itemdata where pid=?",(self.hsn_entry.get(),))
                 row=cur.fetchone()
                 if row==None:
                     messagebox.showerror("Error","Invalid Product HSN",parent=self)
                 else :
                     cur.execute("Update itemdata set itemname=?,hsn=?,category=?,itemcode=?,saleprice=?,tax1=?,discount=?,dicst=?,wholesaleprice=?,tax2=?,minqty=?,purchesprice=?,gsttax=?,openqty=?,atprice=?,date=?,minstockmanten=?,location=?,unit=? where pid=?",(
-
 
                         self.itemname_entry.get(),
                         self.hsn_entry.get(),
@@ -226,8 +240,8 @@ class itemClass(customtkinter.CTk):
                         self.date_entry.get(),
                         self.minstock_entry.get(),
                         self.location_entry.get(),
-                        self.code_entry.get(),
                         self.unit_entry.get(),
+                        self.hsn_entry.get(),
                     ))
                     con.commit()
                     messagebox.showinfo("Success","Item Updated Successfully",parent=self)

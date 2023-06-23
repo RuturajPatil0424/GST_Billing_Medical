@@ -2249,7 +2249,6 @@ class App(customtkinter.CTk):
         p = 1
         scale=self.scaling_optionemenu.get()
         theme = self.appearance_mode_menu.get()
-        print(scale)
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
@@ -2608,8 +2607,6 @@ class App(customtkinter.CTk):
                 b =int(row[1])
                 c=a*b
                 self.itemtotalamlist.append(c)
-                print(c)
-            print(self.itemtotalamlist)
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
         result="₹ "+str(sum(self.itemtotalamlist))
@@ -2630,7 +2627,6 @@ class App(customtkinter.CTk):
                  self.itemlowlist.append(c)
                 else:
                  pass
-            print(len(self.itemlowlist ))
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
         if len(self.itemlowlist ) < 1 :
