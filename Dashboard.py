@@ -227,19 +227,22 @@ class App(customtkinter.CTk):
         self.scaling_label = customtkinter.CTkLabel(self.navigation_frame,image=self.mode_image,compound="left",anchor="w", text="   Dark Mode", font=customtkinter.CTkFont(size=15))
         self.scaling_label.grid(row=14, column=0, padx=20, pady=(10, 0))
 
+        self.apmodelist =["Light", "Dark", "System"]
+        self.appearancelis2 = ["Light", "Dark", "System"]
         self.appearance_mode_menu = customtkinter.CTkOptionMenu(self.navigation_frame,
-                                                                values=["Light", "Dark", "System"],
                                                                 command=self.change_appearance_mode_event)
         self.appearance_mode_menu.grid(row=15, column=0, padx=20, pady=20, sticky="s")
 
         self.scaling_label = customtkinter.CTkLabel(self.navigation_frame,image=self.scale_image,compound="left", text="   UI Scaling", anchor="w", font=customtkinter.CTkFont(size=15))
         self.scaling_label.grid(row=16, column=0, padx=20, pady=(10, 0))
 
+        self.scalelis=["80%", "90%","100%","110%", "120%"]
+        self.scalelis2 = ["80%", "90%", "100%", "110%", "120%"]
         self.scaling_optionemenu = customtkinter.CTkOptionMenu(self.navigation_frame,
-                                                               values=["100%","80%", "90%","100%","110%", "120%"],
-                                                               command=self.change_scaling_event)
+                                                               command=self.change_appearance_mode_event)
         self.scaling_optionemenu.grid(row=17, column=0, padx=20, pady=(10, 20))
 
+        self.get_appearance_mode_event()
         # todo: crete frames
         # create home frame
         self.home_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
@@ -287,6 +290,9 @@ class App(customtkinter.CTk):
 
         self.in_home_purchase_top_frame = customtkinter.CTkFrame(self.home_frame, width=400, height=300)
         self.in_home_purchase_top_frame.place(x=830, y=410)
+
+        self.in_home_lowitem_top_frame = customtkinter.CTkFrame(self.home_frame, width=400, height=270)
+        self.in_home_lowitem_top_frame.place(x=10, y=720)
 
         self.in_home_cheques_frame = customtkinter.CTkFrame(self.home_frame, width=460, height=120)
         self.in_home_cheques_frame.place(x=1255, y=540)
@@ -399,10 +405,13 @@ class App(customtkinter.CTk):
         self.Stock_lable.place(x=10, y=10)
         self.stockam = StringVar()
         self.stockam = "₹ 00.00"
+        self.itemtotalamlist=[]
 
         self.stock_amount_lable = customtkinter.CTkLabel(self.in_home_stock_frame, text=self.stockam,
                                                         font=customtkinter.CTkFont(size=20))
         self.stock_amount_lable.place(x=10, y=50)
+
+        self.calstockvalue()
 
         # todo: cheques bar bar
         self.cheques_lable = customtkinter.CTkLabel(self.in_home_cheques_frame, text="Open Cheques",
@@ -522,7 +531,20 @@ class App(customtkinter.CTk):
         self.purchesam_lable2 = customtkinter.CTkLabel(self.in_home_purchase_top_frame, text=self.saleam,
                                                    font=customtkinter.CTkFont(size=25, weight="bold"))
         self.purchesam_lable2.place(x=10, y=60)
+
+
+        # todo: home low Stock frame
+        self.itemlowlist=[]
+        self.lowStock_lable = customtkinter.CTkLabel(self.in_home_lowitem_top_frame, text=" Low Stock",text_color="red",
+                                                      font=customtkinter.CTkFont(size=25), image=self.basket_image,
+                                                      compound="left", anchor="w")
+        self.lowStock_lable.place(x=10, y=10)
+
+        self.lowStock_lable2 = customtkinter.CTkLabel(self.in_home_lowitem_top_frame,
+                                                       font=customtkinter.CTkFont(size=15))
+        self.lowStock_lable2.place(x=10, y=50)
         self.getdate()
+        self.getlowitem()
 
         # todo: parties frame
         self.var_searchby = StringVar()
@@ -2172,6 +2194,9 @@ class App(customtkinter.CTk):
         self.totalrecive()
         self.totalpay()
         self.getdate()
+        self.calstockvalue()
+        self.getlowitem()
+
 
     def parties_button_event(self):
         self.select_frame_by_name("parties")
@@ -2184,6 +2209,7 @@ class App(customtkinter.CTk):
 
     def sale_button_event(self):
         self.select_frame_by_name("sale")
+        self.calgetsaletotalamount()
 
     def Purches_button_event(self):
         self.select_frame_by_name("purches")
@@ -2219,9 +2245,68 @@ class App(customtkinter.CTk):
     def sale_estimate_event(self):
         self.select_frame_by_name("estimate")
 
-    def change_appearance_mode_event(self, new_appearance_mode):
-        customtkinter.set_appearance_mode(new_appearance_mode)
-        num = 1
+    def change_appearance_mode_event(self,event):
+        p = 1
+        scale=self.scaling_optionemenu.get()
+        theme = self.appearance_mode_menu.get()
+        print(scale)
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+
+            cur.execute("Select no from invosalenon where no=?", (p,))
+            row = cur.fetchone()
+            cur.execute("Update appearance set theme=? where no=?", (
+                theme,
+                p,
+            ))
+            con.commit()
+            cur.execute("Select no from invosalenon where no=?", (p,))
+            row = cur.fetchone()
+            cur.execute("Update appearance set scelling=? where no=?", (
+                scale,
+                p,
+            ))
+            con.commit()
+            self.get_appearance_mode_event()
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+
+
+    def get_appearance_mode_event(self):
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        self.apmodelist.clear()
+        self.scalelis.clear()
+        try:
+            cur.execute("select theme from appearance where no=1")
+            rows = cur.fetchall()
+            for row in rows:
+                for r in row:
+                  customtkinter.set_appearance_mode(r)
+                  self.apmodelist.insert(0,r)
+                  self.appearance_mode_menu.set(r)
+                  for i in self.appearancelis2:
+                      self.apmodelist.append(i)
+                  self.appearance_mode_menu.configure(values=self.apmodelist)
+
+            cur.execute("select scelling from appearance where no=1")
+            rows = cur.fetchall()
+            for row in rows:
+                for r in row:
+                    new_scaling_float = int(r.replace("%", "")) / 100
+                    customtkinter.set_widget_scaling(new_scaling_float)
+                    self.scalelis.insert(0, r)
+                    self.scaling_optionemenu.set(r)
+                    for i in self.scalelis2:
+                        self.scalelis.append(i)
+                    self.scaling_optionemenu.configure(values=self.scalelis)
+
+
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+
+
 
     def change_scaling_event(self, new_scaling: str):
         new_scaling_float = int(new_scaling.replace("%", "")) / 100
@@ -2511,6 +2596,50 @@ class App(customtkinter.CTk):
         rresult="₹ "+s
         variable.configure(text=rresult)
 
+    def calstockvalue(self):
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        self.itemtotalamlist.clear()
+        try:
+            cur.execute(f"select saleprice,openqty from itemdata ",)
+            rows = cur.fetchall()
+            for row in rows:
+                a=int(row[0])
+                b =int(row[1])
+                c=a*b
+                self.itemtotalamlist.append(c)
+                print(c)
+            print(self.itemtotalamlist)
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+        result="₹ "+str(sum(self.itemtotalamlist))
+        self.stock_amount_lable.configure(text=result,text_color="green")
+
+    def getlowitem(self):
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        self.itemtotalamlist.clear()
+        try:
+            cur.execute(f"select itemname,openqty from itemdata ",)
+            rows = cur.fetchall()
+            for row in rows:
+                if int(row[1]) < 5:
+                 a=int(row[0])
+                 b =int(row[1])
+                 c=f"{a} : {b}"
+                 self.itemlowlist.append(c)
+                else:
+                 pass
+            print(len(self.itemlowlist ))
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+        if len(self.itemlowlist ) < 1 :
+            self.lowStock_lable2.configure(text="No Item")
+        else:
+          for i in self.itemlowlist :
+            result=f"\n {i}"
+            self.lowStock_lable2.configure(text=result)
+
     def calculate_growth_rate(initial_value, final_value):
         growth_rate = (final_value - initial_value) / initial_value * 100
         return growth_rate
@@ -2654,8 +2783,6 @@ class App(customtkinter.CTk):
         self.party_trans_search.set("Select"),
         self.Var_trans_searchtxt.set(""),
         self.get_transiction_data()
-
-
 
 
     def itemshow(self):

@@ -15,6 +15,7 @@ class saleClass(customtkinter.CTk):
         self.title("GST Management System | Developed By Ruturaj Patil")
         # self.config(bg="white")
         self.focus_force()
+        self.get_appearance_mode_event()
         # ==============================================================
 
         self.Partynames = [""]
@@ -2087,6 +2088,19 @@ class saleClass(customtkinter.CTk):
 
     def amountupdate(self,*args):
         self.finalamount()
+
+    def get_appearance_mode_event(self):
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+            cur.execute("select theme from appearance where no=1")
+            rows = cur.fetchall()
+            for row in rows:
+                for r in row:
+                    customtkinter.set_appearance_mode(r)
+
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
 
     def refrance(self,event):

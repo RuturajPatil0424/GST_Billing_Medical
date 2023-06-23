@@ -15,6 +15,7 @@ class supplierClass(customtkinter.CTk):
         self.title("GST Management System | Developed By Ruturaj Patil")
         #self.config(bg="white")
         self.focus_force()
+        self.get_appearance_mode_event()
         #==============================================================
 
         self.addpartleble = customtkinter.CTkLabel(self, text="Add Party",font=customtkinter.CTkFont(size=25))
@@ -103,8 +104,6 @@ class supplierClass(customtkinter.CTk):
         self.add3_entry = customtkinter.CTkEntry(self.tabview.tab("Additional Fields"), width=200, height=40, placeholder_text="Additional Fields 3")
         self.add3_entry.place(x=490,y=30)
 
-        # def change_appearance_mode_event(self, new_appearance_mode):
-        customtkinter.set_appearance_mode("light")
 
 
     def add_party_event(self):
@@ -145,9 +144,18 @@ class supplierClass(customtkinter.CTk):
         except Exception as ex:
             messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=self)
 
+    def get_appearance_mode_event(self):
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+            cur.execute("select theme from appearance where no=1")
+            rows = cur.fetchall()
+            for row in rows:
+                for r in row:
+                    customtkinter.set_appearance_mode(r)
 
-    def change_appearance_mode_event(self, new_appearance_mode):
-       print(new_appearance_mode)
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
 
 

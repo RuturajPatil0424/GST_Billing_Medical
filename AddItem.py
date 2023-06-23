@@ -13,8 +13,8 @@ class itemClass(customtkinter.CTk):
 
         self.geometry("780x600+300+130")
         self.title("GST Management System | Developed By Ruturaj Patil")
-        #self.config(bg="white")
         self.focus_force()
+
         #==============================================================
 
         self.addpartleble = customtkinter.CTkLabel(self, text="Add Item",font=customtkinter.CTkFont(size=25))
@@ -150,10 +150,7 @@ class itemClass(customtkinter.CTk):
         self.add3_entry = customtkinter.CTkEntry(self.tabview.tab("Manufacturing"), width=200, height=40, placeholder_text="Manufacturing 3")
         self.add3_entry.place(x=490,y=30)
 
-
-
-        # def change_appearance_mode_event(self, new_appearance_mode):
-        customtkinter.set_appearance_mode("light")
+        self.get_appearance_mode_event()
 
 
     def add_item_event(self):
@@ -238,9 +235,18 @@ class itemClass(customtkinter.CTk):
         except Exception as ex:
             messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=self)
 
+    def get_appearance_mode_event(self):
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+            cur.execute("select theme from appearance where no=1")
+            rows = cur.fetchall()
+            for row in rows:
+                for r in row:
+                    customtkinter.set_appearance_mode(r)
 
-    def change_appearance_mode_event(self, new_appearance_mode):
-        print(new_appearance_mode)
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
 
 
