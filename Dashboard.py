@@ -433,6 +433,8 @@ class App(customtkinter.CTk):
         self.saleam="₹ 00"
         self.saletotalamlist=[]
         self.totalsaleam=[]
+        self.purtotalamlist = []
+        self.pursaleam = []
 
         self.sale_amount_lable = customtkinter.CTkLabel(self.in_home_sale_top_frame, text=self.saleam,
                                                         font=customtkinter.CTkFont(size=30, weight="bold"))
@@ -440,6 +442,10 @@ class App(customtkinter.CTk):
         self.sale_amount_lable2 = customtkinter.CTkLabel(self.in_home_sale_top_frame, text="Total Sale",
                                                         font=customtkinter.CTkFont(size=15))
         self.sale_amount_lable2.place(x=10, y=120)
+
+        self.sale_amount_date = customtkinter.CTkLabel(self.in_home_sale_top_frame,
+                                                         font=customtkinter.CTkFont(size=15))
+        self.sale_amount_date.place(x=600, y=10)
 
         self.salegroth = StringVar()
         self.salegroth = "0%"
@@ -455,7 +461,7 @@ class App(customtkinter.CTk):
                                                                values=["Today",'Yesterday','This Weak','Last Weak','This Month',"Last Month", "This Quarter","Last Quarter", "This Year","Last Year"],command=self.gd)
         self.sale_optionemenu.place(x=790,y=10)
 
-        self.getdate()
+
 
 
         # todo: home expenses frame
@@ -516,6 +522,7 @@ class App(customtkinter.CTk):
         self.purchesam_lable2 = customtkinter.CTkLabel(self.in_home_purchase_top_frame, text=self.saleam,
                                                    font=customtkinter.CTkFont(size=25, weight="bold"))
         self.purchesam_lable2.place(x=10, y=60)
+        self.getdate()
 
         # todo: parties frame
         self.var_searchby = StringVar()
@@ -2262,7 +2269,10 @@ class App(customtkinter.CTk):
             ld=31
             lm=int(currentmonth)
             ly = int(currentYear)
+            datess=f"{d}/{m}/{y}  To  {ld}/{lm}/{ly}"
+            self.sale_amount_date.configure(text=datess)
             self.totalsael(d,m,y,ld,lm,ly)
+            self.totalpurc(d, m, y, ld, lm, ly)
         elif lastdate == "Today" :
             d=int(currentdate)
             m=int(currentmonth)
@@ -2270,7 +2280,10 @@ class App(customtkinter.CTk):
             ld=int(currentdate)
             lm=int(currentmonth)
             ly=int(currentYear)
+            datess = f"{d}/{m}/{y}"
+            self.sale_amount_date.configure(text=datess)
             self.totalsael(d,m,y,ld,lm,ly)
+            self.totalpurc(d, m, y, ld, lm, ly)
         elif lastdate == "Yesterday" :
             d=int(currentdate)-1
             m=int(currentmonth)
@@ -2278,23 +2291,53 @@ class App(customtkinter.CTk):
             ld=int(currentdate)-1
             lm=int(currentmonth)
             ly=int(currentYear)
+            datess = f"{d}/{m}/{y}"
+            self.sale_amount_date.configure(text=datess)
             self.totalsael(d,m,y,ld,lm,ly)
+            self.totalpurc(d, m, y, ld, lm, ly)
         elif lastdate == "This Weak" :
-            d=int(currentdate)-6
-            m=int(currentmonth)
-            y=int(currentYear)
-            ld=int(currentdate)
-            lm=int(currentmonth)
-            ly=int(currentYear)
+            m = int(currentmonth)
+            y = int(currentYear)
+            lm = int(currentmonth)
+            ly = int(currentYear)
+            if int(currentdate) >= 1 and int(currentdate) <= 7:
+             d=1
+             ld=7
+            elif int(currentdate) >= 8 and int(currentdate) <= 14:
+             d = 8
+             ld = 14
+            elif int(currentdate) >= 15 and int(currentdate) <= 21:
+             d = 15
+             ld = 21
+            elif int(currentdate) >= 22 and int(currentdate) <= 31:
+             d = 22
+             ld = 31
+
+            datess = f"{d}/{m}/{y}  To  {ld}/{lm}/{ly}"
+            self.sale_amount_date.configure(text=datess)
             self.totalsael(d,m,y,ld,lm,ly)
+            self.totalpurc(d, m, y, ld, lm, ly)
         elif lastdate == "Last Weak" :
-            d=int(currentdate)-14
-            m=int(currentmonth)
-            y=int(currentYear)
-            ld=int(currentdate)-7
-            lm=int(currentmonth)
-            ly=int(currentYear)
+            m = int(currentmonth)
+            y = int(currentYear)
+            lm = int(currentmonth)
+            ly = int(currentYear)
+            if int(currentdate) >= 1 and int(currentdate) <= 7:
+                d = 22
+                ld = 31
+            elif int(currentdate) >= 8 and int(currentdate) <= 14:
+                d = 1
+                ld = 7
+            elif int(currentdate) >= 15 and int(currentdate) <= 21:
+                d = 8
+                ld = 14
+            elif int(currentdate) >= 22 and int(currentdate) <= 31:
+                d = 15
+                ld = 21
+            datess = f"{d}/{m}/{y}  To  {ld}/{lm}/{ly}"
+            self.sale_amount_date.configure(text=datess)
             self.totalsael(d,m,y,ld,lm,ly)
+            self.totalpurc(d, m, y, ld, lm, ly)
         elif lastdate == "Last Month" :
             d=1
             if int(currentmonth) == 1:
@@ -2305,7 +2348,10 @@ class App(customtkinter.CTk):
             ld=31
             lm=int(currentmonth)-1
             ly=int(currentYear)
+            datess = f"{d}/{m}/{y}  To  {ld}/{lm}/{ly}"
+            self.sale_amount_date.configure(text=datess)
             self.totalsael(d,m,y,ld,lm,ly)
+            self.totalpurc(d, m, y, ld, lm, ly)
         elif lastdate == "This Quarter" :
             d=1
             ld = 31
@@ -2320,8 +2366,10 @@ class App(customtkinter.CTk):
             elif int(currentmonth) == 9 or int(currentmonth) == 10 or int(currentmonth) == 11 or int(currentmonth) == 12 :
              m=9
              lm=12
-
+            datess = f"{d}/{m}/{y}  To  {ld}/{lm}/{ly}"
+            self.sale_amount_date.configure(text=datess)
             self.totalsael(d,m,y,ld,lm,ly)
+            self.totalpurc(d, m, y, ld, lm, ly)
         elif lastdate == "Last Quarter" :
             d = 1
             ld = 31
@@ -2336,7 +2384,10 @@ class App(customtkinter.CTk):
             elif int(currentmonth) == 9 or int(currentmonth) == 10 or int(currentmonth) == 11 or int(currentmonth) == 12:
                 m = 1
                 lm = 4
+            datess = f"{d}/{m}/{y}  To  {ld}/{lm}/{ly}"
+            self.sale_amount_date.configure(text=datess)
             self.totalsael(d,m,y,ld,lm,ly)
+            self.totalpurc(d, m, y, ld, lm, ly)
         elif lastdate == "This Year" :
             d=1
             m=1
@@ -2344,7 +2395,10 @@ class App(customtkinter.CTk):
             ld=31
             lm=12
             ly=int(currentYear)
+            datess = f"{d}/{m}/{y}  To  {ld}/{lm}/{ly}"
+            self.sale_amount_date.configure(text=datess)
             self.totalsael(d,m,y,ld,lm,ly)
+            self.totalpurc(d, m, y, ld, lm, ly)
         elif lastdate == "Last Year" :
             d=1
             m=1
@@ -2352,7 +2406,10 @@ class App(customtkinter.CTk):
             ld=31
             lm=12
             ly=int(currentYear)-1
+            datess = f"{d}/{m}/{y}  To  {ld}/{lm}/{ly}"
+            self.sale_amount_date.configure(text=datess)
             self.totalsael(d,m,y,ld,lm,ly)
+            self.totalpurc(d, m, y, ld, lm, ly)
 
     def totalsael(self,d,m,y,ld,lm,ly):
       con = sqlite3.connect(database=r'DataBase/ims.db')
@@ -2397,6 +2454,49 @@ class App(customtkinter.CTk):
         y= y + 1
       self.caluclattotalsale(self.saletotalamlist,self.totalsaleam,self.sale_amount_lable)
 
+    def totalpurc(self,d,m,y,ld,lm,ly):
+      con = sqlite3.connect(database=r'DataBase/ims.db')
+      cur = con.cursor()
+      self.purtotalamlist.clear()
+      self.pursaleam.clear()
+
+      while y <= ly:
+        while m <= lm:
+
+            while d <= ld:
+              if len(str(d)) == 1:
+                date="0"+str(d)
+              elif len(str(d)) == 1 and d == 0:
+                dm=str(d)
+                dd=dm.replace("0","1")
+                date="0"+dd
+              else:
+                date =str(d)
+              if len(str(m)) == 1:
+                month="/0"+str(m)
+              elif len(str(m)) == 1 and m == 0:
+                dm=str(m)
+                dd=dm.replace("0","1")
+                month="/0"+dd
+              else:
+                month ="/"+str(m)
+              date=date+month+"/"+str(y)
+              try:
+                cur.execute(f"select total from gstpurchase where invoicedate=?",(date,) )
+                rows = cur.fetchall()
+                for row in rows:
+                  for r in row:
+                    self.purtotalamlist.append(r)
+
+              except Exception as ex:
+                 messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+
+              d = d + 1
+            m = m + 1
+            d =1
+        y= y + 1
+      self.caluclattotalsale(self.purtotalamlist,self.pursaleam,self.purchesam_lable2)
+
     def opencalcu(self):
         op("Calculator")
     def caluclattotalsale(self,list1,list2,variable):
@@ -2410,6 +2510,10 @@ class App(customtkinter.CTk):
         s=str(result)
         rresult="₹ "+s
         variable.configure(text=rresult)
+
+    def calculate_growth_rate(initial_value, final_value):
+        growth_rate = (final_value - initial_value) / initial_value * 100
+        return growth_rate
 
     def get_data(self, ev):
         f = self.productTable.focus()
