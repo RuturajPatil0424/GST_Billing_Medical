@@ -6,6 +6,7 @@ from subprocess import call
 import sqlite3
 from tkinter import messagebox, END, ttk
 from AppOpener import open as op, close
+from datetime import date as Dates
 
 class App(customtkinter.CTk):
     def __init__(self):
@@ -429,7 +430,7 @@ class App(customtkinter.CTk):
         self.sale_lable=customtkinter.CTkLabel(self.in_home_sale_top_frame,text=" Sale",font=customtkinter.CTkFont(size=25),image=self.saleim_image,compound="left",anchor="w")
         self.sale_lable.place(x=10,y=10)
         self.saleam=StringVar()
-        self.saleam="₹ 00.00"
+        self.saleam="₹ 00"
         self.saletotalamlist=[]
         self.totalsaleam=[]
 
@@ -451,11 +452,11 @@ class App(customtkinter.CTk):
         self.sale_growt_lable2.place(x=10, y=220)
 
         self.sale_optionemenu = customtkinter.CTkOptionMenu(self.in_home_sale_top_frame,width=40,
-                                                               values=["This Month","Last Month", "This Quarter", "This Year"])
+                                                               values=["Today",'Yesterday','This Weak','Last Weak','This Month',"Last Month", "This Quarter","Last Quarter", "This Year","Last Year"],command=self.gd)
         self.sale_optionemenu.place(x=790,y=10)
 
-        self.totalsael()
-        self.caluclattotalsale(self.saletotalamlist,self.totalsaleam,self.sale_amount_lable)
+        self.getdate()
+
 
         # todo: home expenses frame
 
@@ -2161,6 +2162,9 @@ class App(customtkinter.CTk):
         self.select_frame_by_name("sale_invoice")
     def home_button_event(self):
         self.select_frame_by_name("home")
+        self.totalrecive()
+        self.totalpay()
+        self.getdate()
 
     def parties_button_event(self):
         self.select_frame_by_name("parties")
@@ -2243,21 +2247,155 @@ class App(customtkinter.CTk):
 
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    def gd(self,event):
+        self.getdate()
+    def getdate(self):
+        TodayDate= Dates.today()
+        currentdate = TodayDate.strftime("%d")
+        currentmonth=TodayDate.strftime("%m")
+        currentYear = TodayDate.strftime("%Y")
+        lastdate=self.sale_optionemenu.get()
+        if lastdate == "This Month" :
+            d=1
+            m=int(currentmonth)
+            y=int(currentYear)
+            ld=31
+            lm=int(currentmonth)
+            ly = int(currentYear)
+            self.totalsael(d,m,y,ld,lm,ly)
+        elif lastdate == "Today" :
+            d=int(currentdate)
+            m=int(currentmonth)
+            y=int(currentYear)
+            ld=int(currentdate)
+            lm=int(currentmonth)
+            ly=int(currentYear)
+            self.totalsael(d,m,y,ld,lm,ly)
+        elif lastdate == "Yesterday" :
+            d=int(currentdate)-1
+            m=int(currentmonth)
+            y=int(currentYear)
+            ld=int(currentdate)-1
+            lm=int(currentmonth)
+            ly=int(currentYear)
+            self.totalsael(d,m,y,ld,lm,ly)
+        elif lastdate == "This Weak" :
+            d=int(currentdate)-6
+            m=int(currentmonth)
+            y=int(currentYear)
+            ld=int(currentdate)
+            lm=int(currentmonth)
+            ly=int(currentYear)
+            self.totalsael(d,m,y,ld,lm,ly)
+        elif lastdate == "Last Weak" :
+            d=int(currentdate)-14
+            m=int(currentmonth)
+            y=int(currentYear)
+            ld=int(currentdate)-7
+            lm=int(currentmonth)
+            ly=int(currentYear)
+            self.totalsael(d,m,y,ld,lm,ly)
+        elif lastdate == "Last Month" :
+            d=1
+            if int(currentmonth) == 1:
+                m=12
+            else:
+                m=int(currentmonth)-1
+            y=int(currentYear)
+            ld=31
+            lm=int(currentmonth)-1
+            ly=int(currentYear)
+            self.totalsael(d,m,y,ld,lm,ly)
+        elif lastdate == "This Quarter" :
+            d=1
+            ld = 31
+            y = int(currentYear)
+            ly = int(currentYear)
+            if int(currentmonth) == 1 or int(currentmonth) == 2 or int(currentmonth) == 3 or int(currentmonth) == 4 :
+             m=1
+             lm=4
+            elif int(currentmonth) == 5 or int(currentmonth) == 6 or int(currentmonth) == 7 or int(currentmonth) == 8 :
+             m=5
+             lm=8
+            elif int(currentmonth) == 9 or int(currentmonth) == 10 or int(currentmonth) == 11 or int(currentmonth) == 12 :
+             m=9
+             lm=12
 
-    def totalsael(self):
-        con = sqlite3.connect(database=r'DataBase/ims.db')
-        cur = con.cursor()
-        try:
-            cur.execute("select total from gstsale ", )
-            rows = cur.fetchall()
-            for row in rows:
-                for r in row:
+            self.totalsael(d,m,y,ld,lm,ly)
+        elif lastdate == "Last Quarter" :
+            d = 1
+            ld = 31
+            y = int(currentYear)
+            ly = int(currentYear)
+            if int(currentmonth) == 1 or int(currentmonth) == 2 or int(currentmonth) == 3 or int(currentmonth) == 4:
+                m = 5
+                lm = 8
+            elif int(currentmonth) == 5 or int(currentmonth) == 6 or int(currentmonth) == 7 or int(currentmonth) == 8:
+                m = 9
+                lm = 12
+            elif int(currentmonth) == 9 or int(currentmonth) == 10 or int(currentmonth) == 11 or int(currentmonth) == 12:
+                m = 1
+                lm = 4
+            self.totalsael(d,m,y,ld,lm,ly)
+        elif lastdate == "This Year" :
+            d=1
+            m=1
+            y=int(currentYear)
+            ld=31
+            lm=12
+            ly=int(currentYear)
+            self.totalsael(d,m,y,ld,lm,ly)
+        elif lastdate == "Last Year" :
+            d=1
+            m=1
+            y=int(currentYear)-1
+            ld=31
+            lm=12
+            ly=int(currentYear)-1
+            self.totalsael(d,m,y,ld,lm,ly)
+
+    def totalsael(self,d,m,y,ld,lm,ly):
+      con = sqlite3.connect(database=r'DataBase/ims.db')
+      cur = con.cursor()
+      self.saletotalamlist.clear()
+      self.totalsaleam.clear()
+
+      while y <= ly:
+        while m <= lm:
+
+            while d <= ld:
+              if len(str(d)) == 1:
+                date="0"+str(d)
+              elif len(str(d)) == 1 and d == 0:
+                dm=str(d)
+                dd=dm.replace("0","1")
+                date="0"+dd
+              else:
+                date =str(d)
+              if len(str(m)) == 1:
+                month="/0"+str(m)
+              elif len(str(m)) == 1 and m == 0:
+                dm=str(m)
+                dd=dm.replace("0","1")
+                month="/0"+dd
+              else:
+                month ="/"+str(m)
+              date=date+month+"/"+str(y)
+              try:
+                cur.execute(f"select total from gstsale where invoicedate=?",(date,) )
+                rows = cur.fetchall()
+                for row in rows:
+                  for r in row:
                     self.saletotalamlist.append(r)
 
+              except Exception as ex:
+                 messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
-        except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
+              d = d + 1
+            m = m + 1
+            d =1
+        y= y + 1
+      self.caluclattotalsale(self.saletotalamlist,self.totalsaleam,self.sale_amount_lable)
 
     def opencalcu(self):
         op("Calculator")
