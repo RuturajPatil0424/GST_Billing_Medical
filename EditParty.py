@@ -35,14 +35,23 @@ class supplierClass(customtkinter.CTk):
         self.addpartleble = customtkinter.CTkLabel(self, text="Edit party_",font=customtkinter.CTkFont(size=25))
         self.addpartleble.place(x=320,y=40)
 
+        self.party_name_lable = customtkinter.CTkLabel(self, width=200, height=40, text="Party Name :")
+        self.party_name_lable.place(x=0, y=80)
+
         self.party_name_entry = customtkinter.CTkEntry(self, width=200, height=40, textvariable=self.party_nameVar)
         self.party_name_entry.place(x=50,y=120)
 
         self.gstn_entry = customtkinter.CTkEntry(self, width=200, height=40, textvariable=self.party_gstinVar)
         self.gstn_entry.place(x=280,y=120)
 
+        self.party_gstin_lable = customtkinter.CTkLabel(self, width=200, height=40, text="Party GSTIN NO :")
+        self.party_gstin_lable.place(x=240, y=80)
+
         self.number_entry = customtkinter.CTkEntry(self, width=200, height=40, textvariable=self.party_noVar)
         self.number_entry.place(x=510,y=120)
+
+        self.party_number_lable = customtkinter.CTkLabel(self, width=200, height=40, text="Party Phone NO :")
+        self.party_number_lable.place(x=470, y=80)
 
         self.savebtn = customtkinter.CTkButton(self, command=self.add_party__event, width=80, text="Update", font=customtkinter.CTkFont(size=16))
         self.savebtn.place(x=680,y=560)
@@ -70,8 +79,11 @@ class supplierClass(customtkinter.CTk):
                                                         values=self.party_steateVar)
         self.state_menu.place(x=20,y=100)
 
+        self.party_entry_lable = customtkinter.CTkLabel(self.tabview.tab("GST & Address"), width=200, height=40, text="Email ID :")
+        self.party_entry_lable.place(x=0, y=150)
+
         self.email_entry = customtkinter.CTkEntry(self.tabview.tab("GST & Address"), width=200, height=40, textvariable=self.party_emailVar)
-        self.email_entry.place(x=20,y=170)
+        self.email_entry.place(x=20,y=185)
 
         self.billingaddress_entry = customtkinter.CTkTextbox(self.tabview.tab("GST & Address"), width=300, height=100)
         self.billingaddress_entry.place(x=410,y=30)
@@ -79,29 +91,43 @@ class supplierClass(customtkinter.CTk):
         self.shipingadd_entry = customtkinter.CTkTextbox(self.tabview.tab("GST & Address"), width=300, height=100)
         self.shipingadd_entry.place(x=410,y=150)
 
-        self.billingaddress_lable= customtkinter.CTkLabel(self.tabview.tab("GST & Address"), text="Billing Address : ")
+        self.billingaddress_lable= customtkinter.CTkLabel(self.tabview.tab("GST & Address"), text="Billing  Address : ")
         self.billingaddress_lable.place(x=290,y=30)
 
-        self.shipingaddress_lable= customtkinter.CTkLabel(self.tabview.tab("GST & Address"), text="Shipping Address : ")
+        self.shipingaddress_lable= customtkinter.CTkLabel(self.tabview.tab("GST & Address"), text="Shipping  Address : ")
         self.shipingaddress_lable.place(x=290,y=150)
 
         #todo: Credit & Balance
 
+        self.party_opingbalance_lable = customtkinter.CTkLabel(self.tabview.tab("Credit & Balance"), width=200, height=40,
+                                                        text="Pay  Balance :")
+        self.party_opingbalance_lable.place(x=0, y=10)
+
         self.opingbalance_entry = customtkinter.CTkEntry(self.tabview.tab("Credit & Balance"), width=200, height=40, textvariable=self.party_payBalanceVar)
-        self.opingbalance_entry.place(x=30,y=30)
+        self.opingbalance_entry.place(x=30,y=50)
+
+        self.party_recivebalance_lable = customtkinter.CTkLabel(self.tabview.tab("Credit & Balance"), width=200,
+                                                               height=40,
+                                                               text="Recive  Balance :")
+        self.party_recivebalance_lable.place(x=240, y=10)
 
         self.recivebalance_entry = customtkinter.CTkEntry(self.tabview.tab("Credit & Balance"), width=200, height=40,
                                                          textvariable=self.party_ReceiveVar)
-        self.recivebalance_entry.place(x=260, y=30)
+        self.recivebalance_entry.place(x=260, y=50)
+
+        self.party_customlimit_lable = customtkinter.CTkLabel(self.tabview.tab("Credit & Balance"), width=200,
+                                                                height=40,
+                                                                text="Custom Limit  Balance :")
+        self.party_customlimit_lable.place(x=490, y=10)
 
         self.date_entry = DateEntry(self.tabview.tab("Credit & Balance"), width=10, height=40, selectmode="day",date_pattern="dd/mm/y")
-        self.date_entry.place(x=120,y=90)
+        self.date_entry.place(x=120,y=110)
 
-        self.date_lable = customtkinter.CTkLabel(self.tabview.tab("Credit & Balance"), width=10, height=40, text="As Of Date")
-        self.date_lable.place(x=40, y=80)
+        self.date_lable = customtkinter.CTkLabel(self.tabview.tab("Credit & Balance"), width=10, height=40, text="As Of Date :")
+        self.date_lable.place(x=40, y=100)
 
         self.customlimit_entry = customtkinter.CTkEntry(self.tabview.tab("Credit & Balance"), width=200, height=40, textvariable=self.party_customlismitVar)
-        self.customlimit_entry.place(x=490,y=30)
+        self.customlimit_entry.place(x=490,y=50)
 
         # self.switch = customtkinter.CTkSwitch(self.tabview.tab("Credit & Balance"), text=f"Custom Limit")
         # self.switch.place(x=10,y=90)
@@ -138,7 +164,11 @@ class supplierClass(customtkinter.CTk):
                 self.party_gstinVar.set(party_datalist[2])
                 self.party_noVar.set(party_datalist[3])
                 self.party_gsttypeVar.insert(0,party_datalist[4])
+                self.gsttype_menu.configure(values=self.party_gsttypeVar)
+                self.gsttype_menu.set(party_datalist[4])
                 self.party_steateVar.insert(0,party_datalist[5])
+                self.state_menu.configure(values=self.party_steateVar)
+                self.state_menu.set(party_datalist[5])
                 self.party_emailVar.set(party_datalist[6])
                 self.billingaddress_entry.insert(0.0,party_datalist[7])
                 self.shipingadd_entry.insert(0.0,party_datalist[7])
