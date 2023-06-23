@@ -20,6 +20,9 @@ def create_db():
     cur.execute("CREATE TABLE IF NOT EXISTS partydata(pid INTEGER PRIMARY KEY AUTOINCREMENT,partyname text,gstin text,phonenumber text,gsttype text,amount text,state text,emailid text,billaddress text,shipaddress text,paybalence text,recivebalence text,date text,creditlim text,add1 text,add2 text,add3 text,add4 text)")
     con.commit()
 
+    cur.execute("CREATE TABLE IF NOT EXISTS editpartydata(pid INTEGER PRIMARY KEY AUTOINCREMENT,partyname text,gstin text,phonenumber text,gsttype text,amount text,state text,emailid text,billaddress text,shipaddress text,paybalence text,recivebalence text,date text,creditlim text,add1 text,add2 text,add3 text,add4 text)")
+    con.commit()
+
     cur.execute("CREATE TABLE IF NOT EXISTS salepaymentin(pid INTEGER PRIMARY KEY AUTOINCREMENT,partyname text,gstin text,phonenumber text,gsttype text,amount text,state text,emailid text,billaddress text,shipaddress text,paybalence text,recivebalence text,date text,creditlim text,paymenttype text,add2 text,add3 text,add4 text)")
     con.commit()
 

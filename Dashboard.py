@@ -595,6 +595,12 @@ class App(customtkinter.CTk):
                                                         hover_color=("gray70", "gray30"))
         self.add_party_button.place(x=360, y=20)
 
+        self.edit_party_button = customtkinter.CTkButton(self.party_name_frame, command=self.editparty_event,
+                                                        font=customtkinter.CTkFont(size=15), text="Edit Party", width=70,
+                                                        height=40, image=self.edit_image, fg_color="transparent",
+                                                        hover_color=("gray70", "gray30"))
+        self.edit_party_button.place(x=360, y=80)
+
         self.imp_party_button = customtkinter.CTkButton(self.party_name_frame, font=customtkinter.CTkFont(size=18),
                                                         text="Import Parties", width=70, height=40,
                                                         image=self.image_icon_image, fg_color="transparent",
@@ -2096,7 +2102,8 @@ class App(customtkinter.CTk):
 
     def addparty_event(self):
         call(["python", "AddParty.py"])
-
+    def editparty_event(self):
+        call(["python", "EditParty.py"])
     def edititem_event(self):
         call(["python", "EditItem.py"])
     def additem_event(self):
@@ -2661,6 +2668,7 @@ class App(customtkinter.CTk):
         return growth_rate
 
     def get_data(self, ev):
+        partydatalist=[]
         f = self.productTable.focus()
         content = (self.productTable.item(f))
         row = content['values']
@@ -2682,6 +2690,38 @@ class App(customtkinter.CTk):
                 self.show()
                 self.get_transiction_data()
                 self.patyclear()
+
+            cur.execute("select pid,partyname,gstin,phonenumber,gsttype,state,emailid,billaddress,shipaddress,paybalence,recivebalence,date,creditlim,add1,add2,add3,add4 from partydata where partyname=?",
+                (row[0],))
+            rows = cur.fetchall()
+            for row in rows:
+                for r in row:
+                    partydatalist.append(r)
+                    print(r)
+
+            cur.execute(
+                "Update editpartydata set partyname=?,gstin=?,phonenumber=?,gsttype=?,state=?,emailid=?,billaddress=?,shipaddress=?,paybalence=?,recivebalence=?,date=?,creditlim=?,add1=?,add2=?,add3=?,add4=? where pid=1",
+                (
+
+                    partydatalist[1],
+                    partydatalist[2],
+                    partydatalist[3],
+                    partydatalist[4],
+                    partydatalist[5],
+                    partydatalist[6],
+                    partydatalist[7],
+                    partydatalist[8],
+                    partydatalist[9],
+                    partydatalist[10],
+                    partydatalist[11],
+                    partydatalist[12],
+                    partydatalist[13],
+                    partydatalist[14],
+                    partydatalist[15],
+                    partydatalist[16],
+                ))
+            con.commit()
+
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
@@ -2816,6 +2856,7 @@ class App(customtkinter.CTk):
 
     def get_itemtrans_data(self, ev):
         itemdatalist=[]
+        itemdatalist.clear()
         f = self.itemTable.focus()
         content = (self.itemTable.item(f))
         row = content['values']
@@ -2844,7 +2885,7 @@ class App(customtkinter.CTk):
                 self.itemclear()
 
 
-            cur.execute("select pid,itemname,hsn,category,itemcode,saleprice,tax1,discount,dicst,wholesaleprice,tax2,minqty,purchesprice,gsttax,openqty,atprice,date,minstockmanten,location,unit from itemdata where pid=?",
+            cur.execute("select pid,itemname,hsn,category,itemcode,saleprice,tax1,discount,dicst,wholesaleprice,tax2,minqty,purchesprice,gsttax,openqty,atprice,date,minstockmanten,location,unit from itemdata where hsn=?",
                 (row[1],))
             rows = cur.fetchall()
             for row in rows:
