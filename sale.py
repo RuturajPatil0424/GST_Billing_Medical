@@ -17,6 +17,8 @@ class saleClass(customtkinter.CTk):
         self.focus_force()
         # ==============================================================
 
+        self.get_appearance_mode_event()
+
         self.Partynames = [""]
         self.gstin = StringVar()
         self.partynumber=StringVar()
@@ -676,9 +678,6 @@ class saleClass(customtkinter.CTk):
         self.get_party_gstin()
         self.get_party_number()
 
-
-        # def change_appearance_mode_event(self, new_appearance_mode):
-        customtkinter.set_appearance_mode("light")
 
     def add_party_event(self):
         self.get_party_gstin()
@@ -1971,6 +1970,24 @@ class saleClass(customtkinter.CTk):
     def amountupdate(self,*args):
         self.finalamount()
 
+    def get_appearance_mode_event(self):
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+            cur.execute("select theme from appearance where no=1")
+            rows = cur.fetchall()
+            for row in rows:
+                for r in row:
+                    customtkinter.set_appearance_mode(r)
+            cur.execute("select scelling from appearance where no=1")
+            rows = cur.fetchall()
+            for row in rows:
+                for r in row:
+                    new_scaling_float = int(r.replace("%", "")) / 100
+                    customtkinter.set_widget_scaling(new_scaling_float)
+
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
     def refrance(self,event):
         if self.Payment_type_entry.get() == "Cheque":

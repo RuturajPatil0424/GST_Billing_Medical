@@ -24,7 +24,7 @@ class saleClass(customtkinter.CTk):
         self.reciveamount = StringVar()
         self.resultam = StringVar()
 
-
+        self.get_appearance_mode_event()
         self.Saleleble = customtkinter.CTkLabel(self, text="Sale", font=customtkinter.CTkFont(size=25))
         self.Saleleble.place(x=20, y=40)
 
@@ -617,9 +617,6 @@ class saleClass(customtkinter.CTk):
         self.get_party_gstin()
         self.get_party_number()
 
-
-        # def change_appearance_mode_event(self, new_appearance_mode):
-        customtkinter.set_appearance_mode("light")
 
     def add_party_event(self):
         self.get_party_gstin()
@@ -1723,6 +1720,25 @@ class saleClass(customtkinter.CTk):
            self.Cheque_entry.place(x=50, y=790)
         elif self.Payment_type_entry.get() == "Cash":
            self.Cheque_entry.place_forget()
+
+    def get_appearance_mode_event(self):
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+            cur.execute("select theme from appearance where no=1")
+            rows = cur.fetchall()
+            for row in rows:
+                for r in row:
+                    customtkinter.set_appearance_mode(r)
+            cur.execute("select scelling from appearance where no=1")
+            rows = cur.fetchall()
+            for row in rows:
+                for r in row:
+                    new_scaling_float = int(r.replace("%", "")) / 100
+                    customtkinter.set_widget_scaling(new_scaling_float)
+
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
 if __name__ == "__main__":
     app = saleClass()

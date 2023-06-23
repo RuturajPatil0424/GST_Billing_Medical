@@ -244,6 +244,12 @@ class itemClass(customtkinter.CTk):
             for row in rows:
                 for r in row:
                     customtkinter.set_appearance_mode(r)
+            cur.execute("select scelling from appearance where no=1")
+            rows = cur.fetchall()
+            for row in rows:
+                for r in row:
+                    new_scaling_float = int(r.replace("%", "")) / 100
+                    customtkinter.set_widget_scaling(new_scaling_float)
 
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
