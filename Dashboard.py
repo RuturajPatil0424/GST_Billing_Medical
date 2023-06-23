@@ -100,6 +100,14 @@ class App(customtkinter.CTk):
         self.calculator_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "calculator.png")),
                                                 dark_image=Image.open(os.path.join(image_path, "calculator.png")),
                                                 size=(30, 30))
+        self.stock_image = customtkinter.CTkImage(
+            light_image=Image.open(os.path.join(image_path, "lowitem.png")),
+            dark_image=Image.open(os.path.join(image_path, "lowitem.png")),
+            size=(30, 30))
+        self.edit_image = customtkinter.CTkImage(
+            light_image=Image.open(os.path.join(image_path, "edit.png")),
+            dark_image=Image.open(os.path.join(image_path, "edit.png")),
+            size=(30, 30))
         self.bill_image = customtkinter.CTkImage(
             light_image=Image.open(os.path.join(image_path, "bill.png")),
             dark_image=Image.open(os.path.join(image_path, "bill.png")),
@@ -536,13 +544,13 @@ class App(customtkinter.CTk):
         # todo: home low Stock frame
         self.itemlowlist=[]
         self.lowStock_lable = customtkinter.CTkLabel(self.in_home_lowitem_top_frame, text=" Low Stock",text_color="red",
-                                                      font=customtkinter.CTkFont(size=25), image=self.basket_image,
+                                                      font=customtkinter.CTkFont(size=25), image=self.stock_image,
                                                       compound="left", anchor="w")
         self.lowStock_lable.place(x=10, y=10)
 
-        self.lowStock_lable2 = customtkinter.CTkLabel(self.in_home_lowitem_top_frame,
+        self.lowStock_lable2 = customtkinter.CTkTextbox(self.in_home_lowitem_top_frame,width=350,
                                                        font=customtkinter.CTkFont(size=15))
-        self.lowStock_lable2.place(x=10, y=50)
+        self.lowStock_lable2.place(x=25, y=50)
         self.getdate()
         self.getlowitem()
 
@@ -789,6 +797,15 @@ class App(customtkinter.CTk):
                                                           text_color="black",
                                                           hover_color=("gray70", "gray30"))
         self.imp_item_button.place(x=20, y=20)
+
+        self.edit_item_button = customtkinter.CTkButton(self.item_name_frame,
+                                                       font=customtkinter.CTkFont(size=15), text="Edit Item",
+                                                       command=self.edititem_event,
+                                                       width=70,
+                                                       height=40, image=self.edit_image, fg_color="transparent",
+                                                       text_color="black",
+                                                       hover_color=("gray70", "gray30"))
+        self.edit_item_button.place(x=360, y=80)
 
         self.home_add_sale_button = customtkinter.CTkButton(self.in_item_top_frame,
                                                             font=customtkinter.CTkFont(size=18),
@@ -2080,6 +2097,8 @@ class App(customtkinter.CTk):
     def addparty_event(self):
         call(["python", "AddParty.py"])
 
+    def edititem_event(self):
+        call(["python", "EditItem.py"])
     def additem_event(self):
         call(["python", "AddItem.py"])
     def addsale_event(self):
@@ -2620,10 +2639,10 @@ class App(customtkinter.CTk):
             cur.execute(f"select itemname,openqty from itemdata ",)
             rows = cur.fetchall()
             for row in rows:
-                if int(row[1]) < 5:
-                 a=int(row[0])
+                if int(row[1]) <= 5:
+                 a=row[0]
                  b =int(row[1])
-                 c=f"{a} : {b}"
+                 c=f"Item Name :    {a}       qty  :  {b}"
                  self.itemlowlist.append(c)
                 else:
                  pass
@@ -2634,7 +2653,8 @@ class App(customtkinter.CTk):
         else:
           for i in self.itemlowlist :
             result=f"\n {i}"
-            self.lowStock_lable2.configure(text=result)
+            self.lowStock_lable2.insert(0.0,result)
+            self.lowStock_lable2.configure(state='disabled')
 
     def calculate_growth_rate(initial_value, final_value):
         growth_rate = (final_value - initial_value) / initial_value * 100
@@ -2795,6 +2815,7 @@ class App(customtkinter.CTk):
         messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
     def get_itemtrans_data(self, ev):
+        itemdatalist=[]
         f = self.itemTable.focus()
         content = (self.itemTable.item(f))
         row = content['values']
@@ -2808,6 +2829,7 @@ class App(customtkinter.CTk):
             rows = cur.fetchall()
             self.itemTable.delete(*self.itemTable.get_children())
             for row in rows:
+                print(row)
                 self.itemname.set(row[0])
                 self.itemnumber.set(f"HSN No. : {row[1]}")
                 self.itememail.set(f"Item Code. : {row[2]}")
@@ -2820,6 +2842,40 @@ class App(customtkinter.CTk):
                 self.itemshow()
                 self.get_item_data()
                 self.itemclear()
+
+
+            cur.execute("select pid,itemname,hsn,category,itemcode,saleprice,tax1,discount,dicst,wholesaleprice,tax2,minqty,purchesprice,gsttax,openqty,atprice,date,minstockmanten,location,unit from itemdata where pid=?",
+                (row[1],))
+            rows = cur.fetchall()
+            for row in rows:
+                for r in row:
+                  itemdatalist.append(r)
+
+            cur.execute("Update edititemdata set itemname=?,hsn=?,category=?,itemcode=?,saleprice=?,tax1=?,discount=?,dicst=?,wholesaleprice=?,tax2=?,minqty=?,purchesprice=?,gsttax=?,openqty=?,atprice=?,date=?,minstockmanten=?,location=?,unit=? where pid=1",(
+
+                    itemdatalist[1],
+                    itemdatalist[2],
+                    itemdatalist[3],
+                    itemdatalist[4],
+                    itemdatalist[5],
+                    itemdatalist[6],
+                    itemdatalist[7],
+                    itemdatalist[8],
+                    itemdatalist[9],
+                    itemdatalist[10],
+                    itemdatalist[11],
+                    itemdatalist[12],
+                    itemdatalist[13],
+                    itemdatalist[14],
+                    itemdatalist[15],
+                    itemdatalist[16],
+                    itemdatalist[17],
+                    itemdatalist[18],
+                    itemdatalist[19],
+
+
+                ))
+            con.commit()
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
