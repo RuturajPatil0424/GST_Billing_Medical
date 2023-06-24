@@ -1,8 +1,6 @@
 from tkinter import StringVar
-import sqlite3
 from tkinter import messagebox, END
 import customtkinter
-from PIL import Image,ImageTk #pip intall
 from tkcalendar import Calendar, DateEntry
 import sqlite3
 class supplierClass(customtkinter.CTk):

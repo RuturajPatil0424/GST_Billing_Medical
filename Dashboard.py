@@ -1142,6 +1142,7 @@ class App(customtkinter.CTk):
         self.sale_calculator_purches_button.place(x=1610, y=20)
 
         self.calgetsaletotalamount()
+        self.involista1=[]
 
         transiction_Frame = ttk.Frame(self.sale_transiction_frame, relief=RIDGE)
         transiction_Frame.place(x=20, y=100, width=1680, height=580)
@@ -1176,7 +1177,7 @@ class App(customtkinter.CTk):
         self.saletransictionTable.column("cheqno", width=150,anchor="center")
 
         self.saletransictionTable.pack(fill=BOTH, expand=1)
-        self.saletransictionTable.bind("<ButtonRelease-1>",self.saletrans)
+        self.saletransictionTable.bind("<ButtonRelease-1>",self.saledataget)
 
         self.saletrans()
 
@@ -1210,9 +1211,234 @@ class App(customtkinter.CTk):
 
         # todo : GST sale frame
         self.gstsale_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
-
-
-
+        #
+        # self.in_gstsale_top_frame = customtkinter.CTkFrame(self.gstsale_frame, width=1720, height=100)
+        # self.in_gstsale_top_frame.place(x=10, y=10)
+        #
+        # self.gstsale_detail_frame = customtkinter.CTkFrame(self.gstsale_frame, width=1720, height=150)
+        # self.gstsale_detail_frame.place(x=10, y=120)
+        #
+        # self.gstsale_detail_frame1 = customtkinter.CTkFrame(self.gstsale_detail_frame, width=200, height=80,
+        #                                                  fg_color="#b9f3e7")
+        # self.gstsale_detail_frame1.place(x=20, y=60)
+        # self.gstsale_detail_frame2 = customtkinter.CTkFrame(self.gstsale_detail_frame, width=200, height=80,
+        #                                                  fg_color="#cfe6fe")
+        # self.gstsale_detail_frame2.place(x=260, y=60)
+        # self.gstsale_detail_frame3 = customtkinter.CTkFrame(self.gstsale_detail_frame, width=200, height=80,
+        #                                                  fg_color="#f8c888")
+        # self.gstsale_detail_frame3.place(x=500, y=60)
+        #
+        # self.gstsale_detail_paid_lable = customtkinter.CTkLabel(self.gstsale_detail_frame1,
+        #                                                      font=customtkinter.CTkFont(size=20), text="Paid",
+        #                                                      text_color="black")
+        # self.gstsale_detail_paid_lable.place(x=20, y=10)
+        #
+        # self.gstsale_detail_unpaid_lable = customtkinter.CTkLabel(self.gstsale_detail_frame2,
+        #                                                        font=customtkinter.CTkFont(size=20), text="Unpaid",
+        #                                                        text_color="black")
+        # self.gstsale_detail_unpaid_lable.place(x=20, y=10)
+        #
+        # self.gstsale_detail_total_lable = customtkinter.CTkLabel(self.gstsale_detail_frame3,
+        #                                                       font=customtkinter.CTkFont(size=20), text="Total",
+        #                                                       text_color="black")
+        # self.gstsale_detail_total_lable.place(x=20, y=10)
+        # self.gstsale_paidamount = StringVar()
+        # self.gstsale_unpaidamount = StringVar()
+        # self.gstsale_totalamount = StringVar()
+        # self.gstsale_paidamount = "₹00.00"
+        # self.gstsale_unpaidamount = "₹00.00"
+        # self.gstsale_totalamount = "₹00.00"
+        #
+        # self.gstsale_paidamount_list = []
+        # self.gstsale_unpaidamount_list = []
+        # self.gstsale_totalamount_list = []
+        #
+        # self.gstsale_detail_paid_amount_lable = customtkinter.CTkLabel(self.gstsale_detail_frame1,
+        #                                                             font=customtkinter.CTkFont(size=25, weight="bold"),
+        #                                                             text=self.gstsale_paidamount,
+        #                                                             text_color="black")
+        # self.gstsale_detail_paid_amount_lable.place(x=20, y=40)
+        #
+        # self.gstsale_detail_unpaid_amount_lable = customtkinter.CTkLabel(self.gstsale_detail_frame2,
+        #                                                               font=customtkinter.CTkFont(size=25,
+        #                                                                                          weight="bold"),
+        #                                                               text=self.gstsale_unpaidamount,
+        #                                                               text_color="black")
+        # self.gstsale_detail_unpaid_amount_lable.place(x=20, y=40)
+        #
+        # self.gstsale_detail_total_amount_lable = customtkinter.CTkLabel(self.gstsale_detail_frame3,
+        #                                                              font=customtkinter.CTkFont(size=25, weight="bold"),
+        #                                                              text=self.gstsale_totalamount,
+        #                                                              text_color="black")
+        # self.gstsale_detail_total_amount_lable.place(x=20, y=40)
+        #
+        # self.gstsale_detail_plus_lable = customtkinter.CTkLabel(self.gstsale_detail_frame,
+        #                                                      font=customtkinter.CTkFont(size=25), text="+")
+        # self.gstsale_detail_plus_lable.place(x=235, y=85)
+        #
+        # self.gstsale_detail_equal_lable = customtkinter.CTkLabel(self.gstsale_detail_frame,
+        #                                                       font=customtkinter.CTkFont(size=25), text="=")
+        # self.gstsale_detail_equal_lable.place(x=475, y=85)
+        #
+        # self.gstsale_transiction_frame = customtkinter.CTkFrame(self.gstsale_frame, width=1720, height=700)
+        # self.gstsale_transiction_frame.place(x=10, y=280)
+        #
+        # self.submenu_gstsale_lable = customtkinter.CTkFrame(self.in_gstsale_top_frame, width=1720, height=40,
+        #                                                  fg_color="transparent")
+        # self.submenu_gstsale_lable.place(x=0, y=60)
+        #
+        # self.gstsale_estimate_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        # self.gstsale_payment_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        # self.gstsale_order_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        # self.gstsale_Delivery_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        # self.gstsale_return_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        #
+        # self.gstsale_invoice_button = customtkinter.CTkButton(self.submenu_gstsale_lable,
+        #                                                    font=customtkinter.CTkFont(size=18),
+        #                                                    command=self.gstsale_button_event,
+        #                                                    text="gstsale Invoice", width=70, height=20,
+        #                                                    image=self.bill_image, text_color="black",
+        #                                                    hover_color=("gray70", "gray30"), fg_color="transparent")
+        # self.gstsale_invoice_button.place(x=10, y=0)
+        #
+        # self.gstsale_estimate_button = customtkinter.CTkButton(self.submenu_gstsale_lable,
+        #                                                     font=customtkinter.CTkFont(size=18),
+        #                                                     command=self.gstsale_estimate_event,
+        #                                                     text="gstsale Estimate", width=70, height=20,
+        #                                                     image=self.bill_image, text_color="black",
+        #                                                     hover_color=("gray70", "gray30"), fg_color="transparent")
+        # self.gstsale_estimate_button.place(x=180, y=0)
+        #
+        # self.gstsale_payment_button = customtkinter.CTkButton(self.submenu_gstsale_lable,
+        #                                                    font=customtkinter.CTkFont(size=18),
+        #                                                    command=self.gstsale_payment_event,
+        #                                                    text="Payment In", width=70, height=20,
+        #                                                    image=self.bill_image, text_color="black",
+        #                                                    hover_color=("gray70", "gray30"), fg_color="transparent")
+        # self.gstsale_payment_button.place(x=360, y=0)
+        #
+        # self.gstsale_order_button = customtkinter.CTkButton(self.submenu_gstsale_lable,
+        #                                                  font=customtkinter.CTkFont(size=18),
+        #                                                  command=self.gstsale_order_event,
+        #                                                  text="gstsale Order", width=70, height=20,
+        #                                                  image=self.bill_image, text_color="black",
+        #                                                  hover_color=("gray70", "gray30"), fg_color="transparent")
+        # self.gstsale_order_button.place(x=520, y=0)
+        #
+        # self.gstsale_chalan_button = customtkinter.CTkButton(self.submenu_gstsale_lable,
+        #                                                   font=customtkinter.CTkFont(size=18),
+        #                                                   command=self.gstsale_delivery_event,
+        #                                                   text="Delivery Challan", width=70, height=20,
+        #                                                   image=self.bill_image, text_color="black",
+        #                                                   hover_color=("gray70", "gray30"), fg_color="transparent")
+        # self.gstsale_chalan_button.place(x=680, y=0)
+        #
+        # self.gstsale_return_button = customtkinter.CTkButton(self.submenu_gstsale_lable,
+        #                                                   font=customtkinter.CTkFont(size=18),
+        #                                                   command=self.gstsale_return_event,
+        #                                                   text="gstsale Return", width=70, height=20,
+        #                                                   image=self.bill_image, text_color="black",
+        #                                                   hover_color=("gray70", "gray30"), fg_color="transparent")
+        # self.gstsale_return_button.place(x=880, y=0)
+        #
+        # self.gstsale_add_gstsale_button = customtkinter.CTkButton(self.in_gstsale_top_frame,
+        #                                                     font=customtkinter.CTkFont(size=18),
+        #                                                     command=self.addgstsale_event,
+        #                                                     text="Add gstsale", width=70, height=30,
+        #                                                     image=self.bill_image, text_color="black",
+        #                                                     hover_color=("gray70", "gray30"), fg_color="transparent")
+        # self.gstsale_add_gstsale_button.place(x=1310, y=20)
+        #
+        # self.gstsale_add_purchess_button = customtkinter.CTkButton(self.in_gstsale_top_frame,
+        #                                                         command=self.addpurchase_event,
+        #                                                         font=customtkinter.CTkFont(size=18),
+        #                                                         text="Add Purchess", width=70, height=30,
+        #                                                         image=self.buy_image, text_color="black",
+        #                                                         hover_color=("gray70", "gray30"),
+        #                                                         fg_color="transparent")
+        # self.gstsale_add_purchess_button.place(x=1440, y=20)
+        #
+        # self.gstsale_setting_purches_button = customtkinter.CTkButton(self.in_gstsale_top_frame, width=30, height=30,
+        #                                                            text="",
+        #                                                            text_color="black", hover_color=("gray70", "gray30"),
+        #                                                            image=self.setting_image, fg_color="transparent")
+        # self.gstsale_setting_purches_button.place(x=1660, y=20)
+        #
+        # self.gstsale_calculator_purches_button = customtkinter.CTkButton(self.in_gstsale_top_frame, width=30, height=30,
+        #                                                               text="",
+        #                                                               text_color="black",
+        #                                                               hover_color=("gray70", "gray30"),
+        #                                                               image=self.calculator_image,
+        #                                                               fg_color="transparent",
+        #                                                               command=self.opencalcu)
+        # self.gstsale_calculator_purches_button.place(x=1610, y=20)
+        #
+        # self.calgetgstsaletotalamount()
+        #
+        # transiction_Frame = ttk.Frame(self.gstsale_transiction_frame, relief=RIDGE)
+        # transiction_Frame.place(x=20, y=100, width=1680, height=580)
+        #
+        # scrolly = ttk.Scrollbar(transiction_Frame, orient=VERTICAL)
+        # scrollx = ttk.Scrollbar(transiction_Frame, orient=HORIZONTAL)
+        #
+        # self.gstsaletransictionTable = ttk.Treeview(transiction_Frame,
+        #                                          columns=(
+        #                                          "date", "invonumber", "name", "type", "total", "balance", "cheqno"),
+        #                                          yscrollcommand=scrolly.set, xscrollcommand=scrollx.set)
+        # scrollx.pack(side=BOTTOM, fill=X)
+        # scrolly.pack(side=RIGHT, fill=Y)
+        # scrollx.config(command=self.gstsaletransictionTable.xview)
+        # scrolly.config(command=self.gstsaletransictionTable.yview)
+        #
+        # self.gstsaletransictionTable.heading("date", text="Date")
+        # self.gstsaletransictionTable.heading("invonumber", text="Invoice Number")
+        # self.gstsaletransictionTable.heading("name", text="Party Name")
+        # self.gstsaletransictionTable.heading("type", text="Payment Type")
+        # self.gstsaletransictionTable.heading("total", text="Total Amount")
+        # self.gstsaletransictionTable.heading("balance", text="Received Amount")
+        # self.gstsaletransictionTable.heading("cheqno", text="Cheque No.")
+        #
+        # self.gstsaletransictionTable["show"] = "headings"
+        #
+        # self.gstsaletransictionTable.column("date", width=150, anchor="center")
+        # self.gstsaletransictionTable.column("invonumber", width=150, anchor="center")
+        # self.gstsaletransictionTable.column("name", width=200, anchor="center")
+        # self.gstsaletransictionTable.column("type", width=100, anchor="center")
+        # self.gstsaletransictionTable.column("total", width=200, anchor="center")
+        # self.gstsaletransictionTable.column("balance", width=200, anchor="center")
+        # self.gstsaletransictionTable.column("cheqno", width=150, anchor="center")
+        #
+        # self.gstsaletransictionTable.pack(fill=BOTH, expand=1)
+        # self.gstsaletransictionTable.bind("<ButtonRelease-1>", self.gstsaletrans)
+        #
+        # self.gstsaletrans()
+        #
+        # self.Var_gstsale_searchtxt = StringVar()
+        #
+        # self.gstsale_pur_lable = customtkinter.CTkLabel(self.gstsale_transiction_frame, font=customtkinter.CTkFont(size=25),
+        #                                              text="Transition")
+        # self.gstsale_pur_lable.place(x=20, y=20)
+        #
+        # self.gstsale_add_sale_button = customtkinter.CTkButton(self.gstsale_transiction_frame, width=70, height=30,
+        #                                                     text="Add gstsale", command=self.addgstsale_event)
+        # self.gstsale_add_sale_button.place(x=1600, y=10)
+        #
+        # self.gstsale_pur_search = customtkinter.CTkComboBox(self.gstsale_transiction_frame, width=110, height=30,
+        #                                                  values=["Select", "Invoice", "Date", "Payment Type",
+        #                                                          "Cheque No.", "Name"])
+        # self.gstsale_pur_search.place(x=1120, y=60)
+        #
+        # self.gstsale_pur_serch_entery = customtkinter.CTkEntry(self.gstsale_transiction_frame, width=300, height=30,
+        #                                                     textvariable=self.Var_gstsale_searchtxt)
+        # self.gstsale_pur_serch_entery.place(x=1240, y=60)
+        #
+        # self.gstsale_pur_serch_button = customtkinter.CTkButton(self.gstsale_transiction_frame, width=70, height=30,
+        #                                                      text="Search", command=self.gstsalestranssearch)
+        # self.gstsale_pur_serch_button.place(x=1550, y=60)
+        #
+        # self.gstsale_pur_clear_button = customtkinter.CTkButton(self.gstsale_transiction_frame, width=70, height=30,
+        #                                                      text="Clear", command=self.gstsaletransclear)
+        # self.gstsale_pur_clear_button.place(x=1630, y=60)
 
         #todo:sale estimate
         self.in_sale_estimate_top_frame = customtkinter.CTkFrame(self.sale_estimate_frame, width=1720, height=100)
@@ -1664,9 +1890,9 @@ class App(customtkinter.CTk):
         self.sale_ordertransictionTable.column("cheqno", width=150, anchor="center")
 
         self.sale_ordertransictionTable.pack(fill=BOTH, expand=1)
-        self.sale_ordertransictionTable.bind("<ButtonRelease-1>", self.saletrans)
+        self.sale_ordertransictionTable.bind("<ButtonRelease-1>",)
 
-        self.saletrans()
+
 
         self.Var_sale_searchtxt = StringVar()
 
@@ -2106,6 +2332,8 @@ class App(customtkinter.CTk):
         call(["python", "EditParty.py"])
     def edititem_event(self):
         call(["python", "EditItem.py"])
+    def editgstsale_event(self):
+        call(["python", "EditGSTSale.py"])
     def additem_event(self):
         call(["python", "AddItem.py"])
     def addsale_event(self):
@@ -3181,16 +3409,129 @@ class App(customtkinter.CTk):
         self.sale_detail_total_amount_lable.configure(text=self.sale_totalamount)
 
     def saletrans(self):
+            self.involista1.clear()
             con = sqlite3.connect(database=r'DataBase/ims.db')
             cur = con.cursor()
             try:
-                cur.execute("select invoicedate,invoiceno,partyname,paymentype,total,received,refreceno from gstsale")
+                cur.execute("select invoicedate,invoiceno,partyname,paymentype,total,received,refreceno from sale")
                 rows = cur.fetchall()
                 self.saletransictionTable.delete(*self.saletransictionTable.get_children())
                 for row in rows:
                     self.saletransictionTable.insert('', END, values=row)
+                    for r in rows:
+                        for i in r:
+                          self.involista1.append(i)
             except Exception as ex:
                 messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+
+
+    def saledataget(self,event):
+        involista2 = []
+        involista2.clear()
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+
+          cur.execute("select partyname,phonenumber,gstin,invoiceno,cashorcr,invoicedate,steteofsuply,paymentype,refreceno,total,received,balance,item1name,qty1,unit1,unitprice1,dec1,desamount1,amount1,item2name,qty2,unit2,unitprice2,dec2,desamount2,amount2,item3name,qty3,unit3,unitprice3,dec3,desamount3,amount3,item4name,qty4,unit4,unitprice4,dec4,desamount4,amount4,item5name,qty5,unit5,unitprice5,dec5,desamount5,amount5,item6name,qty6,unit6,unitprice6,dec6,desamount6,amount6,item7name,qty7,unit7,unitprice7,dec7,desamount7,amount7,item8name,qty8,unit8,unitprice8,dec8,desamount8,amount8,item9name,qty9,unit9,unitprice9,dec9,desamount9,amount9,item10name,qty10,unit10,unitprice10,dec10,desamount10,amount10 from sale where sid=?",
+            (self.involista1[1],))
+          rows = cur.fetchall()
+          for row in rows:
+            for r in row:
+                involista2.append(r)
+
+          cur.execute("Update editsale set partyname=?,phonenumber=?,gstin=?,invoiceno=?,cashorcr=?,invoicedate=?,steteofsuply=?,paymentype=?,refreceno=?,total=?,received=?,balance=?,item1name=?,qty1=?,unit1=?,unitprice1=?,dec1=?,desamount1=?,amount1=?,item2name=?,qty2=?,unit2=?,unitprice2=?,dec2=?,desamount2=?,amount2=?,item3name=?,qty3=?,unit3=?,unitprice3=?,dec3=?,desamount3=?,amount3=?,item4name=?,qty4=?,unit4=?,unitprice4=?,dec4=?,desamount4=?,amount4=?,item5name=?,qty5=?,unit5=?,unitprice5=?,dec5=?,desamount5=?,amount5=?,item6name=?,qty6=?,unit6=?,unitprice6=?,dec6=?,desamount6=?,amount6=?,item7name=?,qty7=?,unit7=?,unitprice7=?,dec7=?,desamount7=?,amount7=?,item8name=?,qty8=?,unit8=?,unitprice8=?,dec8=?,desamount8=?,amount8=?,item9name=?,qty9=?,unit9=?,unitprice9=?,dec9=?,desamount9=?,amount9=?,item10name=?,qty10=?,unit10=?,unitprice10=?,dec10=?,desamount10=?,amount10=? where sid=1",
+                (
+                    involista2[0],
+                    involista2[1],
+                    involista2[2],
+                    involista2[3],
+                    involista2[4],
+                    involista2[5],
+                    involista2[6],
+                    involista2[7],
+                    involista2[8],
+                    involista2[9],
+                    involista2[10],
+                    involista2[11],
+                    involista2[12],
+                    involista2[13],
+                    involista2[14],
+                    involista2[15],
+                    involista2[16],
+                    involista2[17],
+                    involista2[18],
+                    involista2[19],
+                    involista2[20],
+                    involista2[21],
+                    involista2[22],
+                    involista2[23],
+                    involista2[24],
+                    involista2[25],
+                    involista2[26],
+                    involista2[27],
+                    involista2[28],
+                    involista2[29],
+                    involista2[30],
+                    involista2[31],
+                    involista2[32],
+                    involista2[33],
+                    involista2[34],
+                    involista2[35],
+                    involista2[36],
+                    involista2[37],
+                    involista2[38],
+                    involista2[39],
+                    involista2[40],
+                    involista2[41],
+                    involista2[42],
+                    involista2[43],
+                    involista2[44],
+                    involista2[45],
+                    involista2[46],
+                    involista2[47],
+                    involista2[48],
+                    involista2[49],
+                    involista2[50],
+                    involista2[51],
+                    involista2[52],
+                    involista2[53],
+                    involista2[54],
+                    involista2[55],
+                    involista2[56],
+                    involista2[57],
+                    involista2[58],
+                    involista2[59],
+                    involista2[60],
+                    involista2[61],
+                    involista2[62],
+                    involista2[63],
+                    involista2[64],
+                    involista2[65],
+                    involista2[66],
+                    involista2[67],
+                    involista2[68],
+                    involista2[69],
+                    involista2[70],
+                    involista2[71],
+                    involista2[72],
+                    involista2[73],
+                    involista2[74],
+                    involista2[75],
+                    involista2[76],
+                    involista2[77],
+                    involista2[78],
+                    involista2[79],
+                    involista2[80],
+                    involista2[81],
+
+
+
+                ))
+          con.commit()
+
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+
 
     def salestranssearch(self):
         select = self.sale_pur_search.get()
