@@ -656,8 +656,8 @@ tta=capwords(totalinword)
 get_item_data()
 doc.render({"company":"Cyber Tech","phone": "8830136942","nam":partydata_list[0],"partynumber":partydata_list[1],"gstin":partydata_list[2],"invoice":partydata_list[4],"date":partydata_list[5],"state":partydata_list[6],"tota":partydata_list[9],"recam":partydata_list[10],"balen":partydata_list[11],"totalqty":partydata_list[14],"totaldic":partydata_list[13],"totalgst":partydata_list[12],"cgst":cgsttotal[0],"item_list":item_list,"amtinword":tta})
 doc.save("new_sampleinvoice.docx")
-filename=f"../PurInvoice/{partydata_list[0]}_{partydata_list[2]}.pdf"
-path=f"..\PurInvoice\{partydata_list[0]}_{partydata_list[2]}.pdf"
+filename=f"PurInvoice/{partydata_list[0]}_{partydata_list[2]}.pdf"
+path=f"PurInvoice/{partydata_list[0]}_{partydata_list[2]}.pdf"
 convert("new_sampleinvoice.docx", filename)
 subprocess.Popen([path], shell=True)
 

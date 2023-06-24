@@ -2281,7 +2281,7 @@ class App(customtkinter.CTk):
         self.purchestransictionTable.column("cheqno", width=100)
 
         self.purchestransictionTable.pack(fill=BOTH, expand=1)
-        self.purchestransictionTable.bind("<ButtonRelease-1>", self.add_amount)
+        self.purchestransictionTable.bind("<ButtonRelease-1>", self.purchasedataget)
 
         self.var_pur_searchby = StringVar()
         self.Var_pur_searchtxt = StringVar()
@@ -2883,8 +2883,9 @@ class App(customtkinter.CTk):
                  pass
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-        if len(self.itemlowlist ) < 1 :
-            self.lowStock_lable2.configure(text="No Item")
+        if len(self.itemlowlist) < 1 :
+            self.lowStock_lable2.insert(0.0,"No Item")
+            self.lowStock_lable2.configure(state='disabled')
         else:
           for i in self.itemlowlist :
             result=f"\n {i}"
@@ -2925,7 +2926,6 @@ class App(customtkinter.CTk):
             for row in rows:
                 for r in row:
                     partydatalist.append(r)
-                    print(r)
 
             cur.execute(
                 "Update editpartydata set partyname=?,gstin=?,phonenumber=?,gsttype=?,state=?,emailid=?,billaddress=?,shipaddress=?,paybalence=?,recivebalence=?,date=?,creditlim=?,add1=?,add2=?,add3=?,add4=? where pid=1",
@@ -3042,6 +3042,141 @@ class App(customtkinter.CTk):
             self.editparty_event()
         except Exception as ex:
             print(ex)
+
+    def purchasedataget(self,event):
+        f = self.purchestransictionTable.focus()
+        content = (self.purchestransictionTable.item(f))
+        mow = content['values']
+        invoice_zero=6-len(str(mow[0]))
+        a = 1
+        mm = "0"
+        while a < invoice_zero:
+            mm = mm + "0"
+            a += 1
+        final = f"{mm}{mow[0]}"
+        strfinal = str(final)
+        purlista = []
+        purlista.clear()
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+
+          cur.execute("select partyname,phonenumber,gstin,cashorcr,invoiceno,invoicedate,steteofsuply,paymentype,refreceno,total,received,balance,item1name,qty1,unit1,unitprice1,dec1,desamount1,tax1,gstamount1,amount1,item2name,qty2,unit2,unitprice2,dec2,desamount2,tax2,gstamount2,amount2,item3name,qty3,unit3,unitprice3,dec3,desamount3,tax3,gstamount3,amount3,item4name,qty4,unit4,unitprice4,dec4,desamount4,tax4,gstamount4,amount4,item5name,qty5,unit5,unitprice5,dec5,desamount5,tax5,gstamount5,amount5,item6name,qty6,unit6,unitprice6,dec6,desamount6,tax6,gstamount6,amount6,item7name,qty7,unit7,unitprice7,dec7,desamount7,tax7,gstamount7,amount7,item8name,qty8,unit8,unitprice8,dec8,desamount8,tax8,gstamount8,amount8,item9name,qty9,unit9,unitprice9,dec9,desamount9,tax9,gstamount9,amount9,item10name,qty10,unit10,unitprice10,dec10,desamount10,tax10,gstamount10,amount10 from gstpurchase where invoiceno=?",
+            (strfinal,))
+          rows = cur.fetchall()
+          for row in rows:
+            for r in row:
+                purlista.append(r)
+          cur.execute("Update editgstpurchase set partyname=?,phonenumber=?,gstin=?,cashorcr=?,invoiceno=?,invoicedate=?,steteofsuply=?,paymentype=?,refreceno=?,total=?,received=?,balance=?,item1name=?,qty1=?,unit1=?,unitprice1=?,dec1=?,desamount1=?,tax1=?,gstamount1=?,amount1=?,item2name=?,qty2=?,unit2=?,unitprice2=?,dec2=?,desamount2=?,tax2=?,gstamount2=?,amount2=?,item3name=?,qty3=?,unit3=?,unitprice3=?,dec3=?,desamount3=?,tax3=?,gstamount3=?,amount3=?,item4name=?,qty4=?,unit4=?,unitprice4=?,dec4=?,desamount4=?,tax4=?,gstamount4=?,amount4=?,item5name=?,qty5=?,unit5=?,unitprice5=?,dec5=?,desamount5=?,tax5=?,gstamount5=?,amount5=?,item6name=?,qty6=?,unit6=?,unitprice6=?,dec6=?,desamount6=?,tax6=?,gstamount6=?,amount6=?,item7name=?,qty7=?,unit7=?,unitprice7=?,dec7=?,desamount7=?,tax7=?,gstamount7=?,amount7=?,item8name=?,qty8=?,unit8=?,unitprice8=?,dec8=?,desamount8=?,tax8=?,gstamount8=?,amount8=?,item9name=?,qty9=?,unit9=?,unitprice9=?,dec9=?,desamount9=?,tax9=?,gstamount9=?,amount9=?,item10name=?,qty10=?,unit10=?,unitprice10=?,dec10=?,desamount10=?,tax10=?,gstamount10=?,amount10=? where sid=1",
+                (
+                    purlista[0],
+                    purlista[1],
+                    purlista[2],
+                    purlista[3],
+                    purlista[4],
+                    purlista[5],
+                    purlista[6],
+                    purlista[7],
+                    purlista[8],
+                    purlista[9],
+                    purlista[10],
+                    purlista[11],
+                    purlista[12],
+                    purlista[13],
+                    purlista[14],
+                    purlista[15],
+                    purlista[16],
+                    purlista[17],
+                    purlista[18],
+                    purlista[19],
+                    purlista[20],
+                    purlista[21],
+                    purlista[22],
+                    purlista[23],
+                    purlista[24],
+                    purlista[25],
+                    purlista[26],
+                    purlista[27],
+                    purlista[28],
+                    purlista[29],
+                    purlista[30],
+                    purlista[31],
+                    purlista[32],
+                    purlista[33],
+                    purlista[34],
+                    purlista[35],
+                    purlista[36],
+                    purlista[37],
+                    purlista[38],
+                    purlista[39],
+                    purlista[40],
+                    purlista[41],
+                    purlista[42],
+                    purlista[43],
+                    purlista[44],
+                    purlista[45],
+                    purlista[46],
+                    purlista[47],
+                    purlista[48],
+                    purlista[49],
+                    purlista[50],
+                    purlista[51],
+                    purlista[52],
+                    purlista[53],
+                    purlista[54],
+                    purlista[55],
+                    purlista[56],
+                    purlista[57],
+                    purlista[58],
+                    purlista[59],
+                    purlista[60],
+                    purlista[61],
+                    purlista[62],
+                    purlista[63],
+                    purlista[64],
+                    purlista[65],
+                    purlista[66],
+                    purlista[67],
+                    purlista[68],
+                    purlista[69],
+                    purlista[70],
+                    purlista[71],
+                    purlista[72],
+                    purlista[73],
+                    purlista[74],
+                    purlista[75],
+                    purlista[76],
+                    purlista[77],
+                    purlista[78],
+                    purlista[79],
+                    purlista[80],
+                    purlista[81],
+                    purlista[82],
+                    purlista[83],
+                    purlista[84],
+                    purlista[85],
+                    purlista[86],
+                    purlista[87],
+                    purlista[88],
+                    purlista[89],
+                    purlista[90],
+                    purlista[91],
+                    purlista[92],
+                    purlista[93],
+                    purlista[94],
+                    purlista[95],
+                    purlista[96],
+                    purlista[97],
+                    purlista[98],
+                    purlista[99],
+                    purlista[100],
+                    purlista[101],
+
+                ))
+          con.commit()
+
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
     def show(self):
       con = sqlite3.connect(database=r'DataBase/ims.db')
@@ -3347,7 +3482,7 @@ class App(customtkinter.CTk):
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
-            cur.execute("select invoiceno,invoicedate,paymentype,total,received,refreceno from gstsale where gstin=?",
+            cur.execute("select invoiceno,invoicedate,paymentype,total,received,refreceno from gstpurchase where gstin=?",
                         (rgst,))
             rows = cur.fetchall()
 
@@ -3446,7 +3581,6 @@ class App(customtkinter.CTk):
           for row in rows:
             for r in row:
                 involista2.append(r)
-          print(involista2)
 
           cur.execute("Update editsale set partyname=?,phonenumber=?,gstin=?,invoiceno=?,cashorcr=?,invoicedate=?,steteofsuply=?,paymentype=?,refreceno=?,total=?,received=?,balance=?,item1name=?,qty1=?,unit1=?,unitprice1=?,dec1=?,desamount1=?,amount1=?,item2name=?,qty2=?,unit2=?,unitprice2=?,dec2=?,desamount2=?,amount2=?,item3name=?,qty3=?,unit3=?,unitprice3=?,dec3=?,desamount3=?,amount3=?,item4name=?,qty4=?,unit4=?,unitprice4=?,dec4=?,desamount4=?,amount4=?,item5name=?,qty5=?,unit5=?,unitprice5=?,dec5=?,desamount5=?,amount5=?,item6name=?,qty6=?,unit6=?,unitprice6=?,dec6=?,desamount6=?,amount6=?,item7name=?,qty7=?,unit7=?,unitprice7=?,dec7=?,desamount7=?,amount7=?,item8name=?,qty8=?,unit8=?,unitprice8=?,dec8=?,desamount8=?,amount8=?,item9name=?,qty9=?,unit9=?,unitprice9=?,dec9=?,desamount9=?,amount9=?,item10name=?,qty10=?,unit10=?,unitprice10=?,dec10=?,desamount10=?,amount10=? where sid=1",
                 (
