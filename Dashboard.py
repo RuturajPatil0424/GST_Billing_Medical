@@ -3418,26 +3418,35 @@ class App(customtkinter.CTk):
                 self.saletransictionTable.delete(*self.saletransictionTable.get_children())
                 for row in rows:
                     self.saletransictionTable.insert('', END, values=row)
-                    for r in rows:
-                        for i in r:
-                          self.involista1.append(i)
             except Exception as ex:
                 messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
 
     def saledataget(self,event):
+        f = self.saletransictionTable.focus()
+        content = (self.saletransictionTable.item(f))
+        mow = content['values']
+        invoice_zero=6-len(str(mow[1]))
+        a = 1
+        mm = "0"
+        while a < invoice_zero:
+            mm = mm + "0"
+            a += 1
+        final = f"{mm}{mow[1]}"
+        strfinal = str(final)
         involista2 = []
         involista2.clear()
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
 
-          cur.execute("select partyname,phonenumber,gstin,invoiceno,cashorcr,invoicedate,steteofsuply,paymentype,refreceno,total,received,balance,item1name,qty1,unit1,unitprice1,dec1,desamount1,amount1,item2name,qty2,unit2,unitprice2,dec2,desamount2,amount2,item3name,qty3,unit3,unitprice3,dec3,desamount3,amount3,item4name,qty4,unit4,unitprice4,dec4,desamount4,amount4,item5name,qty5,unit5,unitprice5,dec5,desamount5,amount5,item6name,qty6,unit6,unitprice6,dec6,desamount6,amount6,item7name,qty7,unit7,unitprice7,dec7,desamount7,amount7,item8name,qty8,unit8,unitprice8,dec8,desamount8,amount8,item9name,qty9,unit9,unitprice9,dec9,desamount9,amount9,item10name,qty10,unit10,unitprice10,dec10,desamount10,amount10 from sale where sid=?",
-            (self.involista1[1],))
+          cur.execute("select partyname,phonenumber,gstin,invoiceno,cashorcr,invoicedate,steteofsuply,paymentype,refreceno,total,received,balance,item1name,qty1,unit1,unitprice1,dec1,desamount1,amount1,item2name,qty2,unit2,unitprice2,dec2,desamount2,amount2,item3name,qty3,unit3,unitprice3,dec3,desamount3,amount3,item4name,qty4,unit4,unitprice4,dec4,desamount4,amount4,item5name,qty5,unit5,unitprice5,dec5,desamount5,amount5,item6name,qty6,unit6,unitprice6,dec6,desamount6,amount6,item7name,qty7,unit7,unitprice7,dec7,desamount7,amount7,item8name,qty8,unit8,unitprice8,dec8,desamount8,amount8,item9name,qty9,unit9,unitprice9,dec9,desamount9,amount9,item10name,qty10,unit10,unitprice10,dec10,desamount10,amount10 from sale where invoiceno=?",
+            (strfinal,))
           rows = cur.fetchall()
           for row in rows:
             for r in row:
                 involista2.append(r)
+          print(involista2)
 
           cur.execute("Update editsale set partyname=?,phonenumber=?,gstin=?,invoiceno=?,cashorcr=?,invoicedate=?,steteofsuply=?,paymentype=?,refreceno=?,total=?,received=?,balance=?,item1name=?,qty1=?,unit1=?,unitprice1=?,dec1=?,desamount1=?,amount1=?,item2name=?,qty2=?,unit2=?,unitprice2=?,dec2=?,desamount2=?,amount2=?,item3name=?,qty3=?,unit3=?,unitprice3=?,dec3=?,desamount3=?,amount3=?,item4name=?,qty4=?,unit4=?,unitprice4=?,dec4=?,desamount4=?,amount4=?,item5name=?,qty5=?,unit5=?,unitprice5=?,dec5=?,desamount5=?,amount5=?,item6name=?,qty6=?,unit6=?,unitprice6=?,dec6=?,desamount6=?,amount6=?,item7name=?,qty7=?,unit7=?,unitprice7=?,dec7=?,desamount7=?,amount7=?,item8name=?,qty8=?,unit8=?,unitprice8=?,dec8=?,desamount8=?,amount8=?,item9name=?,qty9=?,unit9=?,unitprice9=?,dec9=?,desamount9=?,amount9=?,item10name=?,qty10=?,unit10=?,unitprice10=?,dec10=?,desamount10=?,amount10=? where sid=1",
                 (
@@ -3523,8 +3532,6 @@ class App(customtkinter.CTk):
                     involista2[79],
                     involista2[80],
                     involista2[81],
-
-
 
                 ))
           con.commit()

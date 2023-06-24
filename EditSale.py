@@ -52,7 +52,7 @@ class saleClass(customtkinter.CTk):
         self.invoice_entry = customtkinter.CTkEntry(self, width=120, height=30,textvariable=self.invo)
         self.invoice_entry.place(x=1000, y=50)
 
-        self.invoice_genrator()
+        # self.invoice_genrator()
 
         self.date_label = customtkinter.CTkLabel(self, text="Invoice Date")
         self.date_label.place(x=900, y=90)
@@ -71,6 +71,7 @@ class saleClass(customtkinter.CTk):
                                                               "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan",
                                                               "Sikkim", "Tamil Nadu", "Telangana", "Tripura",
                                                               "Uttar Pradesh", "Uttarakhand", "West Bengal"]
+        self.cashlist=["Cash", "Cheque"]
         self.state_menu = customtkinter.CTkOptionMenu(self, width=120, height=30, dynamic_resizing=False,
                                                       values=self.statelist)
         self.state_menu.place(x=1000, y=130)
@@ -78,7 +79,7 @@ class saleClass(customtkinter.CTk):
         self.Payment_type_lable = customtkinter.CTkLabel(self, font=customtkinter.CTkFont(size=15), text="Payment Type")
         self.Payment_type_lable.place(x=50, y=720)
 
-        self.Payment_type_entry = customtkinter.CTkComboBox(self, width=120, values=["Cash", "Cheque"],command=self.refrance)
+        self.Payment_type_entry = customtkinter.CTkComboBox(self, width=120, values=self.cashlist,command=self.refrance)
         self.Payment_type_entry.place(x=50, y=750)
 
         self.Cheque_entry = customtkinter.CTkEntry(self, width=120, height=30, placeholder_text="Reference No.")
@@ -121,7 +122,7 @@ class saleClass(customtkinter.CTk):
         self.Balance_entry = customtkinter.CTkLabel(self, text=self.balence)
         self.Balance_entry.place(x=1070, y=880)
 
-        self.savebtn = customtkinter.CTkButton(self, command=self.savedata, width=80, text="Sell",
+        self.savebtn = customtkinter.CTkButton(self, command=self.savedata, width=80, text="Sell Update",
                                                font=customtkinter.CTkFont(size=16))
         self.savebtn.place(x=1050, y=950)
 
@@ -244,7 +245,7 @@ class saleClass(customtkinter.CTk):
         self.iq9 = StringVar()
         self.iq10 = StringVar()
 
-        self.iqt()
+        # self.iqt()
 
         self.qty_lable = customtkinter.CTkLabel(self.navigation_frame, text="QTY")
         self.qty_lable.grid(row=0, column=2, padx=5, pady=5)
@@ -683,7 +684,7 @@ class saleClass(customtkinter.CTk):
     def add_party_event(self):
         self.get_party_gstin()
         self.get_amount()
-
+        print(self.invoice_entry.get())
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
@@ -700,13 +701,12 @@ class saleClass(customtkinter.CTk):
             elif self.no1_item_entry.get() == "None":
                 print("Please select at list one item!")
             else:
-                cur.execute("Select * from sale")
-
                 if self.cash_switch.get() == 1:
                     crstete = "Credit"
                 else:
                     crstete = "Cash"
-                cur.execute("Insert into sale (partyname,phonenumber,gstin,cashorcr,invoiceno,invoicedate,steteofsuply,paymentype,refreceno,total,received,balance,item1name,qty1,unit1,unitprice1,dec1,desamount1,amount1,item2name,qty2,unit2,unitprice2,dec2,desamount2,amount2,item3name,qty3,unit3,unitprice3,dec3,desamount3,amount3,item4name,qty4,unit4,unitprice4,dec4,desamount4,amount4,item5name,qty5,unit5,unitprice5,dec5,desamount5,amount5,item6name,qty6,unit6,unitprice6,dec6,desamount6,amount6,item7name,qty7,unit7,unitprice7,dec7,desamount7,amount7,item8name,qty8,unit8,unitprice8,dec8,desamount8,amount8,item9name,qty9,unit9,unitprice9,dec9,desamount9,amount9,item10name,qty10,unit10,unitprice10,dec10,desamount10,amount10) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                cur.execute(f"Select * from sale where invoiceno={self.invoice_entry.get()}")
+                cur.execute(f"Update sale set partyname=?,phonenumber=?,gstin=?,cashorcr=?,invoiceno=?,invoicedate=?,steteofsuply=?,paymentype=?,refreceno=?,total=?,received=?,balance=?,item1name=?,qty1=?,unit1=?,unitprice1=?,dec1=?,desamount1=?,amount1=?,item2name=?,qty2=?,unit2=?,unitprice2=?,dec2=?,desamount2=?,amount2=?,item3name=?,qty3=?,unit3=?,unitprice3=?,dec3=?,desamount3=?,amount3=?,item4name=?,qty4=?,unit4=?,unitprice4=?,dec4=?,desamount4=?,amount4=?,item5name=?,qty5=?,unit5=?,unitprice5=?,dec5=?,desamount5=?,amount5=?,item6name=?,qty6=?,unit6=?,unitprice6=?,dec6=?,desamount6=?,amount6=?,item7name=?,qty7=?,unit7=?,unitprice7=?,dec7=?,desamount7=?,amount7=?,item8name=?,qty8=?,unit8=?,unitprice8=?,dec8=?,desamount8=?,amount8=?,item9name=?,qty9=?,unit9=?,unitprice9=?,dec9=?,desamount9=?,amount9=?,item10name=?,qty10=?,unit10=?,unitprice10=?,dec10=?,desamount10=?,amount10=? ",
                     (
 
                         self.partyname_entry.get(),
@@ -946,7 +946,7 @@ class saleClass(customtkinter.CTk):
                     ))
                 con.commit()
                 # self.update_iqt()
-                self.invoice_genrator()
+                #self.invoice_genrator()
 
 
         except Exception as ex:
@@ -956,7 +956,7 @@ class saleClass(customtkinter.CTk):
         call(["python", "saleinvocee.py"])
     def savedata(self):
         self.add_invoice_event()
-        self.invoice_updator()
+        # self.invoice_updator()
         self.add_party_event()
         self.invoice_event()
 
@@ -972,7 +972,7 @@ class saleClass(customtkinter.CTk):
 
             cur.execute("select partyname from partydata")
             rows = cur.fetchall()
-            # self.productTable.delete(*self.productTable.get_children())
+            
 
             for row in rows:
                 for i in row:
@@ -1038,7 +1038,7 @@ class saleClass(customtkinter.CTk):
 
             cur.execute("select recivebalence from partydata where partyname=?", (self.partyname_entry.get(),))
             rows = cur.fetchall()
-            # self.productTable.delete(*self.productTable.get_children())
+            
 
             for row in rows:
                 for i in row:
@@ -1079,7 +1079,7 @@ class saleClass(customtkinter.CTk):
 
             cur.execute("select phonenumber from partydata where partyname=?", (self.partyname_entry.get(),))
             rows = cur.fetchall()
-            # self.productTable.delete(*self.productTable.get_children())
+            
 
             for row in rows:
                 for i in row:
@@ -1100,7 +1100,7 @@ class saleClass(customtkinter.CTk):
 
             cur.execute("select saleprice from itemdata where itemname=?", (name,))
             rows = cur.fetchall()
-            # self.productTable.delete(*self.productTable.get_children())
+            
 
             for row in rows:
                 for i in row:
@@ -1111,7 +1111,12 @@ class saleClass(customtkinter.CTk):
 
     def get_amount(self):
         # pay = int(self.payamount.get())
-        recivee = float(self.reciveamount.get())
+        tax=self.reciveamount.get()
+        if tax == "":
+            re=tax.replace("","0")
+        else:
+            re=tax
+        recivee = float(re)
         payed = int(self.Received_entry.get())
         total = float(self.totalam.get())
         esult = recivee + (total - payed)
@@ -1127,7 +1132,7 @@ class saleClass(customtkinter.CTk):
 
             cur.execute("select location from itemdata")
             rows = cur.fetchall()
-            # self.productTable.delete(*self.productTable.get_children())
+            
 
             for row in rows:
                 for i in row:
@@ -1148,7 +1153,7 @@ class saleClass(customtkinter.CTk):
     #
     #         cur.execute("select gsttax from itemdata where itemname=?", (iname.get(),))
     #         rows = cur.fetchall()
-    #         # self.productTable.delete(*self.productTable.get_children())
+    #         
     #         m=StringVar()
     #         for row in rows:
     #             for i in row:
@@ -1163,87 +1168,90 @@ class saleClass(customtkinter.CTk):
           iseto.set(" ")
 
       else:
+          print(iname)
 
-        con = sqlite3.connect(database=r'DataBase/ims.db')
-        cur = con.cursor()
-        stock=0
-        try:
-            cur.execute("select openqty from itemdata where itemname=?", (iname,))
-            datas = cur.fetchall()
-            # self.productTable.delete(*self.productTable.get_children())
+        # con = sqlite3.connect(database=r'DataBase/ims.db')
+        # cur = con.cursor()
+        # stock=0
+        # try:
+        #     cur.execute("select openqty from itemdata where itemname=?", (iname,))
+        #     datas = cur.fetchall()
+        #     
+        #
+        #     for data in datas:
+        #         for d in data:
+        #             if d == "":
+        #                 stock=0
+        #             else:
+        #                 stock=int(d)
+        #
+        #     cur.execute("select minqty from itemdata where itemname=?", (iname,))
+        #     rows = cur.fetchall()
+        #
+        #     for row in rows:
+        #
+        #         for i in row:
+        #             if i == "":
+        #                 if str(stock) >= "":
+        #                     if stock >= 1:
+        #                       iseto.set("1")
+        #                     else:
+        #                        iseto.set("0")
+        #                        messagebox.showerror("Aleart", f"Product is out of stock!", parent=self)
+        #
+        #                 elif stock >= 1:
+        #                   i = 1
+        #                   iseto.set(str(i))
+        #                 elif stock == 0:
+        #                     iseto.set("0")
+        #                     messagebox.showerror("Aleart", f"Product is in stock {stock} and minum sell qty is {i}!", parent=self)
+        #             else:
+        #                 if stock == 0:
+        #                   iseto.set(str(i))
+        #                   messagebox.showerror("Aleart", f"Product is out of stock!", parent=self)
+        #                 elif stock >= int(i):
+        #                   iseto.set(str(i))
+        #                 else:
+        #                     iseto.set(stock)
+        #                     messagebox.showerror("Aleart", f"Product is in stock {stock} and minum sell qty is {i}!", parent=self)
 
-            for data in datas:
-                for d in data:
-                    if d == "":
-                        stock=0
-                    else:
-                        stock=int(d)
-
-            cur.execute("select minqty from itemdata where itemname=?", (iname,))
-            rows = cur.fetchall()
-
-            for row in rows:
-
-                for i in row:
-                    if i == "":
-                        if str(stock) >= "":
-                            if stock >= 1:
-                              iseto.set("1")
-                            else:
-                               iseto.set("0")
-                               messagebox.showerror("Aleart", f"Product is out of stock!", parent=self)
-
-                        elif stock >= 1:
-                          i = 1
-                          iseto.set(str(i))
-                        elif stock == 0:
-                            iseto.set("0")
-                            messagebox.showerror("Aleart", f"Product is in stock {stock} and minum sell qty is {i}!", parent=self)
-                    else:
-                        if stock == 0:
-                          iseto.set(str(i))
-                          messagebox.showerror("Aleart", f"Product is out of stock!", parent=self)
-                        elif stock >= int(i):
-                          iseto.set(str(i))
-                        else:
-                            iseto.set(stock)
-                            messagebox.showerror("Aleart", f"Product is in stock {stock} and minum sell qty is {i}!", parent=self)
-
-        except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+        # except Exception as ex:
+        #     messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
     def get_item_qtyentery(self, iname,qaunty):
       if iname == "":
           qaunty.set(" ")
 
       else:
+          print(iname)
+          self.qtty()
 
-        con = sqlite3.connect(database=r'DataBase/ims.db')
-        cur = con.cursor()
-        stock=0
-        qty=int(qaunty.get())
-        try:
-            cur.execute("select openqty from itemdata where itemname=?", (iname,))
-            datas = cur.fetchall()
-
-            for data in datas:
-                for d in data:
-
-                    if d == "":
-                        stock=0
-                    else:
-                        stock=int(d)
-            if stock >= qty:
-               qaunty.set(qty)
-            elif str(stock) == "":
-                qaunty.set("0")
-            else:
-                qaunty.set(stock)
-                messagebox.showerror("Aleart", f"Product is in stock {stock} and you want to sell qty is {qty}!", parent=self)
-            self.qtty()
-
-        except Exception as ex:
-            print("Error", f"Error due to : {str(ex)}", parent=self)
+        # con = sqlite3.connect(database=r'DataBase/ims.db')
+        # cur = con.cursor()
+        # stock=0
+        # qty=int(qaunty.get())
+        # try:
+        #     cur.execute("select openqty from itemdata where itemname=?", (iname,))
+        #     datas = cur.fetchall()
+        #
+        #     for data in datas:
+        #         for d in data:
+        #
+        #             if d == "":
+        #                 stock=0
+        #             else:
+        #                 stock=int(d)
+        #     if stock >= qty:
+        #        qaunty.set(qty)
+        #     elif str(stock) == "":
+        #         qaunty.set("0")
+        #     else:
+        #         qaunty.set(stock)
+        #         messagebox.showerror("Aleart", f"Product is in stock {stock} and you want to sell qty is {qty}!", parent=self)
+        #     self.qtty()
+        #
+        # except Exception as ex:
+        #     print("Error", f"Error due to : {str(ex)}", parent=self)
 
     def qtty(self):
         self.itemtable()
@@ -1357,6 +1365,7 @@ class saleClass(customtkinter.CTk):
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
     def itemgstbill(self, qty, price, disc, discamo, amount):
+      try:
        if qty == " " and disc ==" ":
            discamo.set(" ")
            amount.set("0")
@@ -1400,7 +1409,8 @@ class saleClass(customtkinter.CTk):
                     finalamount=rdicam
                     rfinalamount=round(finalamount,2)
                     amount.set(rfinalamount)
-
+      except Exception as e:
+        print(e)
 
 
 
@@ -1880,47 +1890,47 @@ class saleClass(customtkinter.CTk):
     #     self.totaldesam()
     #     self.totaltaxam()
 
-    def invoice_genrator(self):
+    # def invoice_genrator(self):
+    #
+    #     con = sqlite3.connect(database=r'DataBase/ims.db')
+    #     cur = con.cursor()
+    #     try:
+    #
+    #             cur.execute("select invoice from invosalenon where no=1",)
+    #             rows = cur.fetchall()
+    #             
+    #             for row in rows:
+    #                 for i in row:
+    #                     invoice_zero=6-len(i)
+    #                     self.incre=int(i)+1
+    #                     a=1
+    #                     mm = "0"
+    #                     while a<invoice_zero:
+    #                         mm=mm+"0"
+    #                         a+=1
+    #                     final=f"{mm}{self.incre}"
+    #                     strfinal=str(final)
+    #                     self.invo.set(strfinal)
+    #                     self.invoice_entry.configure(textvariable=self.invo)
+    #
+    #     except Exception as ex:
+    #         messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
-        con = sqlite3.connect(database=r'DataBase/ims.db')
-        cur = con.cursor()
-        try:
-
-                cur.execute("select invoice from invosalenon where no=1",)
-                rows = cur.fetchall()
-                # self.productTable.delete(*self.productTable.get_children())
-                for row in rows:
-                    for i in row:
-                        invoice_zero=6-len(i)
-                        self.incre=int(i)+1
-                        a=1
-                        mm = "0"
-                        while a<invoice_zero:
-                            mm=mm+"0"
-                            a+=1
-                        final=f"{mm}{self.incre}"
-                        strfinal=str(final)
-                        self.invo.set(strfinal)
-                        self.invoice_entry.configure(textvariable=self.invo)
-
-        except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
-    def invoice_updator(self):
-        p = 1
-        con = sqlite3.connect(database=r'DataBase/ims.db')
-        cur = con.cursor()
-        try:
-
-            cur.execute("Select no from invosalenon where no=?", (p,))
-            row = cur.fetchone()
-            cur.execute("Update invosalenon set invoice=? where no=?", (
-                self.incre,
-                p,
-            ))
-            con.commit()
-        except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    # def invoice_updator(self):
+    #     p = 1
+    #     con = sqlite3.connect(database=r'DataBase/ims.db')
+    #     cur = con.cursor()
+    #     try:
+    #
+    #         cur.execute("Select no from invosalenon where no=?", (p,))
+    #         row = cur.fetchone()
+    #         cur.execute("Update invosalenon set invoice=? where no=?", (
+    #             self.incre,
+    #             p,
+    #         ))
+    #         con.commit()
+    #     except Exception as ex:
+    #         messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
     def update_item_qty(self, name, seto):
         if name == "":
@@ -1935,7 +1945,7 @@ class saleClass(customtkinter.CTk):
               else:
                   cur.execute("select openqty from itemdata where itemname=?", (name,))
                   rows = cur.fetchall()
-                  # self.productTable.delete(*self.productTable.get_children())
+                  
                   b=seto.get()
                   for row in rows:
                      for i in row:
@@ -1997,32 +2007,117 @@ class saleClass(customtkinter.CTk):
         try:
 
             cur.execute(
-                "select pid,partyname,gstin,phonenumber,gsttype,state,emailid,billaddress,shipaddress,paybalence,recivebalence,date,creditlim,add1,add2,add3,add4 from editsale where pid=?",
+                "select partyname,phonenumber,gstin,invoiceno,cashorcr,invoicedate,steteofsuply,paymentype,refreceno,total,received,balance,item1name,qty1,unit1,unitprice1,dec1,desamount1,amount1,item2name,qty2,unit2,unitprice2,dec2,desamount2,amount2,item3name,qty3,unit3,unitprice3,dec3,desamount3,amount3,item4name,qty4,unit4,unitprice4,dec4,desamount4,amount4,item5name,qty5,unit5,unitprice5,dec5,desamount5,amount5,item6name,qty6,unit6,unitprice6,dec6,desamount6,amount6,item7name,qty7,unit7,unitprice7,dec7,desamount7,amount7,item8name,qty8,unit8,unitprice8,dec8,desamount8,amount8,item9name,qty9,unit9,unitprice9,dec9,desamount9,amount9,item10name,qty10,unit10,unitprice10,dec10,desamount10,amount10 from editsale where sid=?",
                 (1,))
             rows = cur.fetchall()
             for row in rows:
                 for r in row:
                     items_datalist.append(r)
-                    print(r)
+            print(items_datalist)
+            self.partyname_entry.set(value=items_datalist[0])
+            self.partynumber.set(items_datalist[1])
+            self.phonenumber_entry.configure(textvariable=self.partynumber)
+            self.gstin.set(items_datalist[2])
+            self.gstin_entry.configure(textvariable=self.gstin)
+            self.invo.set(items_datalist[3])
+            self.invoice_entry.configure(textvariable=self.invo)
+            self.date_entry.set_date(items_datalist[5])
+            self.statelist.insert(0,items_datalist[6])
+            self.state_menu.set(items_datalist[6])
+            self.state_menu.configure(values=self.statelist)
+            self.cashlist.insert(0, items_datalist[7])
+            self.Payment_type_entry.set(items_datalist[7])
+            self.Payment_type_entry.configure(values=self.cashlist)
+            self.recvam.set(items_datalist[10])
+            self.Received_entry.configure(textvariable=self.recvam)
 
-            # self.party_nameVar.set(items_datalist[1])
-            # self.party_gstinVar.set(items_datalist[2])
-            # self.party_noVar.set(items_datalist[3])
-            # self.party_gsttypeVar.insert(0, items_datalist[4])
-            # self.gsttype_menu.configure(values=self.party_gsttypeVar)
-            # self.gsttype_menu.set(items_datalist[4])
-            # self.party_steateVar.insert(0, items_datalist[5])
-            # self.state_menu.configure(values=self.party_steateVar)
-            # self.state_menu.set(items_datalist[5])
-            # self.party_emailVar.set(items_datalist[6])
-            # self.billingaddress_entry.insert(0.0, items_datalist[7])
-            # self.shipingadd_entry.insert(0.0, items_datalist[7])
-            # self.party_payBalanceVar.set(items_datalist[9])
-            # self.party_ReceiveVar.set(items_datalist[10])
-            # self.party_customlismitVar.set(items_datalist[12])
-            # self.party_add1Var.set(items_datalist[12])
-            # self.party_add2Var.set(items_datalist[13])
-            # self.party_add3Var.set(items_datalist[14])
+
+            if items_datalist[4] == "Credit":
+                self.cash_switch.select()
+            elif items_datalist[4] == "Cash":
+                self.cash_switch.deselect()
+
+            self.no1var.set(items_datalist[12])
+            self.iq1.set(items_datalist[13])
+            self.Item_unit_List.insert(0,items_datalist[14])
+            self.no1_unit_entry.set(items_datalist[14])
+            self.no1_unit_entry.configure(values=self.Item_unit_List)
+            self.ip1.set(items_datalist[15])
+            self.id1.set(items_datalist[16])
+
+            self.no2var.set(items_datalist[19])
+            self.iq2.set(items_datalist[20])
+            self.Item_unit_List.insert(0, items_datalist[21])
+            self.no2_unit_entry.set(items_datalist[21])
+            self.no2_unit_entry.configure(values=self.Item_unit_List)
+            self.ip2.set(items_datalist[22])
+            self.id2.set(items_datalist[23])
+
+            self.no3var.set(items_datalist[26])
+            self.iq3.set(items_datalist[27])
+            self.Item_unit_List.insert(0, items_datalist[28])
+            self.no3_unit_entry.set(items_datalist[28])
+            self.no3_unit_entry.configure(values=self.Item_unit_List)
+            self.ip3.set(items_datalist[29])
+            self.id3.set(items_datalist[30])
+
+            self.no4var.set(items_datalist[33])
+            self.iq4.set(items_datalist[34])
+            self.Item_unit_List.insert(0, items_datalist[35])
+            self.no4_unit_entry.set(items_datalist[35])
+            self.no4_unit_entry.configure(values=self.Item_unit_List)
+            self.ip4.set(items_datalist[36])
+            self.id4.set(items_datalist[37])
+
+            self.no5var.set(items_datalist[40])
+            self.iq5.set(items_datalist[41])
+            self.Item_unit_List.insert(0, items_datalist[42])
+            self.no5_unit_entry.set(items_datalist[42])
+            self.no5_unit_entry.configure(values=self.Item_unit_List)
+            self.ip5.set(items_datalist[43])
+            self.id5.set(items_datalist[44])
+
+            self.no6var.set(items_datalist[47])
+            self.iq6.set(items_datalist[48])
+            self.Item_unit_List.insert(0, items_datalist[49])
+            self.no6_unit_entry.set(items_datalist[49])
+            self.no6_unit_entry.configure(values=self.Item_unit_List)
+            self.ip6.set(items_datalist[50])
+            self.id6.set(items_datalist[51])
+
+            self.no7var.set(items_datalist[54])
+            self.iq7.set(items_datalist[55])
+            self.Item_unit_List.insert(0, items_datalist[56])
+            self.no7_unit_entry.set(items_datalist[56])
+            self.no7_unit_entry.configure(values=self.Item_unit_List)
+            self.ip7.set(items_datalist[57])
+            self.id7.set(items_datalist[58])
+
+            self.no8var.set(items_datalist[61])
+            self.iq8.set(items_datalist[62])
+            self.Item_unit_List.insert(0, items_datalist[63])
+            self.no8_unit_entry.set(items_datalist[63])
+            self.no8_unit_entry.configure(values=self.Item_unit_List)
+            self.ip8.set(items_datalist[64])
+            self.id8.set(items_datalist[65])
+
+            self.no9var.set(items_datalist[68])
+            self.iq9.set(items_datalist[69])
+            self.Item_unit_List.insert(0, items_datalist[70])
+            self.no9_unit_entry.set(items_datalist[70])
+            self.no9_unit_entry.configure(values=self.Item_unit_List)
+            self.ip9.set(items_datalist[71])
+            self.id9.set(items_datalist[72])
+
+            self.no10var.set(items_datalist[75])
+            self.iq10.set(items_datalist[76])
+            self.Item_unit_List.insert(0, items_datalist[77])
+            self.no10_unit_entry.set(items_datalist[77])
+            self.no10_unit_entry.configure(values=self.Item_unit_List)
+            self.ip10.set(items_datalist[78])
+            self.id10.set(items_datalist[79])
+
+            self.qtty()
 
 
         except Exception as ex:
