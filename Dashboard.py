@@ -737,6 +737,7 @@ class App(customtkinter.CTk):
         self.transictionTable.pack(fill=BOTH, expand=1)
         self.transictionTable.bind("<ButtonRelease-1>", self.add_amount)
 
+
         self.var_trans_searchby = StringVar()
         self.Var_trans_searchtxt = StringVar()
 
@@ -757,6 +758,11 @@ class App(customtkinter.CTk):
                                                                 text="Clear",
                                                                 command=self.patytransclear)
         self.party_trans_clear_button.place(x=1100, y=60)
+
+        self.party_trans_Edit_button = customtkinter.CTkButton(self.party_transiction_frame, width=70, height=30,
+                                                                text="Edit",
+                                                                command=self.editparty_event)
+        self.party_trans_Edit_button.place(x=20, y=60)
 
         # todo: item frame
         self.items_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
@@ -962,7 +968,7 @@ class App(customtkinter.CTk):
         self.itemtransictionTable.column("cheqno", width=100)
 
         self.itemtransictionTable.pack(fill=BOTH, expand=1)
-        self.itemtransictionTable.bind("<ButtonRelease-1>", self.add_amount)
+        self.itemtransictionTable.bind("<ButtonRelease-1>", self.add_itemamount)
 
         self.var_pur_searchby = StringVar()
         self.Var_pur_searchtxt = StringVar()
@@ -983,6 +989,12 @@ class App(customtkinter.CTk):
                                                                 command=self.itemctranslear)
         self.item_pur_clear_button.place(x=1100, y=60)
 
+        self.item_trans_Edit_button = customtkinter.CTkButton(self.item_transiction_frame, width=70, height=30,
+                                                               text="Edit",
+                                                               command=self.edititem_event)
+        self.item_trans_Edit_button.place(x=20, y=60)
+
+        # gst : frame
         self.gstsale_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
 
         # todo: sale frame
@@ -1188,7 +1200,7 @@ class App(customtkinter.CTk):
 
         self.sale_add_sale_button = customtkinter.CTkButton(self.sale_transiction_frame, width=70, height=30,
                                                              text="Add Sale", command=self.addsale_event)
-        self.sale_add_sale_button.place(x=1600, y=10)
+        self.sale_add_sale_button.place(x=20, y=60)
 
         self.sale_pur_search = customtkinter.CTkComboBox(self.sale_transiction_frame, width=110, height=30,
                                                          values=["Select", "Invoice", "Date", "Payment Type",
@@ -1206,6 +1218,10 @@ class App(customtkinter.CTk):
         self.sale_pur_clear_button = customtkinter.CTkButton(self.sale_transiction_frame, width=70, height=30,
                                                              text="Clear",command=self.saletransclear)
         self.sale_pur_clear_button.place(x=1630, y=60)
+
+        self.sale_pur_edit_button = customtkinter.CTkButton(self.sale_transiction_frame, width=70, height=30,
+                                                             text="Edit", command=self.editsale_event)
+        self.sale_pur_edit_button.place(x=100, y=60)
 
 
 
@@ -2339,6 +2355,8 @@ class App(customtkinter.CTk):
     def addsale_event(self):
         call(["python", "AddSale.py"])
         # os.system('python AddSale.py')
+    def editsale_event(self):
+        call(["python", "EditSale.py"])
     def addestimate_event(self):
         call(["python", "Estimate.py"])
     def addpurchase_event(self):
@@ -2464,6 +2482,7 @@ class App(customtkinter.CTk):
     def sale_button_event(self):
         self.select_frame_by_name("sale")
         self.calgetsaletotalamount()
+        self.saletrans()
 
     def Purches_button_event(self):
         self.select_frame_by_name("purches")
@@ -3039,7 +3058,26 @@ class App(customtkinter.CTk):
             ))
             con.commit()
 
-            self.editparty_event()
+
+        except Exception as ex:
+            print(ex)
+    def add_itemamount(self, ev):
+
+        f = self.itemtransictionTable.focus()
+        content = (self.itemtransictionTable.item(f))
+        row = content['values']
+        invo = row[0]
+        try:
+            con = sqlite3.connect(database=r'DataBase/ims.db')
+            cur = con.cursor()
+
+            cur.execute("Select invoice from edittransction where no=1")
+            cur.execute("Update edittransction set invoice=?", (
+                invo,
+            ))
+            con.commit()
+
+
         except Exception as ex:
             print(ex)
 
