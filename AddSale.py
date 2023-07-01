@@ -3,7 +3,7 @@ import sqlite3
 from tkinter import messagebox, END
 import customtkinter
 from PIL import Image, ImageTk  # pip intall
-from tkcalendar import Calendar, DateEntry
+from tkcalendar import DateEntry
 import sqlite3
 from subprocess import call
 class saleClass(customtkinter.CTk):

@@ -6,8 +6,8 @@ pip install num2words
 pip install pytube
 pip install selenium
 pip install tkcalendar
-pip install
-pip install
+pip install AppOpener
+pip install openpyxl
 pip install
 pip install
 pip install

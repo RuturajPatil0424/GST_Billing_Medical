@@ -1223,7 +1223,6 @@ class saleClass(customtkinter.CTk):
           qaunty.set(" ")
 
       else:
-          print(iname)
           self.qtty()
 
         # con = sqlite3.connect(database=r'DataBase/ims.db')

@@ -249,15 +249,15 @@ class App(customtkinter.CTk):
         self.scaling_optionemenu = customtkinter.CTkOptionMenu(self.navigation_frame,
                                                                command=self.change_appearance_mode_event)
         self.scaling_optionemenu.grid(row=17, column=0, padx=20, pady=(10, 20))
-
         self.get_appearance_mode_event()
+
         # todo: crete frames
         # create home frame
         self.home_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         self.home_frame.grid_columnconfigure(0, weight=1)
 
-        # todo: Home frame
 
+        # todo: Home frame
         self.in_home_top_frame = customtkinter.CTkFrame(self.home_frame, width=1720, height=80)
         self.in_home_top_frame.place(x=10, y=10)
 
@@ -320,7 +320,6 @@ class App(customtkinter.CTk):
         self.in_purchase_order_frame = customtkinter.CTkFrame(self.home_frame, width=460, height=120)
         self.in_purchase_order_frame.place(x=1255, y=870)
 
-        # todo: main side bar
 
         # todo: Purchase handel bar
         self.purchase_main_lable = customtkinter.CTkLabel(self.home_frame, text="Purchase",
@@ -478,9 +477,6 @@ class App(customtkinter.CTk):
                                                                values=["Today",'Yesterday','This Weak','Last Weak','This Month',"Last Month", "This Quarter","Last Quarter", "This Year","Last Year"],command=self.gd)
         self.sale_optionemenu.place(x=790,y=10)
 
-
-
-
         # todo: home expenses frame
 
         self.expenses_lable = customtkinter.CTkLabel(self.in_home_expenses_top_frame, text="00.00",
@@ -553,6 +549,7 @@ class App(customtkinter.CTk):
         self.lowStock_lable2.place(x=25, y=50)
         self.getdate()
         self.getlowitem()
+
 
         # todo: parties frame
         self.var_searchby = StringVar()
@@ -655,14 +652,11 @@ class App(customtkinter.CTk):
         self.productTable.heading("gstin", text="GSTIN")
         self.productTable.heading("pay", text="Pay")
         self.productTable.heading("receive", text="Receive")
-
         self.productTable["show"] = "headings"
-
         self.productTable.column("party", width=130, )
         self.productTable.column("gstin", width=100)
         self.productTable.column("pay", width=100)
         self.productTable.column("receive", width=100)
-
         self.productTable.pack(fill=BOTH, expand=1)
         self.productTable.bind("<ButtonRelease-1>", self.get_data)
 
@@ -675,12 +669,10 @@ class App(customtkinter.CTk):
         self.partyaddress = StringVar()
         self.partygstin = StringVar()
 
-        self.party_name_lable = customtkinter.CTkLabel(self.party_detail_frame, textvariable=self.partyname,
-                                          font=customtkinter.CTkFont(size=18), text_color="black")
+        self.party_name_lable = customtkinter.CTkLabel(self.party_detail_frame, textvariable=self.partyname,font=customtkinter.CTkFont(size=18), text_color="black")
         self.party_name_lable.place(x=15, y=10)
 
-        self.party_number_lable = customtkinter.CTkLabel(self.party_detail_frame, textvariable=self.partynumber,
-                                                         font=customtkinter.CTkFont(size=12), text_color="black")
+        self.party_number_lable = customtkinter.CTkLabel(self.party_detail_frame, textvariable=self.partynumber,font=customtkinter.CTkFont(size=12), text_color="black")
         self.party_number_lable.place(x=15, y=60)
 
         self.party_email_lable = customtkinter.CTkLabel(self.party_detail_frame, textvariable=self.partyemail,
@@ -723,20 +715,15 @@ class App(customtkinter.CTk):
         self.transictionTable.heading("total", text="Total Amount")
         self.transictionTable.heading("balance", text="Received Amount")
         self.transictionTable.heading("cheqno", text="Cheque No.")
-
         self.transictionTable["show"] = "headings"
-
-
         self.transictionTable.column("number", width=150)
         self.transictionTable.column("date", width=150)
         self.transictionTable.column("type", width=100)
         self.transictionTable.column("total", width=200)
         self.transictionTable.column("balance", width=200)
         self.transictionTable.column("cheqno", width=100)
-
         self.transictionTable.pack(fill=BOTH, expand=1)
         self.transictionTable.bind("<ButtonRelease-1>", self.add_amount)
-
 
         self.var_trans_searchby = StringVar()
         self.Var_trans_searchtxt = StringVar()
@@ -763,6 +750,7 @@ class App(customtkinter.CTk):
                                                                 text="Edit",
                                                                 command=self.editparty_event)
         self.party_trans_Edit_button.place(x=20, y=60)
+
 
         # todo: item frame
         self.items_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
@@ -931,8 +919,6 @@ class App(customtkinter.CTk):
                                                           font=customtkinter.CTkFont(size=12))
         self.item_purchase_lable.place(x=1000, y=110)
 
-
-
         self.item_gstin_lable = customtkinter.CTkLabel(self.item_transiction_frame, text="TRANSACTION",
                                                           font=customtkinter.CTkFont(size=14, ))
         self.item_gstin_lable.place(x=10, y=10)
@@ -994,12 +980,250 @@ class App(customtkinter.CTk):
                                                                command=self.edititem_event)
         self.item_trans_Edit_button.place(x=20, y=60)
 
-        # gst : frame
+
+        # todo : GST sale frame
         self.gstsale_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+
+        self.in_gstsale_top_frame = customtkinter.CTkFrame(self.gstsale_frame, width=1720, height=100)
+        self.in_gstsale_top_frame.place(x=10, y=10)
+
+        self.gstsale_detail_frame = customtkinter.CTkFrame(self.gstsale_frame, width=1720, height=150)
+        self.gstsale_detail_frame.place(x=10, y=120)
+
+        self.gstsale_detail_frame1 = customtkinter.CTkFrame(self.gstsale_detail_frame, width=200, height=80,
+                                                            fg_color="#b9f3e7")
+        self.gstsale_detail_frame1.place(x=20, y=60)
+        self.gstsale_detail_frame2 = customtkinter.CTkFrame(self.gstsale_detail_frame, width=200, height=80,
+                                                            fg_color="#cfe6fe")
+        self.gstsale_detail_frame2.place(x=260, y=60)
+        self.gstsale_detail_frame3 = customtkinter.CTkFrame(self.gstsale_detail_frame, width=200, height=80,
+                                                            fg_color="#f8c888")
+        self.gstsale_detail_frame3.place(x=500, y=60)
+
+        self.gstsale_detail_paid_lable = customtkinter.CTkLabel(self.gstsale_detail_frame1,
+                                                                font=customtkinter.CTkFont(size=20), text="Paid",
+                                                                text_color="black")
+        self.gstsale_detail_paid_lable.place(x=20, y=10)
+
+        self.gstsale_detail_unpaid_lable = customtkinter.CTkLabel(self.gstsale_detail_frame2,
+                                                                  font=customtkinter.CTkFont(size=20), text="Unpaid",
+                                                                  text_color="black")
+        self.gstsale_detail_unpaid_lable.place(x=20, y=10)
+
+        self.gstsale_detail_total_lable = customtkinter.CTkLabel(self.gstsale_detail_frame3,
+                                                                 font=customtkinter.CTkFont(size=20), text="Total",
+                                                                 text_color="black")
+        self.gstsale_detail_total_lable.place(x=20, y=10)
+        self.gstsale_paidamount = StringVar()
+        self.gstsale_unpaidamount = StringVar()
+        self.gstsale_totalamount = StringVar()
+        self.gstsale_paidamount = "₹00.00"
+        self.gstsale_unpaidamount = "₹00.00"
+        self.gstsale_totalamount = "₹00.00"
+
+        self.gstsale_paidamount_list = []
+        self.gstsale_unpaidamount_list = []
+        self.gstsale_totalamount_list = []
+
+        self.gstsale_detail_paid_amount_lable = customtkinter.CTkLabel(self.gstsale_detail_frame1,
+                                                                       font=customtkinter.CTkFont(size=25,
+                                                                                                  weight="bold"),
+                                                                       text=self.gstsale_paidamount,
+                                                                       text_color="black")
+        self.gstsale_detail_paid_amount_lable.place(x=20, y=40)
+
+        self.gstsale_detail_unpaid_amount_lable = customtkinter.CTkLabel(self.gstsale_detail_frame2,
+                                                                         font=customtkinter.CTkFont(size=25,
+                                                                                                    weight="bold"),
+                                                                         text=self.gstsale_unpaidamount,
+                                                                         text_color="black")
+        self.gstsale_detail_unpaid_amount_lable.place(x=20, y=40)
+
+        self.gstsale_detail_total_amount_lable = customtkinter.CTkLabel(self.gstsale_detail_frame3,
+                                                                        font=customtkinter.CTkFont(size=25,
+                                                                                                   weight="bold"),
+                                                                        text=self.gstsale_totalamount,
+                                                                        text_color="black")
+        self.gstsale_detail_total_amount_lable.place(x=20, y=40)
+
+        self.gstsale_detail_plus_lable = customtkinter.CTkLabel(self.gstsale_detail_frame,
+                                                                font=customtkinter.CTkFont(size=25), text="+")
+        self.gstsale_detail_plus_lable.place(x=235, y=85)
+
+        self.gstsale_detail_equal_lable = customtkinter.CTkLabel(self.gstsale_detail_frame,
+                                                                 font=customtkinter.CTkFont(size=25), text="=")
+        self.gstsale_detail_equal_lable.place(x=475, y=85)
+
+        self.gstsale_transiction_frame = customtkinter.CTkFrame(self.gstsale_frame, width=1720, height=700)
+        self.gstsale_transiction_frame.place(x=10, y=280)
+
+        self.submenu_gstsale_lable = customtkinter.CTkFrame(self.in_gstsale_top_frame, width=1720, height=40,
+                                                            fg_color="transparent")
+        self.submenu_gstsale_lable.place(x=0, y=60)
+
+        self.gstsale_estimate_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        self.gstsale_payment_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        self.gstsale_order_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        self.gstsale_Delivery_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        self.gstsale_return_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+
+        self.gstsale_invoice_button = customtkinter.CTkButton(self.submenu_gstsale_lable,
+                                                              font=customtkinter.CTkFont(size=18),
+                                                              command=self.gst_sale_button_event,
+                                                              text="Sale Invoice", width=70, height=20,
+                                                              image=self.bill_image, text_color="black",
+                                                              hover_color=("gray70", "gray30"), fg_color="transparent")
+        self.gstsale_invoice_button.place(x=10, y=0)
+
+        self.gstsale_estimate_button = customtkinter.CTkButton(self.submenu_gstsale_lable,
+                                                               font=customtkinter.CTkFont(size=18),
+                                                               command=self.gstsale_estimate_event,
+                                                               text="Sale Estimate", width=70, height=20,
+                                                               image=self.bill_image, text_color="black",
+                                                               hover_color=("gray70", "gray30"), fg_color="transparent")
+        self.gstsale_estimate_button.place(x=180, y=0)
+
+        self.gstsale_payment_button = customtkinter.CTkButton(self.submenu_gstsale_lable,
+                                                              font=customtkinter.CTkFont(size=18),
+                                                              command=self.gstsale_payment_event,
+                                                              text="Payment In", width=70, height=20,
+                                                              image=self.bill_image, text_color="black",
+                                                              hover_color=("gray70", "gray30"), fg_color="transparent")
+        self.gstsale_payment_button.place(x=360, y=0)
+
+        self.gstsale_order_button = customtkinter.CTkButton(self.submenu_gstsale_lable,
+                                                            font=customtkinter.CTkFont(size=18),
+                                                            command=self.gstsale_order_event,
+                                                            text="Sale Order", width=70, height=20,
+                                                            image=self.bill_image, text_color="black",
+                                                            hover_color=("gray70", "gray30"), fg_color="transparent")
+        self.gstsale_order_button.place(x=520, y=0)
+
+        self.gstsale_chalan_button = customtkinter.CTkButton(self.submenu_gstsale_lable,
+                                                             font=customtkinter.CTkFont(size=18),
+                                                             command=self.gstsale_delivery_event,
+                                                             text="Delivery Challan", width=70, height=20,
+                                                             image=self.bill_image, text_color="black",
+                                                             hover_color=("gray70", "gray30"), fg_color="transparent")
+        self.gstsale_chalan_button.place(x=680, y=0)
+
+        self.gstsale_return_button = customtkinter.CTkButton(self.submenu_gstsale_lable,
+                                                             font=customtkinter.CTkFont(size=18),
+                                                             command=self.gstsale_return_event,
+                                                             text="Sale Return", width=70, height=20,
+                                                             image=self.bill_image, text_color="black",
+                                                             hover_color=("gray70", "gray30"), fg_color="transparent")
+        self.gstsale_return_button.place(x=880, y=0)
+
+        self.gstsale_add_gstsale_button = customtkinter.CTkButton(self.in_gstsale_top_frame,
+                                                                  font=customtkinter.CTkFont(size=18),
+                                                                  command=self.addgstsale_event,
+                                                                  text="Add Sale", width=70, height=30,
+                                                                  image=self.bill_image, text_color="black",
+                                                                  hover_color=("gray70", "gray30"),
+                                                                  fg_color="transparent")
+        self.gstsale_add_gstsale_button.place(x=1310, y=20)
+
+        self.gstsale_add_purchess_button = customtkinter.CTkButton(self.in_gstsale_top_frame,
+                                                                   command=self.addpurchase_event,
+                                                                   font=customtkinter.CTkFont(size=18),
+                                                                   text="Add Purchess", width=70, height=30,
+                                                                   image=self.buy_image, text_color="black",
+                                                                   hover_color=("gray70", "gray30"),
+                                                                   fg_color="transparent")
+        self.gstsale_add_purchess_button.place(x=1440, y=20)
+
+        self.gstsale_setting_purches_button = customtkinter.CTkButton(self.in_gstsale_top_frame, width=30, height=30,
+                                                                      text="",
+                                                                      text_color="black",
+                                                                      hover_color=("gray70", "gray30"),
+                                                                      image=self.setting_image, fg_color="transparent")
+        self.gstsale_setting_purches_button.place(x=1660, y=20)
+
+        self.gstsale_calculator_purches_button = customtkinter.CTkButton(self.in_gstsale_top_frame, width=30, height=30,
+                                                                         text="",
+                                                                         text_color="black",
+                                                                         hover_color=("gray70", "gray30"),
+                                                                         image=self.calculator_image,
+                                                                         fg_color="transparent",
+                                                                         command=self.opencalcu)
+        self.gstsale_calculator_purches_button.place(x=1610, y=20)
+
+        # self.calgetsaletotalamount()
+        self.involista3 = []
+
+        transiction_Frame = ttk.Frame(self.gstsale_transiction_frame, relief=RIDGE)
+        transiction_Frame.place(x=20, y=100, width=1680, height=580)
+
+        scrolly = ttk.Scrollbar(transiction_Frame, orient=VERTICAL)
+        scrollx = ttk.Scrollbar(transiction_Frame, orient=HORIZONTAL)
+
+        self.gstsaletransictionTable = ttk.Treeview(transiction_Frame,
+                                                    columns=(
+                                                        "date", "invonumber", "name", "type", "total", "balance",
+                                                        "cheqno"),
+                                                    yscrollcommand=scrolly.set, xscrollcommand=scrollx.set)
+        scrollx.pack(side=BOTTOM, fill=X)
+        scrolly.pack(side=RIGHT, fill=Y)
+        scrollx.config(command=self.gstsaletransictionTable.xview)
+        scrolly.config(command=self.gstsaletransictionTable.yview)
+
+        self.gstsaletransictionTable.heading("date", text="Date")
+        self.gstsaletransictionTable.heading("invonumber", text="Invoice Number")
+        self.gstsaletransictionTable.heading("name", text="Party Name")
+        self.gstsaletransictionTable.heading("type", text="Payment Type")
+        self.gstsaletransictionTable.heading("total", text="Total Amount")
+        self.gstsaletransictionTable.heading("balance", text="Received Amount")
+        self.gstsaletransictionTable.heading("cheqno", text="Cheque No.")
+        self.gstsaletransictionTable["show"] = "headings"
+        self.gstsaletransictionTable.column("date", width=150, anchor="center")
+        self.gstsaletransictionTable.column("invonumber", width=150, anchor="center")
+        self.gstsaletransictionTable.column("name", width=200, anchor="center")
+        self.gstsaletransictionTable.column("type", width=100, anchor="center")
+        self.gstsaletransictionTable.column("total", width=200, anchor="center")
+        self.gstsaletransictionTable.column("balance", width=200, anchor="center")
+        self.gstsaletransictionTable.column("cheqno", width=150, anchor="center")
+
+        self.gstsaletransictionTable.pack(fill=BOTH, expand=1)
+        self.gstsaletransictionTable.bind("<ButtonRelease-1>", self.gstsaledataget)
+
+        self.gstsaletrans()
+
+        self.Var_gstsale_searchtxt = StringVar()
+
+        self.gstsale_pur_lable = customtkinter.CTkLabel(self.gstsale_transiction_frame,
+                                                        font=customtkinter.CTkFont(size=25),
+                                                        text="Transition")
+        self.gstsale_pur_lable.place(x=20, y=20)
+
+        self.gstsale_add_gstsale_button = customtkinter.CTkButton(self.gstsale_transiction_frame, width=70, height=30,
+                                                                  text="Add Sale", command=self.addgstsale_event)
+        self.gstsale_add_gstsale_button.place(x=20, y=60)
+
+        self.gstsale_pur_search = customtkinter.CTkComboBox(self.gstsale_transiction_frame, width=110, height=30,
+                                                            values=["Select", "Invoice", "Date", "Payment Type",
+                                                                    "Cheque No.", "Name"])
+        self.gstsale_pur_search.place(x=1120, y=60)
+
+        self.gstsale_pur_serch_entery = customtkinter.CTkEntry(self.gstsale_transiction_frame, width=300, height=30,
+                                                               textvariable=self.Var_gstsale_searchtxt)
+        self.gstsale_pur_serch_entery.place(x=1240, y=60)
+
+        self.gstsale_pur_serch_button = customtkinter.CTkButton(self.gstsale_transiction_frame, width=70, height=30,
+                                                                text="Search", command=self.gstsalestranssearch)
+        self.gstsale_pur_serch_button.place(x=1550, y=60)
+
+        self.gstsale_pur_clear_button = customtkinter.CTkButton(self.gstsale_transiction_frame, width=70, height=30,
+                                                                text="Clear", command=self.gstsaletransclear)
+        self.gstsale_pur_clear_button.place(x=1630, y=60)
+
+        self.gstsale_pur_edit_button = customtkinter.CTkButton(self.gstsale_transiction_frame, width=70, height=30,
+                                                               text="Edit", command=self.editgstsale_event)
+        self.gstsale_pur_edit_button.place(x=100, y=60)
+
 
         # todo: sale frame
         self.sale_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
-
 
         self.in_sale_top_frame = customtkinter.CTkFrame(self.sale_frame, width=1720, height=100)
         self.in_sale_top_frame.place(x=10, y=10)
@@ -1225,236 +1449,9 @@ class App(customtkinter.CTk):
 
 
 
-        # todo : GST sale frame
-        self.gstsale_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
-        #
-        # self.in_gstsale_top_frame = customtkinter.CTkFrame(self.gstsale_frame, width=1720, height=100)
-        # self.in_gstsale_top_frame.place(x=10, y=10)
-        #
-        # self.gstsale_detail_frame = customtkinter.CTkFrame(self.gstsale_frame, width=1720, height=150)
-        # self.gstsale_detail_frame.place(x=10, y=120)
-        #
-        # self.gstsale_detail_frame1 = customtkinter.CTkFrame(self.gstsale_detail_frame, width=200, height=80,
-        #                                                  fg_color="#b9f3e7")
-        # self.gstsale_detail_frame1.place(x=20, y=60)
-        # self.gstsale_detail_frame2 = customtkinter.CTkFrame(self.gstsale_detail_frame, width=200, height=80,
-        #                                                  fg_color="#cfe6fe")
-        # self.gstsale_detail_frame2.place(x=260, y=60)
-        # self.gstsale_detail_frame3 = customtkinter.CTkFrame(self.gstsale_detail_frame, width=200, height=80,
-        #                                                  fg_color="#f8c888")
-        # self.gstsale_detail_frame3.place(x=500, y=60)
-        #
-        # self.gstsale_detail_paid_lable = customtkinter.CTkLabel(self.gstsale_detail_frame1,
-        #                                                      font=customtkinter.CTkFont(size=20), text="Paid",
-        #                                                      text_color="black")
-        # self.gstsale_detail_paid_lable.place(x=20, y=10)
-        #
-        # self.gstsale_detail_unpaid_lable = customtkinter.CTkLabel(self.gstsale_detail_frame2,
-        #                                                        font=customtkinter.CTkFont(size=20), text="Unpaid",
-        #                                                        text_color="black")
-        # self.gstsale_detail_unpaid_lable.place(x=20, y=10)
-        #
-        # self.gstsale_detail_total_lable = customtkinter.CTkLabel(self.gstsale_detail_frame3,
-        #                                                       font=customtkinter.CTkFont(size=20), text="Total",
-        #                                                       text_color="black")
-        # self.gstsale_detail_total_lable.place(x=20, y=10)
-        # self.gstsale_paidamount = StringVar()
-        # self.gstsale_unpaidamount = StringVar()
-        # self.gstsale_totalamount = StringVar()
-        # self.gstsale_paidamount = "₹00.00"
-        # self.gstsale_unpaidamount = "₹00.00"
-        # self.gstsale_totalamount = "₹00.00"
-        #
-        # self.gstsale_paidamount_list = []
-        # self.gstsale_unpaidamount_list = []
-        # self.gstsale_totalamount_list = []
-        #
-        # self.gstsale_detail_paid_amount_lable = customtkinter.CTkLabel(self.gstsale_detail_frame1,
-        #                                                             font=customtkinter.CTkFont(size=25, weight="bold"),
-        #                                                             text=self.gstsale_paidamount,
-        #                                                             text_color="black")
-        # self.gstsale_detail_paid_amount_lable.place(x=20, y=40)
-        #
-        # self.gstsale_detail_unpaid_amount_lable = customtkinter.CTkLabel(self.gstsale_detail_frame2,
-        #                                                               font=customtkinter.CTkFont(size=25,
-        #                                                                                          weight="bold"),
-        #                                                               text=self.gstsale_unpaidamount,
-        #                                                               text_color="black")
-        # self.gstsale_detail_unpaid_amount_lable.place(x=20, y=40)
-        #
-        # self.gstsale_detail_total_amount_lable = customtkinter.CTkLabel(self.gstsale_detail_frame3,
-        #                                                              font=customtkinter.CTkFont(size=25, weight="bold"),
-        #                                                              text=self.gstsale_totalamount,
-        #                                                              text_color="black")
-        # self.gstsale_detail_total_amount_lable.place(x=20, y=40)
-        #
-        # self.gstsale_detail_plus_lable = customtkinter.CTkLabel(self.gstsale_detail_frame,
-        #                                                      font=customtkinter.CTkFont(size=25), text="+")
-        # self.gstsale_detail_plus_lable.place(x=235, y=85)
-        #
-        # self.gstsale_detail_equal_lable = customtkinter.CTkLabel(self.gstsale_detail_frame,
-        #                                                       font=customtkinter.CTkFont(size=25), text="=")
-        # self.gstsale_detail_equal_lable.place(x=475, y=85)
-        #
-        # self.gstsale_transiction_frame = customtkinter.CTkFrame(self.gstsale_frame, width=1720, height=700)
-        # self.gstsale_transiction_frame.place(x=10, y=280)
-        #
-        # self.submenu_gstsale_lable = customtkinter.CTkFrame(self.in_gstsale_top_frame, width=1720, height=40,
-        #                                                  fg_color="transparent")
-        # self.submenu_gstsale_lable.place(x=0, y=60)
-        #
-        # self.gstsale_estimate_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
-        # self.gstsale_payment_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
-        # self.gstsale_order_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
-        # self.gstsale_Delivery_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
-        # self.gstsale_return_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
-        #
-        # self.gstsale_invoice_button = customtkinter.CTkButton(self.submenu_gstsale_lable,
-        #                                                    font=customtkinter.CTkFont(size=18),
-        #                                                    command=self.gstsale_button_event,
-        #                                                    text="gstsale Invoice", width=70, height=20,
-        #                                                    image=self.bill_image, text_color="black",
-        #                                                    hover_color=("gray70", "gray30"), fg_color="transparent")
-        # self.gstsale_invoice_button.place(x=10, y=0)
-        #
-        # self.gstsale_estimate_button = customtkinter.CTkButton(self.submenu_gstsale_lable,
-        #                                                     font=customtkinter.CTkFont(size=18),
-        #                                                     command=self.gstsale_estimate_event,
-        #                                                     text="gstsale Estimate", width=70, height=20,
-        #                                                     image=self.bill_image, text_color="black",
-        #                                                     hover_color=("gray70", "gray30"), fg_color="transparent")
-        # self.gstsale_estimate_button.place(x=180, y=0)
-        #
-        # self.gstsale_payment_button = customtkinter.CTkButton(self.submenu_gstsale_lable,
-        #                                                    font=customtkinter.CTkFont(size=18),
-        #                                                    command=self.gstsale_payment_event,
-        #                                                    text="Payment In", width=70, height=20,
-        #                                                    image=self.bill_image, text_color="black",
-        #                                                    hover_color=("gray70", "gray30"), fg_color="transparent")
-        # self.gstsale_payment_button.place(x=360, y=0)
-        #
-        # self.gstsale_order_button = customtkinter.CTkButton(self.submenu_gstsale_lable,
-        #                                                  font=customtkinter.CTkFont(size=18),
-        #                                                  command=self.gstsale_order_event,
-        #                                                  text="gstsale Order", width=70, height=20,
-        #                                                  image=self.bill_image, text_color="black",
-        #                                                  hover_color=("gray70", "gray30"), fg_color="transparent")
-        # self.gstsale_order_button.place(x=520, y=0)
-        #
-        # self.gstsale_chalan_button = customtkinter.CTkButton(self.submenu_gstsale_lable,
-        #                                                   font=customtkinter.CTkFont(size=18),
-        #                                                   command=self.gstsale_delivery_event,
-        #                                                   text="Delivery Challan", width=70, height=20,
-        #                                                   image=self.bill_image, text_color="black",
-        #                                                   hover_color=("gray70", "gray30"), fg_color="transparent")
-        # self.gstsale_chalan_button.place(x=680, y=0)
-        #
-        # self.gstsale_return_button = customtkinter.CTkButton(self.submenu_gstsale_lable,
-        #                                                   font=customtkinter.CTkFont(size=18),
-        #                                                   command=self.gstsale_return_event,
-        #                                                   text="gstsale Return", width=70, height=20,
-        #                                                   image=self.bill_image, text_color="black",
-        #                                                   hover_color=("gray70", "gray30"), fg_color="transparent")
-        # self.gstsale_return_button.place(x=880, y=0)
-        #
-        # self.gstsale_add_gstsale_button = customtkinter.CTkButton(self.in_gstsale_top_frame,
-        #                                                     font=customtkinter.CTkFont(size=18),
-        #                                                     command=self.addgstsale_event,
-        #                                                     text="Add gstsale", width=70, height=30,
-        #                                                     image=self.bill_image, text_color="black",
-        #                                                     hover_color=("gray70", "gray30"), fg_color="transparent")
-        # self.gstsale_add_gstsale_button.place(x=1310, y=20)
-        #
-        # self.gstsale_add_purchess_button = customtkinter.CTkButton(self.in_gstsale_top_frame,
-        #                                                         command=self.addpurchase_event,
-        #                                                         font=customtkinter.CTkFont(size=18),
-        #                                                         text="Add Purchess", width=70, height=30,
-        #                                                         image=self.buy_image, text_color="black",
-        #                                                         hover_color=("gray70", "gray30"),
-        #                                                         fg_color="transparent")
-        # self.gstsale_add_purchess_button.place(x=1440, y=20)
-        #
-        # self.gstsale_setting_purches_button = customtkinter.CTkButton(self.in_gstsale_top_frame, width=30, height=30,
-        #                                                            text="",
-        #                                                            text_color="black", hover_color=("gray70", "gray30"),
-        #                                                            image=self.setting_image, fg_color="transparent")
-        # self.gstsale_setting_purches_button.place(x=1660, y=20)
-        #
-        # self.gstsale_calculator_purches_button = customtkinter.CTkButton(self.in_gstsale_top_frame, width=30, height=30,
-        #                                                               text="",
-        #                                                               text_color="black",
-        #                                                               hover_color=("gray70", "gray30"),
-        #                                                               image=self.calculator_image,
-        #                                                               fg_color="transparent",
-        #                                                               command=self.opencalcu)
-        # self.gstsale_calculator_purches_button.place(x=1610, y=20)
-        #
-        # self.calgetgstsaletotalamount()
-        #
-        # transiction_Frame = ttk.Frame(self.gstsale_transiction_frame, relief=RIDGE)
-        # transiction_Frame.place(x=20, y=100, width=1680, height=580)
-        #
-        # scrolly = ttk.Scrollbar(transiction_Frame, orient=VERTICAL)
-        # scrollx = ttk.Scrollbar(transiction_Frame, orient=HORIZONTAL)
-        #
-        # self.gstsaletransictionTable = ttk.Treeview(transiction_Frame,
-        #                                          columns=(
-        #                                          "date", "invonumber", "name", "type", "total", "balance", "cheqno"),
-        #                                          yscrollcommand=scrolly.set, xscrollcommand=scrollx.set)
-        # scrollx.pack(side=BOTTOM, fill=X)
-        # scrolly.pack(side=RIGHT, fill=Y)
-        # scrollx.config(command=self.gstsaletransictionTable.xview)
-        # scrolly.config(command=self.gstsaletransictionTable.yview)
-        #
-        # self.gstsaletransictionTable.heading("date", text="Date")
-        # self.gstsaletransictionTable.heading("invonumber", text="Invoice Number")
-        # self.gstsaletransictionTable.heading("name", text="Party Name")
-        # self.gstsaletransictionTable.heading("type", text="Payment Type")
-        # self.gstsaletransictionTable.heading("total", text="Total Amount")
-        # self.gstsaletransictionTable.heading("balance", text="Received Amount")
-        # self.gstsaletransictionTable.heading("cheqno", text="Cheque No.")
-        #
-        # self.gstsaletransictionTable["show"] = "headings"
-        #
-        # self.gstsaletransictionTable.column("date", width=150, anchor="center")
-        # self.gstsaletransictionTable.column("invonumber", width=150, anchor="center")
-        # self.gstsaletransictionTable.column("name", width=200, anchor="center")
-        # self.gstsaletransictionTable.column("type", width=100, anchor="center")
-        # self.gstsaletransictionTable.column("total", width=200, anchor="center")
-        # self.gstsaletransictionTable.column("balance", width=200, anchor="center")
-        # self.gstsaletransictionTable.column("cheqno", width=150, anchor="center")
-        #
-        # self.gstsaletransictionTable.pack(fill=BOTH, expand=1)
-        # self.gstsaletransictionTable.bind("<ButtonRelease-1>", self.gstsaletrans)
-        #
-        # self.gstsaletrans()
-        #
-        # self.Var_gstsale_searchtxt = StringVar()
-        #
-        # self.gstsale_pur_lable = customtkinter.CTkLabel(self.gstsale_transiction_frame, font=customtkinter.CTkFont(size=25),
-        #                                              text="Transition")
-        # self.gstsale_pur_lable.place(x=20, y=20)
-        #
-        # self.gstsale_add_sale_button = customtkinter.CTkButton(self.gstsale_transiction_frame, width=70, height=30,
-        #                                                     text="Add gstsale", command=self.addgstsale_event)
-        # self.gstsale_add_sale_button.place(x=1600, y=10)
-        #
-        # self.gstsale_pur_search = customtkinter.CTkComboBox(self.gstsale_transiction_frame, width=110, height=30,
-        #                                                  values=["Select", "Invoice", "Date", "Payment Type",
-        #                                                          "Cheque No.", "Name"])
-        # self.gstsale_pur_search.place(x=1120, y=60)
-        #
-        # self.gstsale_pur_serch_entery = customtkinter.CTkEntry(self.gstsale_transiction_frame, width=300, height=30,
-        #                                                     textvariable=self.Var_gstsale_searchtxt)
-        # self.gstsale_pur_serch_entery.place(x=1240, y=60)
-        #
-        # self.gstsale_pur_serch_button = customtkinter.CTkButton(self.gstsale_transiction_frame, width=70, height=30,
-        #                                                      text="Search", command=self.gstsalestranssearch)
-        # self.gstsale_pur_serch_button.place(x=1550, y=60)
-        #
-        # self.gstsale_pur_clear_button = customtkinter.CTkButton(self.gstsale_transiction_frame, width=70, height=30,
-        #                                                      text="Clear", command=self.gstsaletransclear)
-        # self.gstsale_pur_clear_button.place(x=1630, y=60)
+
+
+
 
         #todo:sale estimate
         self.in_sale_estimate_top_frame = customtkinter.CTkFrame(self.sale_estimate_frame, width=1720, height=100)
@@ -1544,6 +1541,37 @@ class App(customtkinter.CTk):
                                                           hover_color=("gray70", "gray30"), fg_color="transparent")
         self.sale_return_button.place(x=880, y=0)
 
+        self.estimatee_sale_detail_frame = customtkinter.CTkFrame(self.sale_estimate_frame, width=1720, height=150)
+        self.estimatee_sale_detail_frame.place(x=10, y=120)
+
+
+        self.estimatee_sale_detail_frame3 = customtkinter.CTkFrame(self.estimatee_sale_detail_frame, width=200, height=80,
+                                                         fg_color="#f8c888")
+        self.estimatee_sale_detail_frame3.place(x=20, y=60)
+
+
+        self.estimatee_sale_detail_total_lable = customtkinter.CTkLabel(self.estimatee_sale_detail_frame3,
+                                                              font=customtkinter.CTkFont(size=20), text="Total E Amount",
+                                                              text_color="black")
+        self.estimatee_sale_detail_total_lable.place(x=20, y=10)
+        self.estimatee_sale_paidamount = StringVar()
+        self.estimatee_sale_unpaidamount = StringVar()
+        self.estimatee_sale_totalamount = StringVar()
+        self.estimatee_sale_totalamount = "₹00.00"
+
+        self.estimatee_sale_paidamount_list = []
+        self.estimatee_sale_unpaidamount_list = []
+        self.estimatee_sale_totalamount_list = []
+
+
+        self.estimatee_sale_detail_total_amount_lable = customtkinter.CTkLabel(self.estimatee_sale_detail_frame3,
+                                                                     font=customtkinter.CTkFont(size=25, weight="bold"),
+                                                                     text=self.estimatee_sale_totalamount,
+                                                                     text_color="black")
+        self.estimatee_sale_detail_total_amount_lable.place(x=20, y=40)
+
+
+
         self.sale_estimate_transiction_frame = customtkinter.CTkFrame(self.sale_estimate_frame, width=1720, height=700)
         self.sale_estimate_transiction_frame.place(x=10, y=280)
 
@@ -1583,7 +1611,6 @@ class App(customtkinter.CTk):
         self.sale_estimatetransictionTable.pack(fill=BOTH, expand=1)
         self.sale_estimatetransictionTable.bind("<ButtonRelease-1>", self.saleestimatetrans)
 
-        self.saleestimatetrans()
 
         self.Var_sale_estimate_searchtxt = StringVar()
 
@@ -1611,6 +1638,8 @@ class App(customtkinter.CTk):
         self.sale_estimate_pur_clear_button = customtkinter.CTkButton(self.sale_estimate_transiction_frame, width=70, height=30,
                                                              text="Clear", command=self.saleestimatetransclear)
         self.sale_estimate_pur_clear_button.place(x=1630, y=60)
+        self.calgetsaleestimatetotalamount()
+        self.saleestimatetrans()
 
         # todo:sale payment
         self.in_sale_payment_top_frame = customtkinter.CTkFrame(self.sale_payment_frame, width=1720, height=100)
@@ -2341,36 +2370,13 @@ class App(customtkinter.CTk):
         # select default frame
         self.select_frame_by_name("home")
 
-
-    def addparty_event(self):
-        call(["python", "AddParty.py"])
-    def editparty_event(self):
-        call(["python", "EditParty.py"])
-    def edititem_event(self):
-        call(["python", "EditItem.py"])
-    def editgstsale_event(self):
-        call(["python", "EditGSTSale.py"])
-    def additem_event(self):
-        call(["python", "AddItem.py"])
-    def addsale_event(self):
-        call(["python", "AddSale.py"])
-        # os.system('python AddSale.py')
-    def editsale_event(self):
-        call(["python", "EditSale.py"])
-    def addestimate_event(self):
-        call(["python", "Estimate.py"])
-    def addpurchase_event(self):
-        call(["python", "Purchase.py"])
-    def editparty_event(self):
-        call(["python", "EditParty.py"])
-
     def select_frame_by_name(self, name):
         # set button color for selected button
         self.home_button.configure(fg_color=("gray75", "gray25") if name == "home" else "transparent")
         self.parties_button.configure(fg_color=("gray75", "gray25") if name == "parties" else "transparent")
         self.Items_button.configure(fg_color=("gray75", "gray25") if name == "items" else "transparent")
         self.gst_sale_button.configure(fg_color=("gray75", "gray25") if name == "gstsale" else "transparent")
-        self.sale_button.configure(fg_color=("gray75", "gray25") if name == "sale" else "transparent")
+        self.sale_button.configure(fg_color=("gray75", "gray25") if name == "sale" or name == "return" or name == "payment" or name == "order" or name == "delivery" or name == "estimate" else "transparent")
         self.Purches_button.configure(fg_color=("gray75", "gray25") if name == "purches" else "transparent")
         self.Expenses_button.configure(fg_color=("gray75", "gray25") if name == "expenses" else "transparent")
         self.Cashhandel_button.configure(fg_color=("gray75", "gray25") if name == "cashhandel" else "transparent")
@@ -2379,6 +2385,15 @@ class App(customtkinter.CTk):
         self.Backup_button.configure(fg_color=("gray75", "gray25") if name == "backup" else "transparent")
         self.Utilities_button.configure(fg_color=("gray75", "gray25") if name == "utilities" else "transparent")
         self.Setting_button.configure(fg_color=("gray75", "gray25") if name == "setting" else "transparent")
+
+        # GST Sale Frames
+        self.gstsale_return_button.configure(fg_color=("gray75", "gray25") if name == "gstreturn" else "transparent")
+        self.gstsale_payment_button.configure(fg_color=("gray75", "gray25") if name == "gstpayment" else "transparent")
+        self.gstsale_order_button.configure(fg_color=("gray75", "gray25") if name == "gstorder" else "transparent")
+        self.gstsale_chalan_button.configure(fg_color=("gray75", "gray25") if name == "gstdelivery" else "transparent")
+        self.gstsale_estimate_button.configure(fg_color=("gray75", "gray25") if name == "gstestimate" else "transparent")
+
+        # Sale Frames
         self.sale_return_button.configure(fg_color=("gray75", "gray25") if name == "return" else "transparent")
         self.sale_payment_button.configure(fg_color=("gray75", "gray25") if name == "payment" else "transparent")
         self.sale_order_button.configure(fg_color=("gray75", "gray25") if name == "order" else "transparent")
@@ -2402,7 +2417,7 @@ class App(customtkinter.CTk):
             self.gstsale_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.gstsale_frame.grid_forget()
-        if name == "sale":
+        if name == "sale" :
             self.sale_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.sale_frame.grid_forget()
@@ -2438,6 +2453,30 @@ class App(customtkinter.CTk):
             self.setting_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.setting_frame.grid_forget()
+
+        # GST Sale
+        if name == "gstreturn":
+            self.gstsale_return_frame.grid(row=0, column=1, sticky="nsew")
+        else:
+            self.gstsale_return_frame.grid_forget()
+        if name == "gstpayment":
+            self.gstsale_payment_frame.grid(row=0, column=1, sticky="nsew")
+        else:
+            self.gstsale_payment_frame.grid_forget()
+        if name == "gstorder":
+            self.gstsale_order_frame.grid(row=0, column=1, sticky="nsew")
+        else:
+            self.gstsale_order_frame.grid_forget()
+        if name == "gstdelivery":
+            self.gstsale_Delivery_frame.grid(row=0, column=1, sticky="nsew")
+        else:
+            self.gstsale_Delivery_frame.grid_forget()
+        if name == "gstestimate":
+            self.gstsale_estimate_frame.grid(row=0, column=1, sticky="nsew")
+        else:
+            self.gstsale_estimate_frame.grid_forget()
+
+        # Sale
         if name == "return":
             self.sale_return_frame.grid(row=0, column=1, sticky="nsew")
         else:
@@ -2461,6 +2500,8 @@ class App(customtkinter.CTk):
 
     def sale_invoice_button_event(self):
         self.select_frame_by_name("sale_invoice")
+
+    # home
     def home_button_event(self):
         self.select_frame_by_name("home")
         self.totalrecive()
@@ -2468,45 +2509,42 @@ class App(customtkinter.CTk):
         self.getdate()
         self.calstockvalue()
         self.getlowitem()
-
-
+    # Party
     def parties_button_event(self):
         self.select_frame_by_name("parties")
 
+    # item
     def Items_button_event(self):
         self.select_frame_by_name("items")
 
+    # GST Sale
     def gst_sale_button_event(self):
         self.select_frame_by_name("gstsale")
+        self.gstcalgetsaletotalamount()
+        self.gstsaletrans()
 
+    def gstsale_return_event(self):
+        self.select_frame_by_name("gstreturn")
+
+    def gstsale_payment_event(self):
+        self.select_frame_by_name("gstpayment")
+
+    def gstsale_order_event(self):
+        self.select_frame_by_name("gstorder")
+
+    def gstsale_delivery_event(self):
+        self.select_frame_by_name("gstdelivery")
+
+    def gstsale_estimate_event(self):
+        self.select_frame_by_name("gstestimate")
+        self.calgetsaleestimatetotalamount()
+        self.saleestimatetrans()
+
+    # Sale
     def sale_button_event(self):
         self.select_frame_by_name("sale")
         self.calgetsaletotalamount()
         self.saletrans()
-
-    def Purches_button_event(self):
-        self.select_frame_by_name("purches")
-
-    def Expenses_button_event(self):
-        self.select_frame_by_name("expenses")
-
-    def Cashhandel_button_event(self):
-        self.select_frame_by_name("cashhandel")
-
-    def Reports_button_event(self):
-        self.select_frame_by_name("reports")
-
-    def Sync_button_event(self):
-        self.select_frame_by_name("sync")
-
-    def Backup_button_event(self):
-        self.select_frame_by_name("backup")
-
-    def Utilities_button_event(self):
-        self.select_frame_by_name("utilities")
-
-    def Setting_button_event(self):
-        self.select_frame_by_name("setting")
     def sale_return_event(self):
         self.select_frame_by_name("return")
     def sale_payment_event(self):
@@ -2517,6 +2555,80 @@ class App(customtkinter.CTk):
         self.select_frame_by_name("delivery")
     def sale_estimate_event(self):
         self.select_frame_by_name("estimate")
+        self.calgetsaleestimatetotalamount()
+        self.saleestimatetrans()
+
+    # Purchase
+    def Purches_button_event(self):
+        self.select_frame_by_name("purches")
+
+    # Expenses
+    def Expenses_button_event(self):
+        self.select_frame_by_name("expenses")
+
+    # Cash Handel
+    def Cashhandel_button_event(self):
+        self.select_frame_by_name("cashhandel")
+
+    # Reports
+    def Reports_button_event(self):
+        self.select_frame_by_name("reports")
+
+    # Sync
+    def Sync_button_event(self):
+        self.select_frame_by_name("sync")
+
+    # Backup
+    def Backup_button_event(self):
+        self.select_frame_by_name("backup")
+
+    # Utilities
+    def Utilities_button_event(self):
+        self.select_frame_by_name("utilities")
+
+    # Setting
+    def Setting_button_event(self):
+        self.select_frame_by_name("setting")
+
+
+
+    # External py open
+    def opencalcu(self):
+        op("Calculator")
+
+    # gst
+    def addgstsale_event(self):
+        call(["python", "AddSale.py"])
+    def editgstsale_event(self):
+        call(["python", "EditGSTSale.py"])
+
+    # sale
+    def addsale_event(self):
+        call(["python", "sale.py"])
+    def editsale_event(self):
+        call(["python", "EditSale.py"])
+    def addestimate_event(self):
+        call(["python", "Estimate.py"])
+
+    # Party
+    def addparty_event(self):
+        call(["python", "AddParty.py"])
+    def editparty_event(self):
+        call(["python", "EditParty.py"])
+
+    # item
+    def edititem_event(self):
+        call(["python", "EditItem.py"])
+    def additem_event(self):
+        call(["python", "AddItem.py"])
+
+    # Purchase
+    def addpurchase_event(self):
+        call(["python", "Purchase.py"])
+    def editparty_event(self):
+        call(["python", "EditParty.py"])
+
+
 
     def change_appearance_mode_event(self,event):
         p = 1
@@ -2525,7 +2637,6 @@ class App(customtkinter.CTk):
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
-
             cur.execute("Select no from invosalenon where no=?", (p,))
             row = cur.fetchone()
             cur.execute("Update appearance set theme=? where no=?", (
@@ -2544,7 +2655,6 @@ class App(customtkinter.CTk):
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
-
     def get_appearance_mode_event(self):
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
@@ -2561,7 +2671,6 @@ class App(customtkinter.CTk):
                   for i in self.appearancelis2:
                       self.apmodelist.append(i)
                   self.appearance_mode_menu.configure(values=self.apmodelist)
-
             cur.execute("select scelling from appearance where no=1")
             rows = cur.fetchall()
             for row in rows:
@@ -2573,16 +2682,30 @@ class App(customtkinter.CTk):
                     for i in self.scalelis2:
                         self.scalelis.append(i)
                     self.scaling_optionemenu.configure(values=self.scalelis)
-
-
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
+    # def change_scaling_event(self, new_scaling: str):
+    #     new_scaling_float = int(new_scaling.replace("%", "")) / 100
+    #     customtkinter.set_widget_scaling(new_scaling_float)
 
-
-    def change_scaling_event(self, new_scaling: str):
-        new_scaling_float = int(new_scaling.replace("%", "")) / 100
-        customtkinter.set_widget_scaling(new_scaling_float)
+    # home frame methods
+    def calstockvalue(self):
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        self.itemtotalamlist.clear()
+        try:
+            cur.execute(f"select saleprice,openqty from itemdata ",)
+            rows = cur.fetchall()
+            for row in rows:
+                a=int(row[0])
+                b =int(row[1])
+                c=a*b
+                self.itemtotalamlist.append(c)
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+        result="₹ "+str(sum(self.itemtotalamlist))
+        self.stock_amount_lable.configure(text=result,text_color="green")
 
     def totalrecive(self):
         con = sqlite3.connect(database=r'DataBase/ims.db')
@@ -2593,8 +2716,6 @@ class App(customtkinter.CTk):
             for row in rows:
                 for r in row:
                     self.recivetotalamlist.append(r)
-
-
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
@@ -2607,10 +2728,98 @@ class App(customtkinter.CTk):
             for row in rows:
                 for r in row:
                     self.paytotalamlist.append(r)
-
-
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    def caluclattotalsale(self,list1,list2,variable):
+        for r in list1:
+          if r == "":
+             pass
+          else:
+            a= float(r)
+            list2.append(a)
+        result=sum(list2)
+        s=str(result)
+        rresult="₹ "+s
+        variable.configure(text=rresult)
+    def totalsael(self,d,m,y,ld,lm,ly):
+      con = sqlite3.connect(database=r'DataBase/ims.db')
+      cur = con.cursor()
+      self.saletotalamlist.clear()
+      self.totalsaleam.clear()
+      while y <= ly:
+        while m <= lm:
+            while d <= ld:
+              if len(str(d)) == 1:
+                date="0"+str(d)
+              elif len(str(d)) == 1 and d == 0:
+                dm=str(d)
+                dd=dm.replace("0","1")
+                date="0"+dd
+              else:
+                date =str(d)
+              if len(str(m)) == 1:
+                month="/0"+str(m)
+              elif len(str(m)) == 1 and m == 0:
+                dm=str(m)
+                dd=dm.replace("0","1")
+                month="/0"+dd
+              else:
+                month ="/"+str(m)
+              date=date+month+"/"+str(y)
+              try:
+                cur.execute(f"select total from gstsale where invoicedate=?",(date,) )
+                rows = cur.fetchall()
+                for row in rows:
+                  for r in row:
+                    self.saletotalamlist.append(r)
+              except Exception as ex:
+                 messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+              d = d + 1
+            m = m + 1
+            d =1
+        y= y + 1
+      self.caluclattotalsale(self.saletotalamlist,self.totalsaleam,self.sale_amount_lable)
+
+    def totalpurc(self,d,m,y,ld,lm,ly):
+      con = sqlite3.connect(database=r'DataBase/ims.db')
+      cur = con.cursor()
+      self.purtotalamlist.clear()
+      self.pursaleam.clear()
+      while y <= ly:
+        while m <= lm:
+
+            while d <= ld:
+              if len(str(d)) == 1:
+                date="0"+str(d)
+              elif len(str(d)) == 1 and d == 0:
+                dm=str(d)
+                dd=dm.replace("0","1")
+                date="0"+dd
+              else:
+                date =str(d)
+              if len(str(m)) == 1:
+                month="/0"+str(m)
+              elif len(str(m)) == 1 and m == 0:
+                dm=str(m)
+                dd=dm.replace("0","1")
+                month="/0"+dd
+              else:
+                month ="/"+str(m)
+              date=date+month+"/"+str(y)
+              try:
+                cur.execute(f"select total from gstpurchase where invoicedate=?",(date,) )
+                rows = cur.fetchall()
+                for row in rows:
+                  for r in row:
+                    self.purtotalamlist.append(r)
+
+              except Exception as ex:
+                 messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+              d = d + 1
+            m = m + 1
+            d =1
+        y= y + 1
+      self.caluclattotalsale(self.purtotalamlist,self.pursaleam,self.purchesam_lable2)
     def gd(self,event):
         self.getdate()
     def getdate(self):
@@ -2768,123 +2977,6 @@ class App(customtkinter.CTk):
             self.totalsael(d,m,y,ld,lm,ly)
             self.totalpurc(d, m, y, ld, lm, ly)
 
-    def totalsael(self,d,m,y,ld,lm,ly):
-      con = sqlite3.connect(database=r'DataBase/ims.db')
-      cur = con.cursor()
-      self.saletotalamlist.clear()
-      self.totalsaleam.clear()
-
-      while y <= ly:
-        while m <= lm:
-
-            while d <= ld:
-              if len(str(d)) == 1:
-                date="0"+str(d)
-              elif len(str(d)) == 1 and d == 0:
-                dm=str(d)
-                dd=dm.replace("0","1")
-                date="0"+dd
-              else:
-                date =str(d)
-              if len(str(m)) == 1:
-                month="/0"+str(m)
-              elif len(str(m)) == 1 and m == 0:
-                dm=str(m)
-                dd=dm.replace("0","1")
-                month="/0"+dd
-              else:
-                month ="/"+str(m)
-              date=date+month+"/"+str(y)
-              try:
-                cur.execute(f"select total from gstsale where invoicedate=?",(date,) )
-                rows = cur.fetchall()
-                for row in rows:
-                  for r in row:
-                    self.saletotalamlist.append(r)
-
-              except Exception as ex:
-                 messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
-              d = d + 1
-            m = m + 1
-            d =1
-        y= y + 1
-      self.caluclattotalsale(self.saletotalamlist,self.totalsaleam,self.sale_amount_lable)
-
-    def totalpurc(self,d,m,y,ld,lm,ly):
-      con = sqlite3.connect(database=r'DataBase/ims.db')
-      cur = con.cursor()
-      self.purtotalamlist.clear()
-      self.pursaleam.clear()
-
-      while y <= ly:
-        while m <= lm:
-
-            while d <= ld:
-              if len(str(d)) == 1:
-                date="0"+str(d)
-              elif len(str(d)) == 1 and d == 0:
-                dm=str(d)
-                dd=dm.replace("0","1")
-                date="0"+dd
-              else:
-                date =str(d)
-              if len(str(m)) == 1:
-                month="/0"+str(m)
-              elif len(str(m)) == 1 and m == 0:
-                dm=str(m)
-                dd=dm.replace("0","1")
-                month="/0"+dd
-              else:
-                month ="/"+str(m)
-              date=date+month+"/"+str(y)
-              try:
-                cur.execute(f"select total from gstpurchase where invoicedate=?",(date,) )
-                rows = cur.fetchall()
-                for row in rows:
-                  for r in row:
-                    self.purtotalamlist.append(r)
-
-              except Exception as ex:
-                 messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
-              d = d + 1
-            m = m + 1
-            d =1
-        y= y + 1
-      self.caluclattotalsale(self.purtotalamlist,self.pursaleam,self.purchesam_lable2)
-
-    def opencalcu(self):
-        op("Calculator")
-    def caluclattotalsale(self,list1,list2,variable):
-        for r in list1:
-          if r == "":
-             pass
-          else:
-            a= float(r)
-            list2.append(a)
-        result=sum(list2)
-        s=str(result)
-        rresult="₹ "+s
-        variable.configure(text=rresult)
-
-    def calstockvalue(self):
-        con = sqlite3.connect(database=r'DataBase/ims.db')
-        cur = con.cursor()
-        self.itemtotalamlist.clear()
-        try:
-            cur.execute(f"select saleprice,openqty from itemdata ",)
-            rows = cur.fetchall()
-            for row in rows:
-                a=int(row[0])
-                b =int(row[1])
-                c=a*b
-                self.itemtotalamlist.append(c)
-        except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-        result="₹ "+str(sum(self.itemtotalamlist))
-        self.stock_amount_lable.configure(text=result,text_color="green")
-
     def getlowitem(self):
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
@@ -2911,10 +3003,18 @@ class App(customtkinter.CTk):
             self.lowStock_lable2.insert(0.0,result)
             self.lowStock_lable2.configure(state='disabled')
 
-    def calculate_growth_rate(initial_value, final_value):
-        growth_rate = (final_value - initial_value) / initial_value * 100
-        return growth_rate
-
+    # Party Frame Methods
+    def show(self):
+      con = sqlite3.connect(database=r'DataBase/ims.db')
+      cur = con.cursor()
+      try:
+        cur.execute("select partyname,gstin,paybalence,recivebalence from partydata")
+        rows = cur.fetchall()
+        self.productTable.delete(*self.productTable.get_children())
+        for row in rows:
+            self.productTable.insert('', END, values=row)
+      except Exception as ex:
+        messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
     def get_data(self, ev):
         partydatalist=[]
         f = self.productTable.focus()
@@ -2938,18 +3038,15 @@ class App(customtkinter.CTk):
                 self.show()
                 self.get_transiction_data()
                 self.patyclear()
-
             cur.execute("select pid,partyname,gstin,phonenumber,gsttype,state,emailid,billaddress,shipaddress,paybalence,recivebalence,date,creditlim,add1,add2,add3,add4 from partydata where partyname=?",
                 (row[0],))
             rows = cur.fetchall()
             for row in rows:
                 for r in row:
                     partydatalist.append(r)
-
             cur.execute(
                 "Update editpartydata set partyname=?,gstin=?,phonenumber=?,gsttype=?,state=?,emailid=?,billaddress=?,shipaddress=?,paybalence=?,recivebalence=?,date=?,creditlim=?,add1=?,add2=?,add3=?,add4=? where pid=1",
                 (
-
                     partydatalist[1],
                     partydatalist[2],
                     partydatalist[3],
@@ -2968,28 +3065,24 @@ class App(customtkinter.CTk):
                     partydatalist[16],
                 ))
             con.commit()
-
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
-    def get_transiction_data(self):
-
-        gst = self.partygstin.get()
-        rgst = gst.replace("GSTIN : ", "")
-        con = sqlite3.connect(database=r'DataBase/ims.db')
-        cur = con.cursor()
+    def add_amount(self, ev):
+        f = self.transictionTable.focus()
+        content = (self.transictionTable.item(f))
+        row = content['values']
+        invo = row[0]
         try:
-            cur.execute("select invoiceno,invoicedate,paymentype,total,received,refreceno from gstsale where gstin=?",
-                        (rgst,))
-            rows = cur.fetchall()
+            con = sqlite3.connect(database=r'DataBase/ims.db')
+            cur = con.cursor()
 
-            self.transictionTable.delete(*self.transictionTable.get_children())
-            for row in rows:
-                self.transictionTable.insert('', END, values=row)
-
+            cur.execute("Select invoice from edittransction where no=1")
+            cur.execute("Update edittransction set invoice=?", (
+                invo,
+            ))
+            con.commit()
         except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
+            print(ex)
     def patysearch(self):
         select=self.parties_search.get()
         ssk=select.replace("Name","partyname")
@@ -3003,7 +3096,6 @@ class App(customtkinter.CTk):
             elif self.Var_searchtxt.get()=="":
                 messagebox.showerror("Error","Search input should be required",parent=self)
             else :
-
               cur.execute("select partyname,gstin,paybalence,recivebalence from partydata where "+sss+" LIKE '%"+self.Var_searchtxt.get()+"%'")
               rows=cur.fetchall()
               if len(rows)!=0:
@@ -3012,10 +3104,12 @@ class App(customtkinter.CTk):
                  self.productTable.insert('',END,values=row)
               else:
                   messagebox.showerror("Error","No record found!!!",parent=self)
-
         except Exception as ex:
            messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=self)
-
+    def patyclear(self):
+        self.parties_search.set("Select"),
+        self.Var_searchtxt.set(""),
+        self.show()
     def partytranssearch(self):
         select=self.party_trans_search.get()
         ssk=select.replace("Invoice","invoiceno")
@@ -3038,31 +3132,111 @@ class App(customtkinter.CTk):
                  self.transictionTable.insert('',END,values=row)
               else:
                   messagebox.showerror("Error","No record found!!!",parent=self)
-
         except Exception as ex:
            messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=self)
+    def patytransclear(self):
+        self.party_trans_search.set("Select"),
+        self.Var_trans_searchtxt.set(""),
+        self.get_transiction_data()
 
-    def add_amount(self, ev):
 
-        f = self.transictionTable.focus()
-        content = (self.transictionTable.item(f))
+   # Item Frame methods
+    def itemshow(self):
+      con = sqlite3.connect(database=r'DataBase/ims.db')
+      cur = con.cursor()
+      try:
+        cur.execute("select itemname,hsn,itemcode,openqty from itemdata")
+        rows = cur.fetchall()
+        self.itemTable.delete(*self.itemTable.get_children())
+        for row in rows:
+            self.itemTable.insert('', END, values=row)
+      except Exception as ex:
+        messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    def get_itemtrans_data(self, ev):
+        itemdatalist=[]
+        itemdatalist.clear()
+        f = self.itemTable.focus()
+        content = (self.itemTable.item(f))
         row = content['values']
-        invo = row[0]
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
         try:
-            con = sqlite3.connect(database=r'DataBase/ims.db')
-            cur = con.cursor()
-
-            cur.execute("Select invoice from edittransction where no=1")
-            cur.execute("Update edittransction set invoice=?", (
-                invo,
-            ))
+            cur.execute(
+                f"select itemname,hsn,itemcode,gsttax,saleprice,wholesaleprice,purchesprice,openqty from itemdata where hsn=?",
+                (row[1],))
+            rows = cur.fetchall()
+            self.itemTable.delete(*self.itemTable.get_children())
+            for row in rows:
+                self.itemname.set(row[0])
+                self.itemnumber.set(f"HSN No. : {row[1]}")
+                self.itememail.set(f"Item Code. : {row[2]}")
+                self.itemcrlimit.set(f"Tax Rate : {row[3]}")
+                self.itemaddress.set(f"Sale Price : ₹{row[4]}")
+                self.itemgstin.set(f"Wholesale Price : ₹{row[5]}")
+                self.itempurchase.set(f"Purchase Price : ₹{row[6]}")
+                self.itemstock.set(f"In Stock : {row[7]}")
+                self.stoclprice(row[4],row[7],self.itemstockprice)
+                self.itemshow()
+                self.get_item_data()
+                self.itemclear()
+            cur.execute("select pid,itemname,hsn,category,itemcode,saleprice,tax1,discount,dicst,wholesaleprice,tax2,minqty,purchesprice,gsttax,openqty,atprice,date,minstockmanten,location,unit from itemdata where hsn=?",
+                (row[1],))
+            rows = cur.fetchall()
+            for row in rows:
+                for r in row:
+                  itemdatalist.append(r)
+            cur.execute("Update edititemdata set itemname=?,hsn=?,category=?,itemcode=?,saleprice=?,tax1=?,discount=?,dicst=?,wholesaleprice=?,tax2=?,minqty=?,purchesprice=?,gsttax=?,openqty=?,atprice=?,date=?,minstockmanten=?,location=?,unit=? where pid=1",(
+                    itemdatalist[1],
+                    itemdatalist[2],
+                    itemdatalist[3],
+                    itemdatalist[4],
+                    itemdatalist[5],
+                    itemdatalist[6],
+                    itemdatalist[7],
+                    itemdatalist[8],
+                    itemdatalist[9],
+                    itemdatalist[10],
+                    itemdatalist[11],
+                    itemdatalist[12],
+                    itemdatalist[13],
+                    itemdatalist[14],
+                    itemdatalist[15],
+                    itemdatalist[16],
+                    itemdatalist[17],
+                    itemdatalist[18],
+                    itemdatalist[19],
+                ))
             con.commit()
-
-
         except Exception as ex:
-            print(ex)
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    def itemsearch(self):
+        select=self.item_search.get()
+        ssk=select.replace("Name","itemname")
+        ssm=ssk.replace("HSN","hsn")
+        sss = ssm.replace("Item Code", "itemcode")
+        con=sqlite3.connect(database=r'DataBase/ims.db')
+        cur=con.cursor()
+        try:
+            if self.item_search.get()=="Select":
+                messagebox.showerror("Error","Select Search By Option",parent=self)
+            elif self.item_serch_entery.get()=="":
+                messagebox.showerror("Error","Search input should be required",parent=self)
+            else :
+              cur.execute("select itemname,hsn,itemcode,openqty from itemdata where "+sss+" LIKE '%"+self.item_serch_entery.get()+"%'")
+              rows=cur.fetchall()
+              if len(rows)!=0:
+                self.itemTable.delete(*self.itemTable.get_children())
+                for row in rows:
+                 self.itemTable.insert('',END,values=row)
+              else:
+                  messagebox.showerror("Error","No record found!!!",parent=self)
+        except Exception as ex:
+           messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=self)
+    def itemclear(self):
+        self.item_search.set("Select"),
+        self.Vark_item_searchtxt.set(""),
+        self.itemshow()
     def add_itemamount(self, ev):
-
         f = self.itemtransictionTable.focus()
         content = (self.itemtransictionTable.item(f))
         row = content['values']
@@ -3076,10 +3250,459 @@ class App(customtkinter.CTk):
                 invo,
             ))
             con.commit()
-
-
         except Exception as ex:
             print(ex)
+
+    def itemtranssearch(self):
+        select = self.item_pur_search.get()
+        ssk = select.replace("Invoice", "invoiceno")
+        ssm = ssk.replace("Date", "invoicedate")
+        ssmk = ssm.replace("Cheque No.", "refreceno")
+        sss = ssmk.replace("Payment Type", "paymentype")
+        select = self.itemname.get()
+        lis = ["item1name", "item2name", "item3name", "item4name", "item5name", "item6name", "item7name", "item8name",
+               "item9name", "item10name"]
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        for i in lis:
+          try:
+            if self.item_pur_search.get() == "Select":
+                messagebox.showerror("Error", "Select Search By Option", parent=self)
+            elif self.item_pur_serch_entery.get() == "":
+                messagebox.showerror("Error", "Search input should be required", parent=self)
+            else:
+                cur.execute("select invoiceno,invoicedate,paymentype,total,received,refreceno from gstsale where " + sss + " LIKE '%" + self.item_pur_serch_entery.get() + "%' and "+i+" LIKE '%"+select+"%'")
+                rows = cur.fetchall()
+                if len(rows) != 0:
+                    self.itemtransictionTable.delete(*self.itemtransictionTable.get_children())
+                    for row in rows:
+                        self.itemtransictionTable.insert('', END, values=row)
+                else:
+                    print("Error", "No record found!!!")
+          except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    def itemctranslear(self):
+        self.item_pur_search.set("Select"),
+        self.Var_pur_searchtxt.set(""),
+        self.get_item_data()
+    def get_item_data(self):
+        lis = ["item1name", "item2name", "item3name", "item4name", "item5name", "item6name", "item7name", "item8name",
+               "item9name", "item10name"]
+
+        select = self.itemname.get()
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        self.itemtransictionTable.delete(*self.itemtransictionTable.get_children())
+        for i in lis:
+          try:
+            cur.execute(f"select invoiceno,invoicedate,paymentype,total,received,refreceno from gstsale where {i}=?",
+                        (select,))
+            rows = cur.fetchall()
+
+            for row in rows:
+                self.itemtransictionTable.insert('', END, values=row)
+
+          except Exception as ex:
+            print("Error", f"Error due to : {str(ex)}")
+    def itemctranslear(self):
+        self.item_pur_search.set("Select"),
+        self.Var_pur_searchtxt.set(""),
+        self.get_item_data()
+
+
+
+    # GST Sale Frame Methods
+    def gstgetsaletotalamount(self):
+        self.gstsale_paidamount_mlist.clear()
+        self.gstsale_totalamount_mlist.clear()
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+            cur.execute("select received from gstsale ",)
+            rows = cur.fetchall()
+            for row in rows:
+                for r in row:
+                  rm=int(r)
+                  self.gstsale_paidamount_mlist.append(rm)
+
+            cur.execute("select total from gstsale ", )
+            rows = cur.fetchall()
+            for rosw in rows:
+                for r in rosw:
+                  rk=float(r)
+                  self.gstsale_totalamount_mlist.append(rk)
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    def gstcalgetsaletotalamount(self):
+        self.gstsale_paidamount_mlist = []
+        self.gstsale_unpaidamount_mlist = []
+        self.gstsale_totalamount_mlist = []
+        self.gstgetsaletotalamount()
+        print(self.gstsale_totalamount_mlist)
+        for i in self.gstsale_paidamount_list:
+           for k in i:
+             if k == "":
+                 pass
+             else:
+              a=int(k)
+              self.gstsale_paidamount_mlist.append(a)
+        for m in self.gstsale_totalamount_list:
+            for k in m:
+             if k == "":
+                 pass
+             else:
+               b=float(k)
+               self.gstsale_totalamount_mlist.append(b)
+        sumpaid=sum(self.gstsale_paidamount_mlist)
+        sumtotal=sum(self.gstsale_totalamount_mlist)
+        recive=sumtotal-sumpaid
+        self.gstsale_paidamount=f"₹{sumpaid}"
+        self.gstsale_unpaidamount =f"₹{recive}"
+        self.gstsale_totalamount=f"₹{sumtotal}"
+        self.gstsale_detail_paid_amount_lable.configure(text=self.gstsale_paidamount)
+        self.gstsale_detail_unpaid_amount_lable.configure(text=self.gstsale_unpaidamount)
+        self.gstsale_detail_total_amount_lable.configure(text=self.gstsale_totalamount)
+    def gstsaletrans(self):
+            self.involista3.clear()
+            con = sqlite3.connect(database=r'DataBase/ims.db')
+            cur = con.cursor()
+            try:
+                cur.execute("select invoicedate,invoiceno,partyname,paymentype,total,received,refreceno from gstsale")
+                rows = cur.fetchall()
+                self.gstsaletransictionTable.delete(*self.gstsaletransictionTable.get_children())
+                for row in rows:
+                    self.gstsaletransictionTable.insert('', END, values=row)
+            except Exception as ex:
+                messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    def gstsaledataget(self,event):
+        f = self.gstsaletransictionTable.focus()
+        content = (self.gstsaletransictionTable.item(f))
+        mow = content['values']
+        invoice_zero=6-len(str(mow[1]))
+        a = 1
+        mm = "0"
+        while a < invoice_zero:
+            mm = mm + "0"
+            a += 1
+        final = f"{mm}{mow[1]}"
+        strfinal = str(final)
+        involista3 = []
+        involista3.clear()
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+          cur.execute("select partyname,phonenumber,gstin,invoiceno,cashorcr,invoicedate,steteofsuply,paymentype,refreceno,total,received,balance,item1name,qty1,unit1,unitprice1,dec1,desamount1,amount1,item2name,qty2,unit2,unitprice2,dec2,desamount2,amount2,item3name,qty3,unit3,unitprice3,dec3,desamount3,amount3,item4name,qty4,unit4,unitprice4,dec4,desamount4,amount4,item5name,qty5,unit5,unitprice5,dec5,desamount5,amount5,item6name,qty6,unit6,unitprice6,dec6,desamount6,amount6,item7name,qty7,unit7,unitprice7,dec7,desamount7,amount7,item8name,qty8,unit8,unitprice8,dec8,desamount8,amount8,item9name,qty9,unit9,unitprice9,dec9,desamount9,amount9,item10name,qty10,unit10,unitprice10,dec10,desamount10,amount10 from gstsale where invoiceno=?",
+            (strfinal,))
+          rows = cur.fetchall()
+          for row in rows:
+            for r in row:
+                involista3.append(r)
+          cur.execute("Update editgstsale set partyname=?,phonenumber=?,gstin=?,invoiceno=?,cashorcr=?,invoicedate=?,steteofsuply=?,paymentype=?,refreceno=?,total=?,received=?,balance=?,item1name=?,qty1=?,unit1=?,unitprice1=?,dec1=?,desamount1=?,amount1=?,item2name=?,qty2=?,unit2=?,unitprice2=?,dec2=?,desamount2=?,amount2=?,item3name=?,qty3=?,unit3=?,unitprice3=?,dec3=?,desamount3=?,amount3=?,item4name=?,qty4=?,unit4=?,unitprice4=?,dec4=?,desamount4=?,amount4=?,item5name=?,qty5=?,unit5=?,unitprice5=?,dec5=?,desamount5=?,amount5=?,item6name=?,qty6=?,unit6=?,unitprice6=?,dec6=?,desamount6=?,amount6=?,item7name=?,qty7=?,unit7=?,unitprice7=?,dec7=?,desamount7=?,amount7=?,item8name=?,qty8=?,unit8=?,unitprice8=?,dec8=?,desamount8=?,amount8=?,item9name=?,qty9=?,unit9=?,unitprice9=?,dec9=?,desamount9=?,amount9=?,item10name=?,qty10=?,unit10=?,unitprice10=?,dec10=?,desamount10=?,amount10=? where sid=1",
+                (
+                    involista3[0],
+                    involista3[1],
+                    involista3[2],
+                    involista3[3],
+                    involista3[4],
+                    involista3[5],
+                    involista3[6],
+                    involista3[7],
+                    involista3[8],
+                    involista3[9],
+                    involista3[10],
+                    involista3[11],
+                    involista3[12],
+                    involista3[13],
+                    involista3[14],
+                    involista3[15],
+                    involista3[16],
+                    involista3[17],
+                    involista3[18],
+                    involista3[19],
+                    involista3[20],
+                    involista3[21],
+                    involista3[22],
+                    involista3[23],
+                    involista3[24],
+                    involista3[25],
+                    involista3[26],
+                    involista3[27],
+                    involista3[28],
+                    involista3[29],
+                    involista3[30],
+                    involista3[31],
+                    involista3[32],
+                    involista3[33],
+                    involista3[34],
+                    involista3[35],
+                    involista3[36],
+                    involista3[37],
+                    involista3[38],
+                    involista3[39],
+                    involista3[40],
+                    involista3[41],
+                    involista3[42],
+                    involista3[43],
+                    involista3[44],
+                    involista3[45],
+                    involista3[46],
+                    involista3[47],
+                    involista3[48],
+                    involista3[49],
+                    involista3[50],
+                    involista3[51],
+                    involista3[52],
+                    involista3[53],
+                    involista3[54],
+                    involista3[55],
+                    involista3[56],
+                    involista3[57],
+                    involista3[58],
+                    involista3[59],
+                    involista3[60],
+                    involista3[61],
+                    involista3[62],
+                    involista3[63],
+                    involista3[64],
+                    involista3[65],
+                    involista3[66],
+                    involista3[67],
+                    involista3[68],
+                    involista3[69],
+                    involista3[70],
+                    involista3[71],
+                    involista3[72],
+                    involista3[73],
+                    involista3[74],
+                    involista3[75],
+                    involista3[76],
+                    involista3[77],
+                    involista3[78],
+                    involista3[79],
+                    involista3[80],
+                    involista3[81],
+                ))
+          con.commit()
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    def gstsalestranssearch(self):
+        select = self.gstsale_pur_search.get()
+        ssk = select.replace("Invoice", "invoiceno")
+        ssm = ssk.replace("Date", "invoicedate")
+        ssmk = ssm.replace("Cheque No.", "refreceno")
+        ssml = ssmk.replace("Name", "partyname")
+        sss = ssml.replace("Payment Type", "paymentype")
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+            if self.gstsale_pur_search.get() == "Select":
+                messagebox.showerror("Error", "Select Search By Option", parent=self)
+            elif self.Var_gstsale_searchtxt.get() == "":
+                messagebox.showerror("Error", "Search input should be required", parent=self)
+            else:
+                cur.execute(
+                    "select invoicedate,invoiceno,partyname,paymentype,total,received,refreceno from gstsale where " + sss + " LIKE '%" + self.Var_gstsale_searchtxt.get() + "%'")
+                rows = cur.fetchall()
+                if len(rows) != 0:
+                    self.gstsaletransictionTable.delete(*self.gstsaletransictionTable.get_children())
+                    for row in rows:
+                        self.gstsaletransictionTable.insert('', END, values=row)
+                else:
+                    messagebox.showerror("Error", "No record found!!!", parent=self)
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+
+    def gstsaletransclear(self):
+        self.gstsale_pur_search.set("Select"),
+        self.Var_gstsale_searchtxt.set(""),
+        self.gstsaletrans()
+
+
+
+
+    # Sale Frame Methods
+    def calgetsaletotalamount(self):
+        self.sale_paidamount_mlist = []
+        self.sale_unpaidamount_mlist = []
+        self.sale_totalamount_mlist = []
+        self.getsaletotalamount()
+        for i in self.sale_paidamount_list:
+           for k in i:
+             if k == "":
+                 pass
+             else:
+              a=int(k)
+              self.sale_paidamount_mlist.append(a)
+        for m in self.sale_totalamount_list:
+            for k in m:
+             if k == "":
+                 pass
+             else:
+               b=float(k)
+               self.sale_totalamount_mlist.append(b)
+        sumpaid=sum(self.sale_paidamount_mlist)
+        sumtotal = sum(self.sale_totalamount_mlist)
+        recive=sumtotal-sumpaid
+        self.sale_paidamount=f"₹{sumpaid}"
+        self.sale_unpaidamount =f"₹{recive}"
+        self.sale_totalamount=f"₹{sumtotal}"
+        self.sale_detail_paid_amount_lable.configure(text=self.sale_paidamount)
+        self.sale_detail_unpaid_amount_lable.configure(text=self.sale_unpaidamount)
+        self.sale_detail_total_amount_lable.configure(text=self.sale_totalamount)
+    def saletrans(self):
+            self.involista1.clear()
+            con = sqlite3.connect(database=r'DataBase/ims.db')
+            cur = con.cursor()
+            try:
+                cur.execute("select invoicedate,invoiceno,partyname,paymentype,total,received,refreceno from sale")
+                rows = cur.fetchall()
+                self.saletransictionTable.delete(*self.saletransictionTable.get_children())
+                for row in rows:
+                    self.saletransictionTable.insert('', END, values=row)
+            except Exception as ex:
+                messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+
+    def saledataget(self,event):
+        f = self.saletransictionTable.focus()
+        content = (self.saletransictionTable.item(f))
+        mow = content['values']
+        invoice_zero=6-len(str(mow[1]))
+        a = 1
+        mm = "0"
+        while a < invoice_zero:
+            mm = mm + "0"
+            a += 1
+        final = f"{mm}{mow[1]}"
+        strfinal = str(final)
+        involista2 = []
+        involista2.clear()
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+          cur.execute("select partyname,phonenumber,gstin,invoiceno,cashorcr,invoicedate,steteofsuply,paymentype,refreceno,total,received,balance,item1name,qty1,unit1,unitprice1,dec1,desamount1,amount1,item2name,qty2,unit2,unitprice2,dec2,desamount2,amount2,item3name,qty3,unit3,unitprice3,dec3,desamount3,amount3,item4name,qty4,unit4,unitprice4,dec4,desamount4,amount4,item5name,qty5,unit5,unitprice5,dec5,desamount5,amount5,item6name,qty6,unit6,unitprice6,dec6,desamount6,amount6,item7name,qty7,unit7,unitprice7,dec7,desamount7,amount7,item8name,qty8,unit8,unitprice8,dec8,desamount8,amount8,item9name,qty9,unit9,unitprice9,dec9,desamount9,amount9,item10name,qty10,unit10,unitprice10,dec10,desamount10,amount10 from sale where invoiceno=?",
+            (strfinal,))
+          rows = cur.fetchall()
+          for row in rows:
+            for r in row:
+                involista2.append(r)
+          cur.execute("Update editsale set partyname=?,phonenumber=?,gstin=?,invoiceno=?,cashorcr=?,invoicedate=?,steteofsuply=?,paymentype=?,refreceno=?,total=?,received=?,balance=?,item1name=?,qty1=?,unit1=?,unitprice1=?,dec1=?,desamount1=?,amount1=?,item2name=?,qty2=?,unit2=?,unitprice2=?,dec2=?,desamount2=?,amount2=?,item3name=?,qty3=?,unit3=?,unitprice3=?,dec3=?,desamount3=?,amount3=?,item4name=?,qty4=?,unit4=?,unitprice4=?,dec4=?,desamount4=?,amount4=?,item5name=?,qty5=?,unit5=?,unitprice5=?,dec5=?,desamount5=?,amount5=?,item6name=?,qty6=?,unit6=?,unitprice6=?,dec6=?,desamount6=?,amount6=?,item7name=?,qty7=?,unit7=?,unitprice7=?,dec7=?,desamount7=?,amount7=?,item8name=?,qty8=?,unit8=?,unitprice8=?,dec8=?,desamount8=?,amount8=?,item9name=?,qty9=?,unit9=?,unitprice9=?,dec9=?,desamount9=?,amount9=?,item10name=?,qty10=?,unit10=?,unitprice10=?,dec10=?,desamount10=?,amount10=? where sid=1",
+                (
+                    involista2[0],
+                    involista2[1],
+                    involista2[2],
+                    involista2[3],
+                    involista2[4],
+                    involista2[5],
+                    involista2[6],
+                    involista2[7],
+                    involista2[8],
+                    involista2[9],
+                    involista2[10],
+                    involista2[11],
+                    involista2[12],
+                    involista2[13],
+                    involista2[14],
+                    involista2[15],
+                    involista2[16],
+                    involista2[17],
+                    involista2[18],
+                    involista2[19],
+                    involista2[20],
+                    involista2[21],
+                    involista2[22],
+                    involista2[23],
+                    involista2[24],
+                    involista2[25],
+                    involista2[26],
+                    involista2[27],
+                    involista2[28],
+                    involista2[29],
+                    involista2[30],
+                    involista2[31],
+                    involista2[32],
+                    involista2[33],
+                    involista2[34],
+                    involista2[35],
+                    involista2[36],
+                    involista2[37],
+                    involista2[38],
+                    involista2[39],
+                    involista2[40],
+                    involista2[41],
+                    involista2[42],
+                    involista2[43],
+                    involista2[44],
+                    involista2[45],
+                    involista2[46],
+                    involista2[47],
+                    involista2[48],
+                    involista2[49],
+                    involista2[50],
+                    involista2[51],
+                    involista2[52],
+                    involista2[53],
+                    involista2[54],
+                    involista2[55],
+                    involista2[56],
+                    involista2[57],
+                    involista2[58],
+                    involista2[59],
+                    involista2[60],
+                    involista2[61],
+                    involista2[62],
+                    involista2[63],
+                    involista2[64],
+                    involista2[65],
+                    involista2[66],
+                    involista2[67],
+                    involista2[68],
+                    involista2[69],
+                    involista2[70],
+                    involista2[71],
+                    involista2[72],
+                    involista2[73],
+                    involista2[74],
+                    involista2[75],
+                    involista2[76],
+                    involista2[77],
+                    involista2[78],
+                    involista2[79],
+                    involista2[80],
+                    involista2[81],
+                ))
+          con.commit()
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+
+
+
+    # def calculate_growth_rate(initial_value, final_value):
+    #     growth_rate = (final_value - initial_value) / initial_value * 100
+    #     return growth_rate
+
+
+
+    def get_transiction_data(self):
+
+        gst = self.partygstin.get()
+        rgst = gst.replace("GSTIN : ", "")
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+            cur.execute("select invoiceno,invoicedate,paymentype,total,received,refreceno from gstsale where gstin=?",
+                        (rgst,))
+            rows = cur.fetchall()
+
+            self.transictionTable.delete(*self.transictionTable.get_children())
+            for row in rows:
+                self.transictionTable.insert('', END, values=row)
+
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+
+
+
+
 
     def purchasedataget(self,event):
         f = self.purchestransictionTable.focus()
@@ -3216,110 +3839,15 @@ class App(customtkinter.CTk):
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
-    def show(self):
-      con = sqlite3.connect(database=r'DataBase/ims.db')
-      cur = con.cursor()
-      try:
-        cur.execute("select partyname,gstin,paybalence,recivebalence from partydata")
-        rows = cur.fetchall()
-        self.productTable.delete(*self.productTable.get_children())
-        for row in rows:
-            self.productTable.insert('', END, values=row)
-
-      except Exception as ex:
-        messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
 
-    def patyclear(self):
-
-        self.parties_search.set("Select"),
-        self.Var_searchtxt.set(""),
-        self.show()
-
-    def patytransclear(self):
-        self.party_trans_search.set("Select"),
-        self.Var_trans_searchtxt.set(""),
-        self.get_transiction_data()
 
 
-    def itemshow(self):
-      con = sqlite3.connect(database=r'DataBase/ims.db')
-      cur = con.cursor()
-      try:
-        cur.execute("select itemname,hsn,itemcode,openqty from itemdata")
-        rows = cur.fetchall()
-        self.itemTable.delete(*self.itemTable.get_children())
-        for row in rows:
-            self.itemTable.insert('', END, values=row)
-
-      except Exception as ex:
-        messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
-    def get_itemtrans_data(self, ev):
-        itemdatalist=[]
-        itemdatalist.clear()
-        f = self.itemTable.focus()
-        content = (self.itemTable.item(f))
-        row = content['values']
-        con = sqlite3.connect(database=r'DataBase/ims.db')
-        cur = con.cursor()
-        try:
-
-            cur.execute(
-                f"select itemname,hsn,itemcode,gsttax,saleprice,wholesaleprice,purchesprice,openqty from itemdata where hsn=?",
-                (row[1],))
-            rows = cur.fetchall()
-            self.itemTable.delete(*self.itemTable.get_children())
-            for row in rows:
-                print(row)
-                self.itemname.set(row[0])
-                self.itemnumber.set(f"HSN No. : {row[1]}")
-                self.itememail.set(f"Item Code. : {row[2]}")
-                self.itemcrlimit.set(f"Tax Rate : {row[3]}")
-                self.itemaddress.set(f"Sale Price : ₹{row[4]}")
-                self.itemgstin.set(f"Wholesale Price : ₹{row[5]}")
-                self.itempurchase.set(f"Purchase Price : ₹{row[6]}")
-                self.itemstock.set(f"In Stock : {row[7]}")
-                self.stoclprice(row[4],row[7],self.itemstockprice)
-                self.itemshow()
-                self.get_item_data()
-                self.itemclear()
 
 
-            cur.execute("select pid,itemname,hsn,category,itemcode,saleprice,tax1,discount,dicst,wholesaleprice,tax2,minqty,purchesprice,gsttax,openqty,atprice,date,minstockmanten,location,unit from itemdata where hsn=?",
-                (row[1],))
-            rows = cur.fetchall()
-            for row in rows:
-                for r in row:
-                  itemdatalist.append(r)
-
-            cur.execute("Update edititemdata set itemname=?,hsn=?,category=?,itemcode=?,saleprice=?,tax1=?,discount=?,dicst=?,wholesaleprice=?,tax2=?,minqty=?,purchesprice=?,gsttax=?,openqty=?,atprice=?,date=?,minstockmanten=?,location=?,unit=? where pid=1",(
-
-                    itemdatalist[1],
-                    itemdatalist[2],
-                    itemdatalist[3],
-                    itemdatalist[4],
-                    itemdatalist[5],
-                    itemdatalist[6],
-                    itemdatalist[7],
-                    itemdatalist[8],
-                    itemdatalist[9],
-                    itemdatalist[10],
-                    itemdatalist[11],
-                    itemdatalist[12],
-                    itemdatalist[13],
-                    itemdatalist[14],
-                    itemdatalist[15],
-                    itemdatalist[16],
-                    itemdatalist[17],
-                    itemdatalist[18],
-                    itemdatalist[19],
 
 
-                ))
-            con.commit()
-        except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+
 
     def stoclprice(self,price,qtyy,var):
         stprice=int(price)
@@ -3327,89 +3855,7 @@ class App(customtkinter.CTk):
         stock=stprice*qty
         var.set(f"Stock Price : ₹{stock}")
 
-    def itemsearch(self):
-        select=self.item_search.get()
-        ssk=select.replace("Name","itemname")
-        ssm=ssk.replace("HSN","hsn")
-        sss = ssm.replace("Item Code", "itemcode")
-        con=sqlite3.connect(database=r'DataBase/ims.db')
-        cur=con.cursor()
-        try:
-            if self.item_search.get()=="Select":
-                messagebox.showerror("Error","Select Search By Option",parent=self)
-            elif self.item_serch_entery.get()=="":
-                messagebox.showerror("Error","Search input should be required",parent=self)
-            else :
-              cur.execute("select itemname,hsn,itemcode,openqty from itemdata where "+sss+" LIKE '%"+self.item_serch_entery.get()+"%'")
-              rows=cur.fetchall()
-              if len(rows)!=0:
-                self.itemTable.delete(*self.itemTable.get_children())
-                for row in rows:
-                 self.itemTable.insert('',END,values=row)
-              else:
-                  messagebox.showerror("Error","No record found!!!",parent=self)
 
-        except Exception as ex:
-           messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=self)
-
-    def get_item_data(self):
-        lis = ["item1name", "item2name", "item3name", "item4name", "item5name", "item6name", "item7name", "item8name",
-               "item9name", "item10name"]
-
-        select = self.itemname.get()
-        con = sqlite3.connect(database=r'DataBase/ims.db')
-        cur = con.cursor()
-        self.itemtransictionTable.delete(*self.itemtransictionTable.get_children())
-        for i in lis:
-          try:
-            cur.execute(f"select invoiceno,invoicedate,paymentype,total,received,refreceno from gstsale where {i}=?",
-                        (select,))
-            rows = cur.fetchall()
-
-            for row in rows:
-                self.itemtransictionTable.insert('', END, values=row)
-
-          except Exception as ex:
-            print("Error", f"Error due to : {str(ex)}")
-
-    def itemtranssearch(self):
-        select = self.item_pur_search.get()
-        ssk = select.replace("Invoice", "invoiceno")
-        ssm = ssk.replace("Date", "invoicedate")
-        ssmk = ssm.replace("Cheque No.", "refreceno")
-        sss = ssmk.replace("Payment Type", "paymentype")
-        select = self.itemname.get()
-        lis = ["item1name", "item2name", "item3name", "item4name", "item5name", "item6name", "item7name", "item8name",
-               "item9name", "item10name"]
-        con = sqlite3.connect(database=r'DataBase/ims.db')
-        cur = con.cursor()
-        for i in lis:
-          try:
-            if self.item_pur_search.get() == "Select":
-                messagebox.showerror("Error", "Select Search By Option", parent=self)
-            elif self.item_pur_serch_entery.get() == "":
-                messagebox.showerror("Error", "Search input should be required", parent=self)
-            else:
-                cur.execute("select invoiceno,invoicedate,paymentype,total,received,refreceno from gstsale where " + sss + " LIKE '%" + self.item_pur_serch_entery.get() + "%' and "+i+" LIKE '%"+select+"%'")
-                rows = cur.fetchall()
-                if len(rows) != 0:
-                    self.itemtransictionTable.delete(*self.itemtransictionTable.get_children())
-                    for row in rows:
-                        self.itemtransictionTable.insert('', END, values=row)
-                else:
-                    print("Error", "No record found!!!")
-
-          except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
-    def itemclear(self):
-        self.item_search.set("Select"),
-        self.Vark_item_searchtxt.set(""),
-        self.itemshow()
-    def itemctranslear(self):
-        self.item_pur_search.set("Select"),
-        self.Var_pur_searchtxt.set(""),
-        self.get_item_data()
 
 
 
@@ -3532,6 +3978,9 @@ class App(customtkinter.CTk):
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
     def getsaletotalamount(self):
+        self.sale_paidamount_list.clear()
+        self.sale_totalamount_list.clear()
+
 
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
@@ -3552,34 +4001,8 @@ class App(customtkinter.CTk):
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
 
-    def calgetsaletotalamount(self):
-        self.sale_paidamount_mlist = []
-        self.sale_unpaidamount_mlist = []
-        self.sale_totalamount_mlist = []
-        self.getsaletotalamount()
-        for i in self.sale_paidamount_list:
-           for k in i:
-             if k == "":
-                 pass
-             else:
-              a=int(k)
-              self.sale_paidamount_mlist.append(a)
-        for m in self.sale_totalamount_list:
-            for k in m:
-             if k == "":
-                 pass
-             else:
-               b=float(k)
-               self.sale_totalamount_mlist.append(b)
-        sumpaid=sum(self.sale_paidamount_mlist)
-        sumtotal = sum(self.sale_totalamount_mlist)
-        recive=sumtotal-sumpaid
-        self.sale_paidamount=f"₹{sumpaid}"
-        self.sale_unpaidamount =f"₹{recive}"
-        self.sale_totalamount=f"₹{sumtotal}"
-        self.sale_detail_paid_amount_lable.configure(text=self.sale_paidamount)
-        self.sale_detail_unpaid_amount_lable.configure(text=self.sale_unpaidamount)
-        self.sale_detail_total_amount_lable.configure(text=self.sale_totalamount)
+
+
 
     def saletrans(self):
             self.involista1.clear()
@@ -3595,121 +4018,7 @@ class App(customtkinter.CTk):
                 messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
 
-    def saledataget(self,event):
-        f = self.saletransictionTable.focus()
-        content = (self.saletransictionTable.item(f))
-        mow = content['values']
-        invoice_zero=6-len(str(mow[1]))
-        a = 1
-        mm = "0"
-        while a < invoice_zero:
-            mm = mm + "0"
-            a += 1
-        final = f"{mm}{mow[1]}"
-        strfinal = str(final)
-        involista2 = []
-        involista2.clear()
-        con = sqlite3.connect(database=r'DataBase/ims.db')
-        cur = con.cursor()
-        try:
 
-          cur.execute("select partyname,phonenumber,gstin,invoiceno,cashorcr,invoicedate,steteofsuply,paymentype,refreceno,total,received,balance,item1name,qty1,unit1,unitprice1,dec1,desamount1,amount1,item2name,qty2,unit2,unitprice2,dec2,desamount2,amount2,item3name,qty3,unit3,unitprice3,dec3,desamount3,amount3,item4name,qty4,unit4,unitprice4,dec4,desamount4,amount4,item5name,qty5,unit5,unitprice5,dec5,desamount5,amount5,item6name,qty6,unit6,unitprice6,dec6,desamount6,amount6,item7name,qty7,unit7,unitprice7,dec7,desamount7,amount7,item8name,qty8,unit8,unitprice8,dec8,desamount8,amount8,item9name,qty9,unit9,unitprice9,dec9,desamount9,amount9,item10name,qty10,unit10,unitprice10,dec10,desamount10,amount10 from sale where invoiceno=?",
-            (strfinal,))
-          rows = cur.fetchall()
-          for row in rows:
-            for r in row:
-                involista2.append(r)
-
-          cur.execute("Update editsale set partyname=?,phonenumber=?,gstin=?,invoiceno=?,cashorcr=?,invoicedate=?,steteofsuply=?,paymentype=?,refreceno=?,total=?,received=?,balance=?,item1name=?,qty1=?,unit1=?,unitprice1=?,dec1=?,desamount1=?,amount1=?,item2name=?,qty2=?,unit2=?,unitprice2=?,dec2=?,desamount2=?,amount2=?,item3name=?,qty3=?,unit3=?,unitprice3=?,dec3=?,desamount3=?,amount3=?,item4name=?,qty4=?,unit4=?,unitprice4=?,dec4=?,desamount4=?,amount4=?,item5name=?,qty5=?,unit5=?,unitprice5=?,dec5=?,desamount5=?,amount5=?,item6name=?,qty6=?,unit6=?,unitprice6=?,dec6=?,desamount6=?,amount6=?,item7name=?,qty7=?,unit7=?,unitprice7=?,dec7=?,desamount7=?,amount7=?,item8name=?,qty8=?,unit8=?,unitprice8=?,dec8=?,desamount8=?,amount8=?,item9name=?,qty9=?,unit9=?,unitprice9=?,dec9=?,desamount9=?,amount9=?,item10name=?,qty10=?,unit10=?,unitprice10=?,dec10=?,desamount10=?,amount10=? where sid=1",
-                (
-                    involista2[0],
-                    involista2[1],
-                    involista2[2],
-                    involista2[3],
-                    involista2[4],
-                    involista2[5],
-                    involista2[6],
-                    involista2[7],
-                    involista2[8],
-                    involista2[9],
-                    involista2[10],
-                    involista2[11],
-                    involista2[12],
-                    involista2[13],
-                    involista2[14],
-                    involista2[15],
-                    involista2[16],
-                    involista2[17],
-                    involista2[18],
-                    involista2[19],
-                    involista2[20],
-                    involista2[21],
-                    involista2[22],
-                    involista2[23],
-                    involista2[24],
-                    involista2[25],
-                    involista2[26],
-                    involista2[27],
-                    involista2[28],
-                    involista2[29],
-                    involista2[30],
-                    involista2[31],
-                    involista2[32],
-                    involista2[33],
-                    involista2[34],
-                    involista2[35],
-                    involista2[36],
-                    involista2[37],
-                    involista2[38],
-                    involista2[39],
-                    involista2[40],
-                    involista2[41],
-                    involista2[42],
-                    involista2[43],
-                    involista2[44],
-                    involista2[45],
-                    involista2[46],
-                    involista2[47],
-                    involista2[48],
-                    involista2[49],
-                    involista2[50],
-                    involista2[51],
-                    involista2[52],
-                    involista2[53],
-                    involista2[54],
-                    involista2[55],
-                    involista2[56],
-                    involista2[57],
-                    involista2[58],
-                    involista2[59],
-                    involista2[60],
-                    involista2[61],
-                    involista2[62],
-                    involista2[63],
-                    involista2[64],
-                    involista2[65],
-                    involista2[66],
-                    involista2[67],
-                    involista2[68],
-                    involista2[69],
-                    involista2[70],
-                    involista2[71],
-                    involista2[72],
-                    involista2[73],
-                    involista2[74],
-                    involista2[75],
-                    involista2[76],
-                    involista2[77],
-                    involista2[78],
-                    involista2[79],
-                    involista2[80],
-                    involista2[81],
-
-                ))
-          con.commit()
-
-        except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
 
     def salestranssearch(self):
@@ -3744,6 +4053,42 @@ class App(customtkinter.CTk):
         self.sale_pur_search.set("Select"),
         self.Var_sale_searchtxt.set(""),
         self.saletrans()
+
+    def getsaleestimatetotalamount(self):
+        self.estimatee_sale_paidamount_list.clear()
+        self.estimatee_sale_totalamount_list.clear()
+
+
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+            cur.execute("select total from estimategstsale ", )
+            rowms = cur.fetchall()
+            for rosw in rowms:
+                self.estimatee_sale_totalamount_list.append(rosw)
+
+
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+
+    def calgetsaleestimatetotalamount(self):
+        self.estimate_sale_paidamount_mlist = []
+        self.estimate_sale_unpaidamount_mlist = []
+        self.estimate_sale_totalamount_mlist = []
+        self.getsaleestimatetotalamount()
+
+        for m in self.estimatee_sale_totalamount_list:
+            for k in m:
+             if k == "":
+                 pass
+             else:
+               b=float(k)
+               self.sale_totalamount_mlist.append(b)
+
+        sumtotal = sum(self.sale_totalamount_mlist)
+
+        self.estimatee_sale_totalamount=f"₹{sumtotal}"
+        self.estimatee_sale_detail_total_amount_lable.configure(text=self.estimatee_sale_totalamount)
 
 
     def saleestimatetrans(self):
