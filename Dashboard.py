@@ -3357,7 +3357,6 @@ class App(customtkinter.CTk):
         self.gstsale_unpaidamount_mlist = []
         self.gstsale_totalamount_mlist = []
         self.gstgetsaletotalamount()
-        print(self.gstsale_totalamount_mlist)
         for i in self.gstsale_paidamount_list:
            for k in i:
              if k == "":
