@@ -107,7 +107,6 @@ class supplierClass(customtkinter.CTk):
 
 
     def add_party_event(self):
-        print(self.state_menu.get())
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
@@ -137,7 +136,6 @@ class supplierClass(customtkinter.CTk):
                         self.add2_entry.get(),
                         self.add3_entry.get(),
                         self.add3_entry.get(),
-
                     ))
                     con.commit()
                     messagebox.showinfo("Success","supplier Addedd Successfully",parent=self)

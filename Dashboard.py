@@ -7,6 +7,9 @@ import sqlite3
 from tkinter import messagebox, END, ttk
 from AppOpener import open as op, close
 from datetime import date as Dates
+import pandas as pd
+from tkinter.filedialog import askopenfilename
+from openpyxl import load_workbook
 
 class App(customtkinter.CTk):
     def __init__(self):
@@ -598,10 +601,11 @@ class App(customtkinter.CTk):
                                                         hover_color=("gray70", "gray30"))
         self.edit_party_button.place(x=360, y=80)
 
+
         self.imp_party_button = customtkinter.CTkButton(self.party_name_frame, font=customtkinter.CTkFont(size=18),
                                                         text="Import Parties", width=70, height=40,
                                                         image=self.image_icon_image, fg_color="transparent",
-                                                        hover_color=("gray70", "gray30"))
+                                                        hover_color=("gray70", "gray30"),command=self.import_Party_Data)
         self.imp_party_button.place(x=20, y=20)
 
         self.home_add_sale_button = customtkinter.CTkButton(self.in_party_top_frame,
@@ -795,7 +799,7 @@ class App(customtkinter.CTk):
                                                           text="Import Items", width=70, height=40,
                                                           image=self.image_icon_image, fg_color="transparent",
                                                           text_color="black",
-                                                          hover_color=("gray70", "gray30"))
+                                                          hover_color=("gray70", "gray30"),command=self.import_Item_Data)
         self.imp_item_button.place(x=20, y=20)
 
         self.edit_item_button = customtkinter.CTkButton(self.item_name_frame,
@@ -3153,6 +3157,45 @@ class App(customtkinter.CTk):
         self.Var_trans_searchtxt.set(""),
         self.get_transiction_data()
 
+    def import_Party_Data(self):
+        file_path = askopenfilename()
+        datarowlist=[]
+        # df = pd.read_excel(file_path)
+        wb=load_workbook(file_path,read_only=True)
+        ws=wb['Sheet1']
+        r_set=[row for row in ws.iter_rows(values_only=True)]
+        l1=r_set.pop(0)
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        for row in r_set:
+            datarowlist.clear()
+            for r in row:
+                datarowlist.append(r)
+            listrow=list(row)
+            cur.execute("Select * from partydata where pid=?", (row[1],))
+            row = cur.fetchone()
+            if row != None:
+               messagebox.showerror("Error", f"This GSTIN no. already assigned for {datarowlist[0]}, try different", parent=self)
+            else:
+               cur.execute( "Insert into partydata (pid,partyname,gstin,phonenumber,gsttype,state,emailid,billaddress,shipaddress,paybalence,recivebalence,date) values(?,?,?,?,?,?,?,?,?,?,?,?)",
+               (
+                   datarowlist[1],
+                   datarowlist[0],
+                   datarowlist[1],
+                   datarowlist[2],
+                   datarowlist[3],
+                   datarowlist[4],
+                   datarowlist[5],
+                   datarowlist[6],
+                   datarowlist[7],
+                   datarowlist[8],
+                   datarowlist[9],
+                   datarowlist[10],
+               ))
+               con.commit()
+        messagebox.showinfo("Success", "Party Data Added Successfully", parent=self)
+        self.show()
+
 
    # Item Frame methods
     def itemshow(self):
@@ -3271,7 +3314,6 @@ class App(customtkinter.CTk):
             con.commit()
         except Exception as ex:
             print(ex)
-
     def itemtranssearch(self):
         select = self.item_pur_search.get()
         ssk = select.replace("Invoice", "invoiceno")
@@ -3327,7 +3369,48 @@ class App(customtkinter.CTk):
         self.item_pur_search.set("Select"),
         self.Var_pur_searchtxt.set(""),
         self.get_item_data()
-
+    def import_Item_Data(self):
+        file_path = askopenfilename()
+        itemdatarowlist=[]
+        # df = pd.read_excel(file_path)
+        wb=load_workbook(file_path,read_only=True)
+        ws=wb['Sheet1']
+        r_set=[row for row in ws.iter_rows(values_only=True)]
+        l1=r_set.pop(0)
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        for rows in r_set:
+            itemdatarowlist.clear()
+            for r in rows:
+                itemdatarowlist.append(r)
+            print(rows[1])
+            cur.execute("Select * from itemdata where pid=?", (rows[1],))
+            row = cur.fetchone()
+            if row != None:
+               messagebox.showerror("Error", f"This HSN No. already assigned for {itemdatarowlist[0]}, try different", parent=self)
+            else:
+               cur.execute("Insert into itemdata (pid,itemname,hsn,category,itemcode,saleprice,discount,wholesaleprice,minqty,purchesprice,gsttax,openqty,minstockmanten,location,unit,date) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+               (
+                   itemdatarowlist[1],
+                   itemdatarowlist[0],
+                   itemdatarowlist[1],
+                   itemdatarowlist[2],
+                   itemdatarowlist[3],
+                   itemdatarowlist[4],
+                   itemdatarowlist[5],
+                   itemdatarowlist[6],
+                   itemdatarowlist[7],
+                   itemdatarowlist[8],
+                   itemdatarowlist[9],
+                   itemdatarowlist[10],
+                   itemdatarowlist[11],
+                   itemdatarowlist[12],
+                   itemdatarowlist[13],
+                   itemdatarowlist[14],
+               ))
+               con.commit()
+        messagebox.showinfo("Success", "Item Added Successfully", parent=self)
+        self.itemshow()
 
 
     # GST Sale Frame Methods
@@ -3343,7 +3426,6 @@ class App(customtkinter.CTk):
                 for r in row:
                   rm=int(r)
                   self.gstsale_paidamount_mlist.append(rm)
-
             cur.execute("select total from gstsale ", )
             rows = cur.fetchall()
             for rosw in rows:
@@ -3535,6 +3617,229 @@ class App(customtkinter.CTk):
         self.Var_gstsale_searchtxt.set(""),
         self.gstsaletrans()
 
+    def wotgst(self, qty, price, disc, tax,  total,disclist,taxlist):
+      print("enter2")
+      if " " == qty:
+          disclist.append(" ")
+          taxlist.append(" ")
+      else:
+       try:
+
+        if "0" in tax or "0.25" in tax or "3" in tax or "5" in tax or "12" in tax or "18" in tax or "28" in tax or "None" in tax:
+            rtax = tax.replace("IGST@", "")
+            rtax = rtax.replace("GST@", "")
+            ktax = rtax.replace("%", "")
+            mtax = ktax.replace("None", "0")
+            di=str(disc)
+            ddm=di.replace("%","")
+            itemprice = float(price)
+            totalpr = float(total)
+            qtyy = int(qty)
+            gsttax = float(mtax)
+            disca = float(ddm)
+
+            wodec = totalpr - (totalpr * (100 / (100 + gsttax)))
+            it = totalpr - wodec
+            rit = it / qtyy
+            rrit = round(rit, 2)
+            print(rrit)
+
+            discountedprice = rrit * qty
+            itemtotalrice = itemprice * qty
+            if "%" in di:
+              dicpricess = itemtotalrice*disca/100
+              dicprice = itemtotalrice - dicpricess
+              disclist.append(dicprice)
+            else:
+              dicprice = itemtotalrice - discountedprice
+              disclist.append(dicprice)
+            print(itemtotalrice)
+            print(discountedprice)
+            print(dicprice)
+
+            rwodec = round(wodec, 2)
+            taxlist.append(rwodec)
+
+            # pwr = wodec / 2
+            # rpwr = round(pwr, 2)
+       except Exception as e:
+        print(e)
+    def getitemdatapri(self,list,discslist,taxslist):
+      print("entered")
+      try:
+        self.wotgst( list[13], list[15], list[16], list[17], list[18],discslist,taxslist)
+        self.wotgst( list[20], list[22], list[23], list[24], list[25],discslist,taxslist)
+        self.wotgst( list[27], list[29], list[30], list[31], list[32],discslist,taxslist)
+        self.wotgst( list[34], list[36], list[37], list[38], list[39],discslist,taxslist)
+        self.wotgst( list[41], list[43], list[44], list[45], list[46],discslist,taxslist)
+        self.wotgst( list[48], list[50], list[51], list[52], list[53],discslist,taxslist)
+        self.wotgst( list[55], list[57], list[58], list[59], list[60],discslist,taxslist)
+        self.wotgst( list[62], list[64], list[65], list[66], list[67],discslist,taxslist)
+        self.wotgst( list[69], list[71], list[72], list[73], list[74],discslist,taxslist)
+        self.wotgst( list[76], list[78], list[79], list[80], list[81],discslist,taxslist)
+      except Exception as e:
+        print(e)
+      print("end")
+
+    def import_gstin_Data(self):
+        file_path = askopenfilename()
+        gstindatarowlist=[]
+        itemdiscountlist = []
+        gsttaxamountlist = []
+        # df = pd.read_excel(file_path)
+        wb=load_workbook(file_path,read_only=True)
+        ws=wb['Sheet1']
+        r_set=[row for row in ws.iter_rows(values_only=True)]
+        l1=r_set.pop(0)
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        m = 0
+        for rows in r_set:
+            gstindatarowlist.clear()
+            itemdiscountlist.clear()
+            gsttaxamountlist.clear()
+
+            for r in rows:
+                print(m)
+                print(r)
+                if "None" in str(r):
+                  rr=str(r).replace("None"," ")
+                else:
+                  rr=r
+                m=m+1
+                gstindatarowlist.append(rr)
+            print(gstindatarowlist)
+            self.getitemdatapri(gstindatarowlist,itemdiscountlist,gsttaxamountlist)
+            print("com")
+            print(gstindatarowlist[4])
+            cur.execute("Select * from gstsale where invoiceno=?", (gstindatarowlist[4],))
+            row = cur.fetchone()
+            print(row)
+            print(gstindatarowlist[19])
+            if row != None:
+               messagebox.showerror("Error", f"This Invoice No. already assigned for {gstindatarowlist[0]}, try different", parent=self)
+            else:
+                print('jk')
+                cur.execute("Insert into gstsale (partyname,phonenumber,gstin,cashorcr,invoiceno,invoicedate,steteofsuply,paymentype,refreceno,total,received,balance,item1name,qty1,unit1,unitprice1,dec1,desamount1,tax1,gstamount1,amount1,item2name,qty2,unit2,unitprice2,dec2,desamount2,tax2,gstamount2,amount2,item3name,qty3,unit3,unitprice3,dec3,desamount3,tax3,gstamount3,amount3,item4name,qty4,unit4,unitprice4,dec4,desamount4,tax4,gstamount4,amount4,item5name,qty5,unit5,unitprice5,dec5,desamount5,tax5,gstamount5,amount5,item6name,qty6,unit6,unitprice6,dec6,desamount6,tax6,gstamount6,amount6,item7name,qty7,unit7,unitprice7,dec7,desamount7,tax7,gstamount7,amount7,item8name,qty8,unit8,unitprice8,dec8,desamount8,tax8,gstamount8,amount8,item9name,qty9,unit9,unitprice9,dec9,desamount9,tax9,gstamount9,amount9,item10name,qty10,unit10,unitprice10,dec10,desamount10,tax10,gstamount10,amount10) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                (
+                   gstindatarowlist[0],
+                   gstindatarowlist[1],
+                   gstindatarowlist[2],
+                   gstindatarowlist[3],
+                   gstindatarowlist[4],
+                   gstindatarowlist[5],
+                   gstindatarowlist[6],
+                   gstindatarowlist[7],
+                   gstindatarowlist[8],
+                   gstindatarowlist[9],
+                   gstindatarowlist[10],
+                   gstindatarowlist[11],
+
+                   gstindatarowlist[12],
+                   gstindatarowlist[13],
+                   gstindatarowlist[14],
+                   gstindatarowlist[15],
+                   gstindatarowlist[16],
+                   itemdiscountlist[0],
+                   gstindatarowlist[17],
+                   gsttaxamountlist[0],
+                   gstindatarowlist[18],
+
+                   gstindatarowlist[19],
+                   gstindatarowlist[20],
+                   gstindatarowlist[21],
+                   gstindatarowlist[22],
+                   gstindatarowlist[23],
+                   itemdiscountlist[1],
+                   gstindatarowlist[24],
+                   gsttaxamountlist[1],
+                   gstindatarowlist[25],
+
+                   gstindatarowlist[26],
+                   gstindatarowlist[27],
+                   gstindatarowlist[28],
+                   gstindatarowlist[29],
+                   gstindatarowlist[30],
+                   itemdiscountlist[2],
+                   gstindatarowlist[31],
+                   gsttaxamountlist[2],
+                   gstindatarowlist[32],
+
+                   gstindatarowlist[33],
+                   gstindatarowlist[34],
+                   gstindatarowlist[35],
+                   gstindatarowlist[36],
+                   gstindatarowlist[37],
+                   itemdiscountlist[3],
+                   gstindatarowlist[38],
+                   gsttaxamountlist[3],
+                   gstindatarowlist[39],
+
+                   gstindatarowlist[40],
+                   gstindatarowlist[41],
+                   gstindatarowlist[42],
+                   gstindatarowlist[43],
+                   gstindatarowlist[44],
+                   itemdiscountlist[4],
+                   gstindatarowlist[45],
+                   gsttaxamountlist[4],
+                   gstindatarowlist[46],
+
+                   gstindatarowlist[47],
+                   gstindatarowlist[48],
+                   gstindatarowlist[49],
+                   gstindatarowlist[50],
+                   gstindatarowlist[51],
+                   itemdiscountlist[5],
+                   gstindatarowlist[52],
+                   gsttaxamountlist[5],
+                   gstindatarowlist[53],
+
+                   gstindatarowlist[54],
+                   gstindatarowlist[55],
+                   gstindatarowlist[56],
+                   gstindatarowlist[57],
+                   gstindatarowlist[58],
+                   itemdiscountlist[6],
+                   gstindatarowlist[59],
+                   gsttaxamountlist[6],
+                   gstindatarowlist[60],
+
+                   gstindatarowlist[61],
+                   gstindatarowlist[62],
+                   gstindatarowlist[63],
+                   gstindatarowlist[64],
+                   gstindatarowlist[65],
+                   itemdiscountlist[7],
+                   gstindatarowlist[66],
+                   gsttaxamountlist[7],
+                   gstindatarowlist[67],
+
+                   gstindatarowlist[68],
+                   gstindatarowlist[69],
+                   gstindatarowlist[70],
+                   gstindatarowlist[71],
+                   gstindatarowlist[72],
+                   itemdiscountlist[8],
+                   gstindatarowlist[73],
+                   gsttaxamountlist[8],
+                   gstindatarowlist[74],
+
+                   gstindatarowlist[75],
+                   gstindatarowlist[76],
+                   gstindatarowlist[77],
+                   gstindatarowlist[78],
+                   gstindatarowlist[79],
+                   itemdiscountlist[9],
+                   gstindatarowlist[80],
+                   gsttaxamountlist[9],
+                   gstindatarowlist[81],
+
+                ))
+                con.commit()
+        messagebox.showinfo("Success", "Item Added Successfully", parent=self)
+        self.gstsaletrans()
+
 
 
 
@@ -3557,11 +3862,11 @@ class App(customtkinter.CTk):
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
-            cur.execute("select received from gstsale ",)
+            cur.execute("select received from sale ",)
             rows = cur.fetchall()
             for row in rows:
                 self.sale_paidamount_list.append(row)
-            cur.execute("select total from gstsale ", )
+            cur.execute("select total from sale ", )
             rowms = cur.fetchall()
             for rosw in rowms:
                 self.sale_totalamount_list.append(rosw)
@@ -3735,7 +4040,7 @@ class App(customtkinter.CTk):
                 messagebox.showerror("Error", "Search input should be required", parent=self)
             else:
                 cur.execute(
-                    "select invoicedate,invoiceno,partyname,paymentype,total,received,refreceno from gstsale where " + sss + " LIKE '%" + self.Var_sale_searchtxt.get() + "%'")
+                    "select invoicedate,invoiceno,partyname,paymentype,total,received,refreceno from sale where " + sss + " LIKE '%" + self.Var_sale_searchtxt.get() + "%'")
                 rows = cur.fetchall()
                 if len(rows) != 0:
                     self.saletransictionTable.delete(*self.saletransictionTable.get_children())

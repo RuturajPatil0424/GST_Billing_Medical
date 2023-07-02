@@ -83,26 +83,78 @@
 # sorted_books = sorted(books, key=lambda x: x[2])
 # print(sorted_books)
 
-from openpyxl import Workbook
+# from openpyxl import Workbook
+#
+# # Create a new workbook
+# wb = Workbook()
+# sheet = wb.active
+#
+# # Add column headers
+# sheet.append(['Name', 'Tax Amount', 'GST Rate', 'GST Amount'])
+#
+# # Add sample tax data with GST
+# tax_data = [
+#     ['John Doe', 1000, "18", '=B2*C2/100'],
+#     ['Jane Smith', 1500, "12", '=B3*C3/100'],
+#     ['Mike Johnson', 800, "5", '=B4*C4/100']
+# ]
+# s=tax_data.sort(key=lambda x : x[2])
+# print(tax_data)
+#
+# for data in tax_data:
+#     sheet.append(data)
+#
+# # Save the workbook
+# wb.save('gst_tax_data.xlsx')
 
-# Create a new workbook
-wb = Workbook()
-sheet = wb.active
 
-# Add column headers
-sheet.append(['Name', 'Tax Amount', 'GST Rate', 'GST Amount'])
+# from tkinter.filedialog import askopenfilename
+#
+#
+# # Open file dialog and retrieve selected file path
+# file_path = askopenfilename()
+#
+# # Print the selected file path
+# print("Selected File:", file_path)
 
-# Add sample tax data with GST
-tax_data = [
-    ['John Doe', 1000, "18", '=B2*C2/100'],
-    ['Jane Smith', 1500, "12", '=B3*C3/100'],
-    ['Mike Johnson', 800, "5", '=B4*C4/100']
-]
-s=tax_data.sort(key=lambda x : x[2])
-print(tax_data)
+def wotgst(price,qty,tax,disc,total):
+    print(tax)
 
-for data in tax_data:
-    sheet.append(data)
+    if "0" in tax or "0.25" in tax or "3" in tax or "5" in tax or "12" in tax or "18" in tax or "28" in tax or "None" in tax:
+        rtax = tax.replace("IGST@", "")
+        rtax = rtax.replace("GST@", "")
+        rtax = rtax.replace("GST@", "")
+        ktax = rtax.replace("%", "")
+        mtax = ktax.replace("None", "0")
+        di = str(disc)
+        ddm = di.replace("%", "")
+        itemprice = float(price)
+        totalpr = float(total)
+        qtyy = int(qty)
+        gsttax = float(mtax)
+        disca = float(ddm)
 
-# Save the workbook
-wb.save('gst_tax_data.xlsx')
+        wodec = totalpr - (totalpr * (100 / (100 + gsttax)))
+        it = totalpr - wodec
+        rit = it / qtyy
+        rrit = round(rit, 2)
+        print(rrit)
+
+        discountedprice = rrit * qty
+        itemtotalrice = itemprice * qty
+        if "%" in di:
+            dicpricess = itemtotalrice * disca / 100
+            dicprice = itemtotalrice - dicpricess
+        else:
+            dicprice = itemtotalrice - discountedprice
+
+        print(itemtotalrice)
+        print(discountedprice)
+        print(dicprice)
+
+        rwodec = round(wodec, 2)
+        print(rwodec)
+
+        pwr = wodec / 2
+        rpwr = round(pwr, 2)
+wotgst(1000,2,"IGST@18","10%",2124)
