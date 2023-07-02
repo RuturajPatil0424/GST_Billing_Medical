@@ -1448,11 +1448,6 @@ class App(customtkinter.CTk):
         self.sale_pur_edit_button.place(x=100, y=60)
 
 
-
-
-
-
-
         #todo:sale estimate
         self.in_sale_estimate_top_frame = customtkinter.CTkFrame(self.sale_estimate_frame, width=1720, height=100)
         self.in_sale_estimate_top_frame.place(x=10, y=10)
@@ -2602,6 +2597,7 @@ class App(customtkinter.CTk):
     def editgstsale_event(self):
         call(["python", "EditGSTSale.py"])
 
+
     # sale
     def addsale_event(self):
         call(["python", "sale.py"])
@@ -2609,6 +2605,7 @@ class App(customtkinter.CTk):
         call(["python", "EditSale.py"])
     def addestimate_event(self):
         call(["python", "Estimate.py"])
+
 
     # Party
     def addparty_event(self):
@@ -3015,6 +3012,23 @@ class App(customtkinter.CTk):
             self.productTable.insert('', END, values=row)
       except Exception as ex:
         messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    def get_transiction_data(self):
+
+        gst = self.partygstin.get()
+        rgst = gst.replace("GSTIN : ", "")
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+            cur.execute("select invoiceno,invoicedate,paymentype,total,received,refreceno from gstsale where gstin=?",
+                        (rgst,))
+            rows = cur.fetchall()
+
+            self.transictionTable.delete(*self.transictionTable.get_children())
+            for row in rows:
+                self.transictionTable.insert('', END, values=row)
+
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
     def get_data(self, ev):
         partydatalist=[]
         f = self.productTable.focus()
@@ -3152,6 +3166,11 @@ class App(customtkinter.CTk):
             self.itemTable.insert('', END, values=row)
       except Exception as ex:
         messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    def stoclprice(self,price,qtyy,var):
+        stprice=int(price)
+        qty=int(qtyy)
+        stock=stprice*qty
+        var.set(f"Stock Price : ₹{stock}")
     def get_itemtrans_data(self, ev):
         itemdatalist=[]
         itemdatalist.clear()
@@ -3521,6 +3540,34 @@ class App(customtkinter.CTk):
 
 
     # Sale Frame Methods
+    def saletrans(self):
+            self.involista1.clear()
+            con = sqlite3.connect(database=r'DataBase/ims.db')
+            cur = con.cursor()
+            try:
+                cur.execute("select invoicedate,invoiceno,partyname,paymentype,total,received,refreceno from sale")
+                rows = cur.fetchall()
+                self.saletransictionTable.delete(*self.saletransictionTable.get_children())
+                for row in rows:
+                    self.saletransictionTable.insert('', END, values=row)
+            except Exception as ex:
+                messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    def getsaletotalamount(self):
+        self.sale_paidamount_list.clear()
+        self.sale_totalamount_list.clear()
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+            cur.execute("select received from gstsale ",)
+            rows = cur.fetchall()
+            for row in rows:
+                self.sale_paidamount_list.append(row)
+            cur.execute("select total from gstsale ", )
+            rowms = cur.fetchall()
+            for rosw in rowms:
+                self.sale_totalamount_list.append(rosw)
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
     def calgetsaletotalamount(self):
         self.sale_paidamount_mlist = []
         self.sale_unpaidamount_mlist = []
@@ -3673,37 +3720,245 @@ class App(customtkinter.CTk):
           con.commit()
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    def salestranssearch(self):
+        select = self.sale_pur_search.get()
+        ssk = select.replace("Invoice", "invoiceno")
+        ssm = ssk.replace("Date", "invoicedate")
+        ssmk = ssm.replace("Cheque No.", "refreceno")
+        ssml = ssmk.replace("Name", "partyname")
+        sss = ssml.replace("Payment Type", "paymentype")
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+            if self.sale_pur_search.get() == "Select":
+                messagebox.showerror("Error", "Select Search By Option", parent=self)
+            elif self.Var_sale_searchtxt.get() == "":
+                messagebox.showerror("Error", "Search input should be required", parent=self)
+            else:
+                cur.execute(
+                    "select invoicedate,invoiceno,partyname,paymentype,total,received,refreceno from gstsale where " + sss + " LIKE '%" + self.Var_sale_searchtxt.get() + "%'")
+                rows = cur.fetchall()
+                if len(rows) != 0:
+                    self.saletransictionTable.delete(*self.saletransictionTable.get_children())
+                    for row in rows:
+                        self.saletransictionTable.insert('', END, values=row)
+                else:
+                    messagebox.showerror("Error", "No record found!!!", parent=self)
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    def saletransclear(self):
+        self.sale_pur_search.set("Select"),
+        self.Var_sale_searchtxt.set(""),
+        self.saletrans()
 
 
+    # sale estimate
+    def calgetsaleestimatetotalamount(self):
+        self.estimate_sale_paidamount_mlist = []
+        self.estimate_sale_unpaidamount_mlist = []
+        self.estimate_sale_totalamount_mlist = []
+        self.getsaleestimatetotalamount()
+        for m in self.estimatee_sale_totalamount_list:
+            for k in m:
+             if k == "":
+                 pass
+             else:
+               b=float(k)
+               self.sale_totalamount_mlist.append(b)
+        sumtotal = sum(self.sale_totalamount_mlist)
+        self.estimatee_sale_totalamount=f"₹{sumtotal}"
+        self.estimatee_sale_detail_total_amount_lable.configure(text=self.estimatee_sale_totalamount)
+    def saleestimatetrans(self):
+            con = sqlite3.connect(database=r'DataBase/ims.db')
+            cur = con.cursor()
+            try:
+                cur.execute("select invoicedate,invoiceno,partyname,paymentype,total,received,refreceno from estimategstsale")
+                rows = cur.fetchall()
+                self.sale_estimatetransictionTable.delete(*self.sale_estimatetransictionTable.get_children())
+                for row in rows:
+                    self.sale_estimatetransictionTable.insert('', END, values=row)
+            except Exception as ex:
+                messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    def salesestimatetranssearch(self):
+        select = self.sale_estimate_pur_search.get()
+        ssk = select.replace("Invoice", "invoiceno")
+        ssm = ssk.replace("Date", "invoicedate")
+        ssmk = ssm.replace("Cheque No.", "refreceno")
+        ssml = ssmk.replace("Name", "partyname")
+        sss = ssml.replace("Payment Type", "paymentype")
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+            if self.sale_estimate_pur_search.get() == "Select":
+                messagebox.showerror("Error", "Select Search By Option", parent=self)
+            elif self.Var_sale_estimate_searchtxt.get() == "":
+                messagebox.showerror("Error", "Search input should be required", parent=self)
+            else:
+                cur.execute(
+                    "select invoicedate,invoiceno,partyname,paymentype,total,received,refreceno from estimategstsale where " + sss + " LIKE '%" + self.Var_sale_estimate_searchtxt.get() + "%'")
+                rows = cur.fetchall()
+                if len(rows) != 0:
+                    self.sale_estimatetransictionTable.delete(*self.sale_estimatetransictionTable.get_children())
+                    for row in rows:
+                        self.sale_estimatetransictionTable.insert('', END, values=row)
+                else:
+                    messagebox.showerror("Error", "No record found!!!", parent=self)
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    def saleestimatetransclear(self):
+        self.sale_estimate_pur_search.set("Select"),
+        self.Var_sale_estimate_searchtxt.set(""),
+        self.saleestimatetrans()
+    def getsaleestimatetotalamount(self):
+        self.estimatee_sale_paidamount_list.clear()
+        self.estimatee_sale_totalamount_list.clear()
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+            cur.execute("select total from estimategstsale ", )
+            rowms = cur.fetchall()
+            for rosw in rowms:
+                self.estimatee_sale_totalamount_list.append(rosw)
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    def calgetsaleestimatetotalamount(self):
+        self.estimate_sale_paidamount_mlist = []
+        self.estimate_sale_unpaidamount_mlist = []
+        self.estimate_sale_totalamount_mlist = []
+        self.getsaleestimatetotalamount()
+        for m in self.estimatee_sale_totalamount_list:
+            for k in m:
+             if k == "":
+                 pass
+             else:
+               b=float(k)
+               self.sale_totalamount_mlist.append(b)
+        sumtotal = sum(self.sale_totalamount_mlist)
+        self.estimatee_sale_totalamount=f"₹{sumtotal}"
+        self.estimatee_sale_detail_total_amount_lable.configure(text=self.estimatee_sale_totalamount)
 
-    # def calculate_growth_rate(initial_value, final_value):
-    #     growth_rate = (final_value - initial_value) / initial_value * 100
-    #     return growth_rate
+    # sale payment
+    def salepaymentintrans(self):
+            con = sqlite3.connect(database=r'DataBase/ims.db')
+            cur = con.cursor()
+            try:
+                cur.execute("select  partyname,phonenumber,emailid,recivebalence,billaddress,gstin from salepaymentin")
+                rows = cur.fetchall()
+                self.sale_paymenttransictionTable.delete(*self.sale_paymenttransictionTable.get_children())
+                for row in rows:
+                    self.sale_paymenttransictionTable.insert('', END, values=row)
+            except Exception as ex:
+                messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    def salepaymentintranssearch(self):
+        select = self.sale_payment_search.get()
+        ssk = select.replace("Name", "partyname")
+        ssm = ssk.replace("GSTIN", "gstin")
+        ssl = ssm.replace("Invoice", "add2")
+        ssjh = ssl.replace("Date.", "date")
+        sss = ssjh.replace("Phone No.", "phonenumber")
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+            if self.sale_payment_search.get() == "Select":
+                messagebox.showerror("Error", "Select Search By Option", parent=self)
+            elif self.Var_sale_payment_searchtxt.get() == "":
+                messagebox.showerror("Error", "Search input should be required", parent=self)
+            else:
+                cur.execute(
+                    "select  partyname,phonenumber,emailid,recivebalence,billaddress,gstin from salepaymentin where " + sss + " LIKE '%" + self.Var_sale_payment_searchtxt.get() + "%'")
+                rows = cur.fetchall()
+                if len(rows) != 0:
+                    self.sale_paymenttransictionTable.delete(*self.sale_paymenttransictionTable.get_children())
+                    for row in rows:
+                        self.sale_paymenttransictionTable.insert('', END, values=row)
+                else:
+                    messagebox.showerror("Error", "No record found!!!", parent=self)
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    def salepaymentcler(self):
+        self.sale_payment_search.set("Select"),
+        self.Var_sale_payment_searchtxt.set(""),
+        self.salepaymentintrans()
 
+    # sale order
 
-
-    def get_transiction_data(self):
-
-        gst = self.partygstin.get()
+    # purches frame
+    def purshow(self):
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+            cur.execute("select partyname,gstin,paybalence,recivebalence from partydata")
+            rows = cur.fetchall()
+            self.purchesTable.delete(*self.purchesTable.get_children())
+            for row in rows:
+                self.purchesTable.insert('', END, values=row)
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    def purchessearch(self):
+        select=self.purches_search.get()
+        ssk=select.replace("Name","partyname")
+        ssm=ssk.replace("GSTIN","gstin")
+        sss = ssm.replace("Phone No.", "phonenumber")
+        con=sqlite3.connect(database=r'DataBase/ims.db')
+        cur=con.cursor()
+        try:
+            if self.purches_search.get()=="Select":
+                messagebox.showerror("Error","Select Search By Option",parent=self)
+            elif self.Vark_pur_searchtxt.get()=="":
+                messagebox.showerror("Error","Search input should be required",parent=self)
+            else :
+              cur.execute("select partyname,gstin,paybalence,recivebalence from partydata where "+sss+" LIKE '%"+self.Vark_pur_searchtxt.get()+"%'")
+              rows=cur.fetchall()
+              if len(rows)!=0:
+                self.purchesTable.delete(*self.purchesTable.get_children())
+                for row in rows:
+                 self.purchesTable.insert('',END,values=row)
+              else:
+                  messagebox.showerror("Error","No record found!!!",parent=self)
+        except Exception as ex:
+           messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=self)
+    def purclear(self):
+        self.purches_search.set("Select"),
+        self.Vark_pur_searchtxt.set(""),
+        self.purshow()
+    def get_purchese_data(self):
+        gst = self.purchesgstin.get()
         rgst = gst.replace("GSTIN : ", "")
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
-            cur.execute("select invoiceno,invoicedate,paymentype,total,received,refreceno from gstsale where gstin=?",
+            cur.execute("select invoiceno,invoicedate,paymentype,total,received,refreceno from gstpurchase where gstin=?",
                         (rgst,))
             rows = cur.fetchall()
-
-            self.transictionTable.delete(*self.transictionTable.get_children())
+            self.purchestransictionTable.delete(*self.purchestransictionTable.get_children())
             for row in rows:
-                self.transictionTable.insert('', END, values=row)
-
+                self.purchestransictionTable.insert('', END, values=row)
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
-
-
-
-
+    def get_purchase_data(self, ev):
+        f = self.purchesTable.focus()
+        content = (self.purchesTable.item(f))
+        row = content['values']
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+            cur.execute(
+                "select partyname,phonenumber,emailid,recivebalence,billaddress,gstin from partydata where pid=?",
+                (row[1],))
+            rows = cur.fetchall()
+            self.purchesTable.delete(*self.purchesTable.get_children())
+            for row in rows:
+                self.purchesname.set(row[0])
+                self.purchesnumber.set(f"Phone No. : {row[1]}")
+                self.purchesemail.set(f"Email : {row[2]}")
+                self.purchescrlimit.set(f"Receiving Amount : ₹{row[3]}")
+                self.purchesaddress.set(f"Address : {row[4]}")
+                self.purchesgstin.set(f"GSTIN : {row[5]}")
+                self.purshow()
+                self.get_purchese_data()
+                self.purclear()
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
     def purchasedataget(self,event):
         f = self.purchestransictionTable.focus()
         content = (self.purchestransictionTable.item(f))
@@ -3721,7 +3976,6 @@ class App(customtkinter.CTk):
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
-
           cur.execute("select partyname,phonenumber,gstin,cashorcr,invoiceno,invoicedate,steteofsuply,paymentype,refreceno,total,received,balance,item1name,qty1,unit1,unitprice1,dec1,desamount1,tax1,gstamount1,amount1,item2name,qty2,unit2,unitprice2,dec2,desamount2,tax2,gstamount2,amount2,item3name,qty3,unit3,unitprice3,dec3,desamount3,tax3,gstamount3,amount3,item4name,qty4,unit4,unitprice4,dec4,desamount4,tax4,gstamount4,amount4,item5name,qty5,unit5,unitprice5,dec5,desamount5,tax5,gstamount5,amount5,item6name,qty6,unit6,unitprice6,dec6,desamount6,tax6,gstamount6,amount6,item7name,qty7,unit7,unitprice7,dec7,desamount7,tax7,gstamount7,amount7,item8name,qty8,unit8,unitprice8,dec8,desamount8,tax8,gstamount8,amount8,item9name,qty9,unit9,unitprice9,dec9,desamount9,tax9,gstamount9,amount9,item10name,qty10,unit10,unitprice10,dec10,desamount10,tax10,gstamount10,amount10 from gstpurchase where invoiceno=?",
             (strfinal,))
           rows = cur.fetchall()
@@ -3832,106 +4086,10 @@ class App(customtkinter.CTk):
                     purlista[99],
                     purlista[100],
                     purlista[101],
-
                 ))
           con.commit()
-
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
-
-
-
-
-
-
-
-
-
-
-    def stoclprice(self,price,qtyy,var):
-        stprice=int(price)
-        qty=int(qtyy)
-        stock=stprice*qty
-        var.set(f"Stock Price : ₹{stock}")
-
-
-
-
-
-    def purchessearch(self):
-        select=self.purches_search.get()
-        ssk=select.replace("Name","partyname")
-        ssm=ssk.replace("GSTIN","gstin")
-        sss = ssm.replace("Phone No.", "phonenumber")
-        con=sqlite3.connect(database=r'DataBase/ims.db')
-        cur=con.cursor()
-        try:
-            if self.purches_search.get()=="Select":
-                messagebox.showerror("Error","Select Search By Option",parent=self)
-            elif self.Vark_pur_searchtxt.get()=="":
-                messagebox.showerror("Error","Search input should be required",parent=self)
-            else :
-              cur.execute("select partyname,gstin,paybalence,recivebalence from partydata where "+sss+" LIKE '%"+self.Vark_pur_searchtxt.get()+"%'")
-              rows=cur.fetchall()
-              if len(rows)!=0:
-                self.purchesTable.delete(*self.purchesTable.get_children())
-                for row in rows:
-                 self.purchesTable.insert('',END,values=row)
-              else:
-                  messagebox.showerror("Error","No record found!!!",parent=self)
-
-        except Exception as ex:
-           messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=self)
-
-    def purshow(self):
-        con = sqlite3.connect(database=r'DataBase/ims.db')
-        cur = con.cursor()
-        try:
-            cur.execute("select partyname,gstin,paybalence,recivebalence from partydata")
-            rows = cur.fetchall()
-            self.purchesTable.delete(*self.purchesTable.get_children())
-            for row in rows:
-                self.purchesTable.insert('', END, values=row)
-
-        except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
-    def purclear(self):
-        self.purches_search.set("Select"),
-        self.Vark_pur_searchtxt.set(""),
-        self.purshow()
-
-    def purtransclear(self):
-        self.purches_pur_search.set("Select"),
-        self.Var_pur_searchtxt.set(""),
-        self.get_purchese_data()
-
-    def get_purchase_data(self, ev):
-        f = self.purchesTable.focus()
-        content = (self.purchesTable.item(f))
-        row = content['values']
-        con = sqlite3.connect(database=r'DataBase/ims.db')
-        cur = con.cursor()
-        try:
-            cur.execute(
-                "select partyname,phonenumber,emailid,recivebalence,billaddress,gstin from partydata where pid=?",
-                (row[1],))
-            rows = cur.fetchall()
-            self.purchesTable.delete(*self.purchesTable.get_children())
-            for row in rows:
-                self.purchesname.set(row[0])
-                self.purchesnumber.set(f"Phone No. : {row[1]}")
-                self.purchesemail.set(f"Email : {row[2]}")
-                self.purchescrlimit.set(f"Receiving Amount : ₹{row[3]}")
-                self.purchesaddress.set(f"Address : {row[4]}")
-                self.purchesgstin.set(f"GSTIN : {row[5]}")
-                self.purshow()
-                self.get_purchese_data()
-                self.purclear()
-        except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
     def purchestranssearch(self):
         select = self.purches_pur_search.get()
         ssk = select.replace("Invoice", "invoiceno")
@@ -3958,231 +4116,15 @@ class App(customtkinter.CTk):
 
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
-    def get_purchese_data(self):
-
-        gst = self.purchesgstin.get()
-        rgst = gst.replace("GSTIN : ", "")
-        con = sqlite3.connect(database=r'DataBase/ims.db')
-        cur = con.cursor()
-        try:
-            cur.execute("select invoiceno,invoicedate,paymentype,total,received,refreceno from gstpurchase where gstin=?",
-                        (rgst,))
-            rows = cur.fetchall()
-
-            self.purchestransictionTable.delete(*self.purchestransictionTable.get_children())
-            for row in rows:
-                self.purchestransictionTable.insert('', END, values=row)
-
-        except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
-    def getsaletotalamount(self):
-        self.sale_paidamount_list.clear()
-        self.sale_totalamount_list.clear()
+    def purtransclear(self):
+        self.purches_pur_search.set("Select"),
+        self.Var_pur_searchtxt.set(""),
+        self.get_purchese_data()
 
 
-        con = sqlite3.connect(database=r'DataBase/ims.db')
-        cur = con.cursor()
-        try:
-            cur.execute("select received from gstsale ",)
-            rows = cur.fetchall()
-            for row in rows:
-                self.sale_paidamount_list.append(row)
-
-
-            cur.execute("select total from gstsale ", )
-            rowms = cur.fetchall()
-            for rosw in rowms:
-                self.sale_totalamount_list.append(rosw)
-
-
-        except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
-
-
-
-
-    def saletrans(self):
-            self.involista1.clear()
-            con = sqlite3.connect(database=r'DataBase/ims.db')
-            cur = con.cursor()
-            try:
-                cur.execute("select invoicedate,invoiceno,partyname,paymentype,total,received,refreceno from sale")
-                rows = cur.fetchall()
-                self.saletransictionTable.delete(*self.saletransictionTable.get_children())
-                for row in rows:
-                    self.saletransictionTable.insert('', END, values=row)
-            except Exception as ex:
-                messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
-
-
-
-
-    def salestranssearch(self):
-        select = self.sale_pur_search.get()
-        ssk = select.replace("Invoice", "invoiceno")
-        ssm = ssk.replace("Date", "invoicedate")
-        ssmk = ssm.replace("Cheque No.", "refreceno")
-        ssml = ssmk.replace("Name", "partyname")
-        sss = ssml.replace("Payment Type", "paymentype")
-        con = sqlite3.connect(database=r'DataBase/ims.db')
-        cur = con.cursor()
-        try:
-            if self.sale_pur_search.get() == "Select":
-                messagebox.showerror("Error", "Select Search By Option", parent=self)
-            elif self.Var_sale_searchtxt.get() == "":
-                messagebox.showerror("Error", "Search input should be required", parent=self)
-            else:
-                cur.execute(
-                    "select invoicedate,invoiceno,partyname,paymentype,total,received,refreceno from gstsale where " + sss + " LIKE '%" + self.Var_sale_searchtxt.get() + "%'")
-                rows = cur.fetchall()
-                if len(rows) != 0:
-                    self.saletransictionTable.delete(*self.saletransictionTable.get_children())
-                    for row in rows:
-                        self.saletransictionTable.insert('', END, values=row)
-                else:
-                    messagebox.showerror("Error", "No record found!!!", parent=self)
-
-        except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
-    def saletransclear(self):
-        self.sale_pur_search.set("Select"),
-        self.Var_sale_searchtxt.set(""),
-        self.saletrans()
-
-    def getsaleestimatetotalamount(self):
-        self.estimatee_sale_paidamount_list.clear()
-        self.estimatee_sale_totalamount_list.clear()
-
-
-        con = sqlite3.connect(database=r'DataBase/ims.db')
-        cur = con.cursor()
-        try:
-            cur.execute("select total from estimategstsale ", )
-            rowms = cur.fetchall()
-            for rosw in rowms:
-                self.estimatee_sale_totalamount_list.append(rosw)
-
-
-        except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
-    def calgetsaleestimatetotalamount(self):
-        self.estimate_sale_paidamount_mlist = []
-        self.estimate_sale_unpaidamount_mlist = []
-        self.estimate_sale_totalamount_mlist = []
-        self.getsaleestimatetotalamount()
-
-        for m in self.estimatee_sale_totalamount_list:
-            for k in m:
-             if k == "":
-                 pass
-             else:
-               b=float(k)
-               self.sale_totalamount_mlist.append(b)
-
-        sumtotal = sum(self.sale_totalamount_mlist)
-
-        self.estimatee_sale_totalamount=f"₹{sumtotal}"
-        self.estimatee_sale_detail_total_amount_lable.configure(text=self.estimatee_sale_totalamount)
-
-
-    def saleestimatetrans(self):
-            con = sqlite3.connect(database=r'DataBase/ims.db')
-            cur = con.cursor()
-            try:
-                cur.execute("select invoicedate,invoiceno,partyname,paymentype,total,received,refreceno from estimategstsale")
-                rows = cur.fetchall()
-                self.sale_estimatetransictionTable.delete(*self.sale_estimatetransictionTable.get_children())
-                for row in rows:
-                    self.sale_estimatetransictionTable.insert('', END, values=row)
-            except Exception as ex:
-                messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
-    def salesestimatetranssearch(self):
-        select = self.sale_estimate_pur_search.get()
-        ssk = select.replace("Invoice", "invoiceno")
-        ssm = ssk.replace("Date", "invoicedate")
-        ssmk = ssm.replace("Cheque No.", "refreceno")
-        ssml = ssmk.replace("Name", "partyname")
-        sss = ssml.replace("Payment Type", "paymentype")
-        con = sqlite3.connect(database=r'DataBase/ims.db')
-        cur = con.cursor()
-        try:
-            if self.sale_estimate_pur_search.get() == "Select":
-                messagebox.showerror("Error", "Select Search By Option", parent=self)
-            elif self.Var_sale_estimate_searchtxt.get() == "":
-                messagebox.showerror("Error", "Search input should be required", parent=self)
-            else:
-                cur.execute(
-                    "select invoicedate,invoiceno,partyname,paymentype,total,received,refreceno from estimategstsale where " + sss + " LIKE '%" + self.Var_sale_estimate_searchtxt.get() + "%'")
-                rows = cur.fetchall()
-                if len(rows) != 0:
-                    self.sale_estimatetransictionTable.delete(*self.sale_estimatetransictionTable.get_children())
-                    for row in rows:
-                        self.sale_estimatetransictionTable.insert('', END, values=row)
-                else:
-                    messagebox.showerror("Error", "No record found!!!", parent=self)
-
-        except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
-    def saleestimatetransclear(self):
-        self.sale_estimate_pur_search.set("Select"),
-        self.Var_sale_estimate_searchtxt.set(""),
-        self.saleestimatetrans()
-
-
-    def salepaymentintrans(self):
-            con = sqlite3.connect(database=r'DataBase/ims.db')
-            cur = con.cursor()
-            try:
-                cur.execute("select  partyname,phonenumber,emailid,recivebalence,billaddress,gstin from salepaymentin")
-                rows = cur.fetchall()
-                self.sale_paymenttransictionTable.delete(*self.sale_paymenttransictionTable.get_children())
-                for row in rows:
-                    self.sale_paymenttransictionTable.insert('', END, values=row)
-            except Exception as ex:
-                messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
-    def salepaymentintranssearch(self):
-        select = self.sale_payment_search.get()
-        ssk = select.replace("Name", "partyname")
-        ssm = ssk.replace("GSTIN", "gstin")
-        ssl = ssm.replace("Invoice", "add2")
-        ssjh = ssl.replace("Date.", "date")
-        sss = ssjh.replace("Phone No.", "phonenumber")
-        con = sqlite3.connect(database=r'DataBase/ims.db')
-        cur = con.cursor()
-        try:
-            if self.sale_payment_search.get() == "Select":
-                messagebox.showerror("Error", "Select Search By Option", parent=self)
-            elif self.Var_sale_payment_searchtxt.get() == "":
-                messagebox.showerror("Error", "Search input should be required", parent=self)
-            else:
-                cur.execute(
-                    "select  partyname,phonenumber,emailid,recivebalence,billaddress,gstin from salepaymentin where " + sss + " LIKE '%" + self.Var_sale_payment_searchtxt.get() + "%'")
-                rows = cur.fetchall()
-                if len(rows) != 0:
-                    self.sale_paymenttransictionTable.delete(*self.sale_paymenttransictionTable.get_children())
-                    for row in rows:
-                        self.sale_paymenttransictionTable.insert('', END, values=row)
-                else:
-                    messagebox.showerror("Error", "No record found!!!", parent=self)
-
-        except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
-    def salepaymentcler(self):
-        self.sale_payment_search.set("Select"),
-        self.Var_sale_payment_searchtxt.set(""),
-        self.saleestimatetrans()
-
-
+    # def calculate_growth_rate(initial_value, final_value):
+    #     growth_rate = (final_value - initial_value) / initial_value * 100
+    #     return growth_rate
 
 if __name__ == "__main__":
     app = App()
