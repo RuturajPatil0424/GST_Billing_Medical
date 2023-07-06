@@ -6,12 +6,23 @@ from PIL import Image, ImageTk  # pip intall
 from tkcalendar import DateEntry
 import sqlite3
 from subprocess import call
+from screeninfo import get_monitors
+from win32api import GetSystemMetrics
+
+# print("Width =", GetSystemMetrics(0))
+# print("Height =", GetSystemMetrics(1))
+
+# for m in get_monitors():
+#     print(str(m))
+#     # mm=list(m)
+#     # for k in mm:
+#     #     print(k)
 class saleClass(customtkinter.CTk):
 
     def __init__(self):
         super().__init__()
 
-        self.geometry("1920x1080+-10+-3")
+        self.geometry(f"{GetSystemMetrics(0)}x{GetSystemMetrics(1)}+-10+-3")
         self.title("GST Management System | Developed By Ruturaj Patil")
         # self.config(bg="white")
         self.focus_force()
@@ -26,42 +37,49 @@ class saleClass(customtkinter.CTk):
         self.resultam = StringVar()
 
 
-        self.Saleleble = customtkinter.CTkLabel(self, text="Sale", font=customtkinter.CTkFont(size=25))
-        self.Saleleble.place(x=20, y=40)
+        self.Saleleble = customtkinter.CTkLabel(self, text="GST  Sale", font=customtkinter.CTkFont(size=25))
+        self.Saleleble.place(x=30, y=20)
 
         self.gstinleble = customtkinter.CTkLabel(self, text="GSTIN : ", font=customtkinter.CTkFont(size=15))
-        self.gstinleble.place(x=650, y=125)
+        self.gstinleble.place(x=505, y=60)
 
         self.gstin_entry = customtkinter.CTkEntry(self, width=150, height=40, textvariable=self.gstin)
-        self.gstin_entry.place(x=710, y=120)
+        self.gstin_entry.place(x=500, y=100)
+
+        self.Partyname_lable = customtkinter.CTkLabel(self, width=200, height=40, text="Party Name : ",
+                                                        font=customtkinter.CTkFont(size=15))
+        self.Partyname_lable.place(x=0, y=60)
+
+        self.phonenumber_lable = customtkinter.CTkLabel(self, width=200, height=40, text="Phone Number : ", font=customtkinter.CTkFont(size=15))
+        self.phonenumber_lable.place(x=240, y=60)
 
         self.phonenumber_entry = customtkinter.CTkEntry(self, width=200, height=40, textvariable=self.partynumber)
-        self.phonenumber_entry.place(x=280, y=120)
+        self.phonenumber_entry.place(x=280, y=100)
 
         self.cash_lable = customtkinter.CTkLabel(self, font=customtkinter.CTkFont(size=15), text="Cash")
-        self.cash_lable.place(x=500, y=125)
+        self.cash_lable.place(x=180, y=25)
 
         self.cash_switch = customtkinter.CTkSwitch(master=self, font=customtkinter.CTkFont(size=15), text="Credit")
-        self.cash_switch.place(x=540, y=125)
+        self.cash_switch.place(x=225, y=25)
 
         self.invocie_lable = customtkinter.CTkLabel(self, text="Invoice No.")
-        self.invocie_lable.place(x=900, y=50)
+        self.invocie_lable.place(x=1050, y=20)
 
         self.invo=StringVar()
         self.invoice_entry = customtkinter.CTkEntry(self, width=150, height=30,textvariable=self.invo)
-        self.invoice_entry.place(x=1000, y=50)
+        self.invoice_entry.place(x=1150, y=20)
 
         self.invoice_genrator()
 
         self.date_label = customtkinter.CTkLabel(self, text="Invoice Date")
-        self.date_label.place(x=900, y=90)
+        self.date_label.place(x=1050, y=60)
 
         self.date_entry = DateEntry(self,selectmode="day",date_pattern="dd/mm/y")
-        self.date_entry.place(x=1000, y=90,width=100)
+        self.date_entry.place(x=1150, y=60,width=100)
 
 
         self.ste_lable = customtkinter.CTkLabel(self, text="State of Supply")
-        self.ste_lable.place(x=900, y=130)
+        self.ste_lable.place(x=1050, y=100)
 
         self.statelist=["None", "Andhra Pradesh", "Arunachal Pradesh", "Assam",
                                                               "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana",
@@ -72,19 +90,19 @@ class saleClass(customtkinter.CTk):
                                                               "Uttar Pradesh", "Uttarakhand", "West Bengal"]
         self.state_menu = customtkinter.CTkOptionMenu(self, width=150, height=30, dynamic_resizing=False,
                                                       values=self.statelist)
-        self.state_menu.place(x=1000, y=130)
+        self.state_menu.place(x=1150, y=100)
 
         self.Payment_type_lable = customtkinter.CTkLabel(self, font=customtkinter.CTkFont(size=15), text="Payment Type")
-        self.Payment_type_lable.place(x=50, y=720)
+        self.Payment_type_lable.place(x=50, y=680)
 
         self.Payment_type_entry = customtkinter.CTkComboBox(self, width=100, values=["Cash", "Cheque"],command=self.refrance)
-        self.Payment_type_entry.place(x=50, y=750)
+        self.Payment_type_entry.place(x=50, y=715)
 
         self.Cheque_entry = customtkinter.CTkEntry(self, width=150, height=30, placeholder_text="Reference No.")
         # self.Cheque_entry.place(x=50, y=790)
 
         self.roundoff_check = customtkinter.CTkCheckBox(self, text="Round off", onvalue=1, offvalue=0,command=self.finalamount)
-        self.roundoff_check.place(x=900, y=750)
+        self.roundoff_check.place(x=1020, y=680)
 
         self.roundoff=StringVar()
         self.totalam=StringVar()
@@ -94,35 +112,35 @@ class saleClass(customtkinter.CTk):
         # self.totalam.set("0")
 
         self.roundoff_entry = customtkinter.CTkEntry(self, width=150, height=30, textvariable=self.roundoff)
-        self.roundoff_entry.place(x=1000, y=750)
+        self.roundoff_entry.place(x=1150, y=680)
         self.roundoff.trace('w',self.amountupdate)
 
         self.Total_lable = customtkinter.CTkLabel(self, text="Total")
-        self.Total_lable.place(x=900, y=790)
+        self.Total_lable.place(x=1050, y=720)
 
         self.Total_entry = customtkinter.CTkEntry(self, width=150, height=30, textvariable=self.totalam)
-        self.Total_entry.place(x=1000, y=790)
+        self.Total_entry.place(x=1150, y=720)
         self.totalam.trace('w', self.amountupdate)
 
         self.Received_lable = customtkinter.CTkLabel(self, text="Received")
-        self.Received_lable.place(x=900, y=840)
+        self.Received_lable.place(x=1050, y=760)
 
         self.Received_entry = customtkinter.CTkEntry(self, width=150, height=30, textvariable=self.recvam)
-        self.Received_entry.place(x=1000, y=840)
+        self.Received_entry.place(x=1150, y=760)
         self.recvam.trace('w', self.amountupdate)
 
         self.Balance_lable = customtkinter.CTkLabel(self, text="Balance")
-        self.Balance_lable.place(x=900, y=880)
+        self.Balance_lable.place(x=1050, y=795)
 
         self.balence = StringVar()
         self.balence="0"
 
         self.Balance_entry = customtkinter.CTkLabel(self, text=self.balence)
-        self.Balance_entry.place(x=1070, y=880)
+        self.Balance_entry.place(x=1170, y=795)
 
         self.savebtn = customtkinter.CTkButton(self, command=self.savedata, width=80, text="Sell",
                                                font=customtkinter.CTkFont(size=16))
-        self.savebtn.place(x=1100, y=950)
+        self.savebtn.place(x=1220, y=850)
 
         # self.table_frame = customtkinter.CTkFrame(self,width=1020,height=300 ,corner_radius=0)
         # self.table_frame.place(x=20,y=200)
@@ -134,7 +152,7 @@ class saleClass(customtkinter.CTk):
         self.navigation_frame = customtkinter.CTkFrame(self, width=1900, height=300, border_width=1, corner_radius=0)
         self.navigation_frame.grid(row=0, column=0, sticky="nsew")
         self.navigation_frame.grid_rowconfigure(11)
-        self.navigation_frame.place(x=20, y=200)
+        self.navigation_frame.place(x=20, y=170)
 
         self.no_lable = customtkinter.CTkLabel(self.navigation_frame, text="No.")
         self.no_lable.grid(row=0, column=0, padx=5, pady=5)
@@ -728,7 +746,7 @@ class saleClass(customtkinter.CTk):
 
         self.Party_var=StringVar()
         self.partyname_entry = customtkinter.CTkComboBox(self, width=200, height=40, variable=self.Party_var,values=self.Partynames,command=self.party)
-        self.partyname_entry.place(x=50, y=120)
+        self.partyname_entry.place(x=50, y=100)
         self.Party_var.trace('w',self.updateparty)
 
         self.get_party_gstin()
@@ -887,14 +905,11 @@ class saleClass(customtkinter.CTk):
      try:
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
-
         cur.execute(f"Select recivebalence from partydata where gstin={self.gstin_entry.get()}")
-        cur.execute(
-            "Update partydata set recivebalence=?",(
+        cur.execute(f"Update partydata set recivebalence=? where gstin={self.gstin_entry.get()}",(
              self.resultam.get(),
             ))
         con.commit()
-
 
      except Exception as ex:
       print(ex)
@@ -1061,11 +1076,10 @@ class saleClass(customtkinter.CTk):
         self.add_invoice_event()
         self.invoice_updator()
         self.add_party_event()
+        self.invoice_genrator()
         self.invoice_event()
 
 
-    def change_appearance_mode_event(self, new_appearance_mode):
-        print(new_appearance_mode)
 
     def get_party_data(self):
 
@@ -1506,12 +1520,13 @@ class saleClass(customtkinter.CTk):
             rows = cur.fetchall()
 
             for row in rows:
-
                 for i in row:
-                    if i == "":
+                    if i == "" :
                         i = "0"
                         iseto.set(i)
-
+                    elif i == None:
+                        i = "0"
+                        iseto.set(i)
                     else:
                         iseto.set(i)
 

@@ -12,7 +12,7 @@ pip install pandas
 pip install docxtpl
 pip install num2words
 pip install docx2pdf
-pip install
-pip install
+pip install screeninfo
+pip install ttkbootstrap
 pip install
 pip install
