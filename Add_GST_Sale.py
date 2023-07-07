@@ -319,6 +319,17 @@ class saleClass(customtkinter.CTk):
         self.ik8 = [""]
         self.ik9 = [""]
         self.ik10 = [""]
+
+        self.iuno1var = StringVar()
+        self.iuno2var = StringVar()
+        self.iuno3var = StringVar()
+        self.iuno4var = StringVar()
+        self.iuno5var = StringVar()
+        self.iuno6var = StringVar()
+        self.iuno7var = StringVar()
+        self.iuno8var = StringVar()
+        self.iuno9var = StringVar()
+        self.iuno10var = StringVar()
         # self.get_item_unit_list()
 
         self.total_qty_lable = customtkinter.CTkLabel(self.navigation_frame, text=self.allqty)
@@ -327,35 +338,45 @@ class saleClass(customtkinter.CTk):
         self.unit_lable = customtkinter.CTkLabel(self.navigation_frame, text="UNIT")
         self.unit_lable.grid(row=0, column=3, padx=5, pady=5)
 
-        self.no1_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.ik1,command=self.itemshow)
+        self.no1_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, variable=self.iuno1var, values=self.ik1,command=self.itemshow)
         self.no1_unit_entry.grid(row=2, column=3, padx=5, pady=5)
+        self.iuno1var.trace('w', self.itemunit_update1)
 
-        self.no2_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.ik2,command=self.itemshow)
+        self.no2_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, variable=self.iuno2var, values=self.ik2,command=self.itemshow)
         self.no2_unit_entry.grid(row=3, column=3, padx=5, pady=5)
+        self.iuno2var.trace('w', self.itemunit_update2)
 
-        self.no3_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.ik3,command=self.itemshow)
+        self.no3_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, variable=self.iuno3var, values=self.ik3,command=self.itemshow)
         self.no3_unit_entry.grid(row=4, column=3, padx=5, pady=5)
+        self.iuno3var.trace('w', self.itemunit_update3)
 
-        self.no4_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.ik4,command=self.itemshow)
+        self.no4_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, variable=self.iuno4var, values=self.ik4,command=self.itemshow)
         self.no4_unit_entry.grid(row=5, column=3, padx=5, pady=5)
+        self.iuno4var.trace('w', self.itemunit_update4)
 
-        self.no5_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.ik5,command=self.itemshow)
+        self.no5_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, variable=self.iuno5var, values=self.ik5,command=self.itemshow)
         self.no5_unit_entry.grid(row=6, column=3, padx=5, pady=5)
+        self.iuno5var.trace('w', self.itemunit_update5)
 
-        self.no6_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.ik6,command=self.itemshow)
+        self.no6_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, variable=self.iuno6var, values=self.ik6,command=self.itemshow)
         self.no6_unit_entry.grid(row=7, column=3, padx=5, pady=5)
+        self.iuno6var.trace('w', self.itemunit_update6)
 
-        self.no7_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.ik7,command=self.itemshow)
+        self.no7_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, variable=self.iuno7var, values=self.ik7,command=self.itemshow)
         self.no7_unit_entry.grid(row=8, column=3, padx=5, pady=5)
+        self.iuno7var.trace('w', self.itemunit_update7)
 
-        self.no8_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.ik8,command=self.itemshow)
+        self.no8_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, variable=self.iuno8var, values=self.ik8,command=self.itemshow)
         self.no8_unit_entry.grid(row=9, column=3, padx=5, pady=5)
+        self.iuno8var.trace('w', self.itemunit_update8)
 
-        self.no9_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.ik9,command=self.itemshow)
+        self.no9_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, variable=self.iuno9var, values=self.ik9,command=self.itemshow)
         self.no9_unit_entry.grid(row=10, column=3, padx=5, pady=5)
+        self.iuno9var.trace('w', self.itemunit_update9)
 
-        self.no10_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.ik10,command=self.itemshow)
+        self.no10_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, variable=self.iuno10var, values=self.ik10,command=self.itemshow)
         self.no10_unit_entry.grid(row=11, column=3, padx=5, pady=5)
+        self.iuno10var.trace('w', self.itemunit_update10)
 
         self.ipp1 = StringVar()
         self.ipp2 = StringVar()
@@ -1484,6 +1505,16 @@ class saleClass(customtkinter.CTk):
         self.totalqty()
         self.totaldesam()
         self.totaltaxam()
+    def itemshowunit(self):
+        # self.iqt()
+        # self.itpri()
+        # self.secper()
+        # self.itx()
+        self.itemtable()
+        self.finalamount()
+        self.totalqty()
+        self.totaldesam()
+        self.totaltaxam()
     def update_qtye1(self,event,*args):
         self.get_item_qtyentery(self.no1_item_entry.get(), self.iq1)
     def update_qtye2(self,event,*args):
@@ -1997,6 +2028,49 @@ class saleClass(customtkinter.CTk):
         self.update_combobox(self.no9_item_entry,self.itm9)
     def itemlist_update10(self,event,*args):
         self.update_combobox(self.no10_item_entry,self.itm10)
+
+
+
+    def itemunit_update1(self,event,*args):
+        self.update_Unit_combobox(self.no1_unit_entry,self.ik1)
+    def itemunit_update2(self,event,*args):
+        self.update_Unit_combobox(self.no2_unit_entry,self.ik2)
+    def itemunit_update3(self,event,*args):
+        self.update_Unit_combobox(self.no3_unit_entry,self.ik3)
+    def itemunit_update4(self,event,*args):
+        self.update_Unit_combobox(self.no4_unit_entry,self.ik4)
+    def itemunit_update5(self,event,*args):
+        self.update_Unit_combobox(self.no5_unit_entry,self.ik5)
+    def itemunit_update6(self,event,*args):
+        self.update_Unit_combobox(self.no6_unit_entry,self.ik6)
+    def itemunit_update7(self,event,*args):
+        self.update_Unit_combobox(self.no7_unit_entry,self.ik7)
+    def itemunit_update8(self,event,*args):
+        self.update_Unit_combobox(self.no8_unit_entry,self.ik8)
+    def itemunit_update9(self,event,*args):
+        self.update_Unit_combobox(self.no9_unit_entry,self.ik9)
+    def itemunit_update10(self,event,*args):
+        self.update_Unit_combobox(self.no10_unit_entry,self.ik10)
+
+    def update_Unit_combobox(self,entery,list):
+        type=entery.get()
+        list.clear()
+        list.append("")
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+            cur.execute("select unit from itemdata")
+            rows = cur.fetchall()
+            for items in rows:
+              for i in items:
+                m=str(i)
+                if type.lower() in m.lower():
+                  list.append(i)
+            mlis=[*set(list)]
+            entery.configure(values=mlis)
+            self.itemshowunit()
+        except Exception as ex:
+              print("Error", f"Error due to : {str(ex)}")
 
     def update_combobox(self,entery,method):
         type=entery.get()
