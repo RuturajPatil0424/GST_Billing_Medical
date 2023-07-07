@@ -142,6 +142,10 @@ class saleClass(customtkinter.CTk):
                                                font=customtkinter.CTkFont(size=16))
         self.savebtn.place(x=1220, y=850)
 
+        self.clearbtn = customtkinter.CTkButton(self, command=self.clear_All_Data, width=80, text="Clear",
+                                                font=customtkinter.CTkFont(size=16))
+        self.clearbtn.place(x=1100, y=850)
+
         # self.table_frame = customtkinter.CTkFrame(self,width=1020,height=300 ,corner_radius=0)
         # self.table_frame.place(x=20,y=200)
 
@@ -1976,6 +1980,12 @@ class saleClass(customtkinter.CTk):
         self.itemgstbill(self.no10_qty_entry.get(), self.no10_unitprice_entry.get(), self.no10_dec_percentagee_entry.get(),
                          self.ida10, self.tax_unit_box, self.no10_tax_percentagee_entry.get(), self.ita10, self.iam10)
 
+    def partynameData(self):
+        self.get_party_data()
+        self.get_party_number()
+        self.get_party_gstin()
+        self.get_party_state()
+        self.get_item_unit_name(self.partyname_entry,self.statelist)
     def party(self,event):
         self.get_party_data()
         self.get_party_number()
@@ -2382,6 +2392,175 @@ class saleClass(customtkinter.CTk):
            self.Cheque_entry.place(x=50, y=790)
         elif self.Payment_type_entry.get() == "Cash":
            self.Cheque_entry.place_forget()
+
+    def itm11(self):
+        self.get_item_qty(self.no1_item_entry.get(), self.iq1)
+        self.get_item_unitdata_name(self.no1_item_entry, self.ik1,self.no1_unit_entry)
+        self.get_P_item_price(self.no1_item_entry.get(), self.ipp1)
+        self.get_item_price(self.no1_item_entry.get(), self.ip1)
+        self.get_item_tax(self.no1_item_entry, self.itax1)
+        self.get_item_dec(self.no1_item_entry.get(), self.id1)
+        # self.itx()
+        self.itemgstbill(self.no1_qty_entry.get(), self.no1_unitprice_entry.get(), self.no1_dec_percentagee_entry.get(),
+                         self.ida1, self.tax_unit_box, self.no1_tax_percentagee_entry.get(), self.ita1, self.iam1)
+        self.finalamount()
+        self.totalqty()
+        self.totaldesam()
+        self.totaltaxam()
+
+
+    def itm12(self):
+        self.get_item_qty(self.no2_item_entry.get(), self.iq2)
+        self.get_item_unitdata_name(self.no2_item_entry, self.ik2,self.no2_unit_entry)
+        self.get_P_item_price(self.no2_item_entry.get(), self.ipp2)
+        self.get_item_price(self.no2_item_entry.get(), self.ip2)
+        self.get_item_tax(self.no2_item_entry, self.itax2)
+        self.get_item_dec(self.no2_item_entry.get(), self.id2)
+        self.itemgstbill(self.no2_qty_entry.get(), self.no2_unitprice_entry.get(), self.no2_dec_percentagee_entry.get(),
+                         self.ida2, self.tax_unit_box, self.no2_tax_percentagee_entry.get(), self.ita2, self.iam2)
+        self.finalamount()
+        self.totalqty()
+        self.totaldesam()
+        self.totaltaxam()
+
+    def itm13(self):
+        self.get_item_qty(self.no3_item_entry.get(), self.iq3)
+        self.get_item_unitdata_name(self.no3_item_entry, self.ik3,self.no3_unit_entry)
+        self.get_P_item_price(self.no3_item_entry.get(), self.ipp3)
+        self.get_item_price(self.no3_item_entry.get(), self.ip3)
+        self.get_item_tax(self.no3_item_entry, self.itax3)
+        self.get_item_dec(self.no3_item_entry.get(), self.id3)
+        self.itemgstbill(self.no3_qty_entry.get(), self.no3_unitprice_entry.get(), self.no3_dec_percentagee_entry.get(),
+                         self.ida3, self.tax_unit_box, self.no3_tax_percentagee_entry.get(), self.ita3, self.iam3)
+        self.finalamount()
+        self.totalqty()
+        self.totaldesam()
+        self.totaltaxam()
+
+    def itm14(self):
+        self.get_item_qty(self.no4_item_entry.get(), self.iq4)
+        self.get_item_unitdata_name(self.no4_item_entry, self.ik4,self.no4_unit_entry)
+        self.get_P_item_price(self.no4_item_entry.get(), self.ipp4)
+        self.get_item_price(self.no4_item_entry.get(), self.ip4)
+        self.get_item_tax(self.no4_item_entry, self.itax4)
+        self.get_item_dec(self.no4_item_entry.get(), self.id4)
+        self.itemgstbill(self.no4_qty_entry.get(), self.no4_unitprice_entry.get(), self.no4_dec_percentagee_entry.get(),
+                         self.ida4, self.tax_unit_box, self.no4_tax_percentagee_entry.get(), self.ita4, self.iam4)
+        self.finalamount()
+        self.totalqty()
+        self.totaldesam()
+        self.totaltaxam()
+
+    def itm15(self):
+        self.get_item_qty(self.no5_item_entry.get(), self.iq5)
+        self.get_item_unitdata_name(self.no5_item_entry, self.ik5,self.no5_unit_entry)
+        self.get_P_item_price(self.no5_item_entry.get(), self.ipp5)
+        self.get_item_price(self.no5_item_entry.get(), self.ip5)
+        self.get_item_tax(self.no5_item_entry, self.itax5)
+        self.get_item_dec(self.no5_item_entry.get(), self.id5)
+        self.itemgstbill(self.no5_qty_entry.get(), self.no5_unitprice_entry.get(), self.no5_dec_percentagee_entry.get(),
+                         self.ida5, self.tax_unit_box, self.no5_tax_percentagee_entry.get(), self.ita5, self.iam5)
+        self.finalamount()
+        self.totalqty()
+        self.totaldesam()
+        self.totaltaxam()
+
+    def itm16(self):
+        self.get_item_qty(self.no6_item_entry.get(), self.iq6)
+        self.get_item_unitdata_name(self.no6_item_entry, self.ik6,self.no6_unit_entry)
+        self.get_P_item_price(self.no6_item_entry.get(), self.ipp6)
+        self.get_item_price(self.no6_item_entry.get(), self.ip6)
+        self.get_item_tax(self.no6_item_entry, self.itax6)
+        self.get_item_dec(self.no6_item_entry.get(), self.id6)
+        self.itemgstbill(self.no6_qty_entry.get(), self.no6_unitprice_entry.get(), self.no6_dec_percentagee_entry.get(),
+                         self.ida6, self.tax_unit_box, self.no6_tax_percentagee_entry.get(), self.ita6, self.iam6)
+        self.finalamount()
+        self.totalqty()
+        self.totaldesam()
+        self.totaltaxam()
+
+    def itm17(self):
+        self.get_item_qty(self.no7_item_entry.get(), self.iq7)
+        self.get_item_unitdata_name(self.no7_item_entry, self.ik7,self.no7_unit_entry)
+        self.get_P_item_price(self.no7_item_entry.get(), self.ipp7)
+        self.get_item_price(self.no7_item_entry.get(), self.ip7)
+        self.get_item_tax(self.no7_item_entry, self.itax7)
+        self.get_item_dec(self.no7_item_entry.get(), self.id7)
+        self.itemgstbill(self.no7_qty_entry.get(), self.no7_unitprice_entry.get(), self.no7_dec_percentagee_entry.get(),
+                         self.ida7, self.tax_unit_box, self.no7_tax_percentagee_entry.get(), self.ita7, self.iam7)
+        self.finalamount()
+        self.totalqty()
+        self.totaldesam()
+        self.totaltaxam()
+
+    def itm18(self):
+        self.get_item_qty(self.no8_item_entry.get(), self.iq8)
+        self.get_item_unitdata_name(self.no8_item_entry, self.ik8,self.no8_unit_entry)
+        self.get_P_item_price(self.no8_item_entry.get(), self.ipp8)
+        self.get_item_price(self.no8_item_entry.get(), self.ip8)
+        self.get_item_tax(self.no8_item_entry, self.itax8)
+        self.get_item_dec(self.no8_item_entry.get(), self.id8)
+        self.itemgstbill(self.no8_qty_entry.get(), self.no8_unitprice_entry.get(), self.no8_dec_percentagee_entry.get(),
+                         self.ida8, self.tax_unit_box, self.no8_tax_percentagee_entry.get(), self.ita8, self.iam8)
+        self.finalamount()
+        self.totalqty()
+        self.totaldesam()
+        self.totaltaxam()
+
+    def itm19(self):
+        self.get_item_qty(self.no9_item_entry.get(), self.iq9)
+        self.get_item_unitdata_name(self.no9_item_entry, self.ik9,self.no9_unit_entry)
+        self.get_P_item_price(self.no9_item_entry.get(), self.ipp9)
+        self.get_item_price(self.no9_item_entry.get(), self.ip9)
+        self.get_item_tax(self.no9_item_entry, self.itax9)
+        self.get_item_dec(self.no9_item_entry.get(), self.id9)
+        self.itemgstbill(self.no9_qty_entry.get(), self.no9_unitprice_entry.get(), self.no9_dec_percentagee_entry.get(),
+                         self.ida9, self.tax_unit_box, self.no9_tax_percentagee_entry.get(), self.ita9, self.iam9)
+        self.finalamount()
+        self.totalqty()
+        self.totaldesam()
+        self.totaltaxam()
+
+    def itm20(self):
+        self.get_item_qty(self.no10_item_entry.get(), self.iq10)
+        self.get_item_unitdata_name(self.no10_item_entry, self.ik10,self.no10_unit_entry)
+        self.get_P_item_price(self.no10_item_entry.get(), self.ipp10)
+        self.get_item_price(self.no10_item_entry.get(), self.ip10)
+        self.get_item_tax(self.no10_item_entry, self.itax10)
+        self.get_item_dec(self.no10_item_entry.get(), self.id10)
+        self.itemgstbill(self.no10_qty_entry.get(), self.no10_unitprice_entry.get(), self.no10_dec_percentagee_entry.get(),
+                         self.ida10, self.tax_unit_box, self.no10_tax_percentagee_entry.get(), self.ita10, self.iam10)
+        self.finalamount()
+        self.totalqty()
+        self.totaldesam()
+        self.totaltaxam()
+
+    def clear_All_Data(self):
+        self.Party_var.set("")
+
+        self.no1var.set("")
+        self.no2var.set("")
+        self.no3var.set("")
+        self.no4var.set("")
+        self.no5var.set("")
+        self.no6var.set("")
+        self.no7var.set("")
+        self.no8var.set("")
+        self.no9var.set("")
+        self.no10var.set("")
+
+        self.partynameData()
+
+        self.itm11()
+        self.itm12()
+        self.itm13()
+        self.itm14()
+        self.itm15()
+        self.itm16()
+        self.itm17()
+        self.itm18()
+        self.itm19()
+        self.itm20()
 
 if __name__ == "__main__":
     app = saleClass()

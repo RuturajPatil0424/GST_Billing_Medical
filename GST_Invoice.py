@@ -355,7 +355,7 @@ def wotgst(price,qty,tax,disc,total,list):
         totalpr=float(total)
         qtyy=int(qty)
         gsttax=float(mtax)
-        disca = float(disc)
+        # disca = float(disc)
 
         wodec = totalpr - (totalpr*(100/(100+gsttax)))
         it=totalpr-wodec
