@@ -1000,7 +1000,7 @@ class saleClass(customtkinter.CTk):
             print(ex)
             # messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
     def invoice_event(self):
-        call(["python", "purachseinvo.py"])
+        call(["python", "Purchase_Invo.py"])
     def savedata(self):
         self.add_invoice_event()
         self.invoice_updator()

@@ -558,7 +558,7 @@ def datastore():
 
   invoice_event()
 def invoice_event():
-  call(["python", "Invoice.py"])
+  call(["python", "GST_Invoice.py"])
 
 def invoice_genrator():
   con = sqlite3.connect(database=r'DataBase/ims.db')

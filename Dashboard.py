@@ -103,6 +103,14 @@ class App(customtkinter.CTk):
         self.calculator_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "calculator.png")),
                                                 dark_image=Image.open(os.path.join(image_path, "calculator.png")),
                                                 size=(30, 30))
+        self.import_image = customtkinter.CTkImage(
+            light_image=Image.open(os.path.join(image_path, "import.png")),
+            dark_image=Image.open(os.path.join(image_path, "import.png")),
+            size=(30, 30))
+        self.export_image = customtkinter.CTkImage(
+            light_image=Image.open(os.path.join(image_path, "export.png")),
+            dark_image=Image.open(os.path.join(image_path, "export.png")),
+            size=(30, 30))
         self.stock_image = customtkinter.CTkImage(
             light_image=Image.open(os.path.join(image_path, "lowitem.png")),
             dark_image=Image.open(os.path.join(image_path, "lowitem.png")),
@@ -558,19 +566,18 @@ class App(customtkinter.CTk):
         self.var_searchby = StringVar()
         self.Var_searchtxt = StringVar()
 
-        self.parties_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="#e4e8ef")
+        self.parties_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
 
-        self.in_party_top_frame = customtkinter.CTkFrame(self.parties_frame, width=1720, height=100, fg_color="#ffffff")
+        self.in_party_top_frame = customtkinter.CTkFrame(self.parties_frame, width=1720, height=100)
         self.in_party_top_frame.place(x=10, y=10)
 
-        self.party_name_frame = customtkinter.CTkFrame(self.parties_frame, width=500, height=860, fg_color="#ffffff")
+        self.party_name_frame = customtkinter.CTkFrame(self.parties_frame, width=500, height=860)
         self.party_name_frame.place(x=10, y=120)
 
-        self.party_detail_frame = customtkinter.CTkFrame(self.parties_frame, width=1210, height=150, fg_color="#ffffff")
+        self.party_detail_frame = customtkinter.CTkFrame(self.parties_frame, width=1210, height=150)
         self.party_detail_frame.place(x=520, y=120)
 
-        self.party_transiction_frame = customtkinter.CTkFrame(self.parties_frame, width=1210, height=700,
-                                                              fg_color="#ffffff")
+        self.party_transiction_frame = customtkinter.CTkFrame(self.parties_frame, width=1210, height=700)
         self.party_transiction_frame.place(x=520, y=280)
 
 
@@ -604,9 +611,16 @@ class App(customtkinter.CTk):
 
         self.imp_party_button = customtkinter.CTkButton(self.party_name_frame, font=customtkinter.CTkFont(size=18),
                                                         text="Import Parties", width=70, height=40,
-                                                        image=self.image_icon_image, fg_color="transparent",
+                                                        image=self.import_image, fg_color="transparent",
                                                         hover_color=("gray70", "gray30"),command=self.import_Party_Data)
         self.imp_party_button.place(x=20, y=20)
+
+        self.exp_party_button = customtkinter.CTkButton(self.party_name_frame, font=customtkinter.CTkFont(size=18),
+                                                        text="Export Parties", width=70, height=40,
+                                                        image=self.export_image, fg_color="transparent",
+                                                        hover_color=("gray70", "gray30"),
+                                                        command=self.import_Party_Data)
+        self.exp_party_button.place(x=20, y=80)
 
         self.home_add_sale_button = customtkinter.CTkButton(self.in_party_top_frame,
                                                             font=customtkinter.CTkFont(size=18),
@@ -673,30 +687,30 @@ class App(customtkinter.CTk):
         self.partyaddress = StringVar()
         self.partygstin = StringVar()
 
-        self.party_name_lable = customtkinter.CTkLabel(self.party_detail_frame, textvariable=self.partyname,font=customtkinter.CTkFont(size=18), text_color="black")
+        self.party_name_lable = customtkinter.CTkLabel(self.party_detail_frame, textvariable=self.partyname,font=customtkinter.CTkFont(size=18))
         self.party_name_lable.place(x=15, y=10)
 
-        self.party_number_lable = customtkinter.CTkLabel(self.party_detail_frame, textvariable=self.partynumber,font=customtkinter.CTkFont(size=12), text_color="black")
+        self.party_number_lable = customtkinter.CTkLabel(self.party_detail_frame, textvariable=self.partynumber,font=customtkinter.CTkFont(size=12))
         self.party_number_lable.place(x=15, y=60)
 
         self.party_email_lable = customtkinter.CTkLabel(self.party_detail_frame, textvariable=self.partyemail,
-                                                        font=customtkinter.CTkFont(size=12), text_color="black")
+                                                        font=customtkinter.CTkFont(size=12))
         self.party_email_lable.place(x=15, y=85)
 
         self.party_crlimit_lable = customtkinter.CTkLabel(self.party_detail_frame, textvariable=self.partycrlimit,
-                                                          font=customtkinter.CTkFont(size=12), text_color="black")
+                                                          font=customtkinter.CTkFont(size=12))
         self.party_crlimit_lable.place(x=15, y=110)
 
         self.party_address_lable = customtkinter.CTkLabel(self.party_detail_frame, textvariable=self.partyaddress,
-                                                          font=customtkinter.CTkFont(size=12), text_color="black")
+                                                          font=customtkinter.CTkFont(size=12))
         self.party_address_lable.place(x=1000, y=60)
 
         self.party_gstin_lable = customtkinter.CTkLabel(self.party_detail_frame, textvariable=self.partygstin,
-                                                        font=customtkinter.CTkFont(size=12), text_color="black")
+                                                        font=customtkinter.CTkFont(size=12))
         self.party_gstin_lable.place(x=1000, y=85)
 
         self.party_gstin_lable = customtkinter.CTkLabel(self.party_transiction_frame, text="TRANSACTION",
-                                                        font=customtkinter.CTkFont(size=14, ), text_color="black")
+                                                        font=customtkinter.CTkFont(size=14))
         self.party_gstin_lable.place(x=10, y=10)
 
         transiction_Frame = ttk.Frame(self.party_transiction_frame, relief=RIDGE)
@@ -797,10 +811,17 @@ class App(customtkinter.CTk):
 
         self.imp_item_button = customtkinter.CTkButton(self.item_name_frame, font=customtkinter.CTkFont(size=18),
                                                           text="Import Items", width=70, height=40,
-                                                          image=self.image_icon_image, fg_color="transparent",
+                                                          image=self.import_image, fg_color="transparent",
                                                           text_color="black",
                                                           hover_color=("gray70", "gray30"),command=self.import_Item_Data)
         self.imp_item_button.place(x=20, y=20)
+
+        self.exp_item_button = customtkinter.CTkButton(self.item_name_frame, font=customtkinter.CTkFont(size=18),
+                                                        text="Export Parties", width=70, height=40,
+                                                        image=self.export_image, fg_color="transparent",
+                                                        hover_color=("gray70", "gray30"),
+                                                        command=self.import_Party_Data)
+        self.exp_item_button.place(x=20, y=80)
 
         self.edit_item_button = customtkinter.CTkButton(self.item_name_frame,
                                                        font=customtkinter.CTkFont(size=15), text="Edit Item",
@@ -2903,10 +2924,17 @@ class App(customtkinter.CTk):
 
         self.imp_purches_button = customtkinter.CTkButton(self.purches_name_frame, font=customtkinter.CTkFont(size=18),
                                                         text="Import Parches Data", width=70, height=40,
-                                                        image=self.image_icon_image, fg_color="transparent",
+                                                        image=self.import_image, fg_color="transparent",
                                                         text_color="black",
                                                         hover_color=("gray70", "gray30"))
         self.imp_purches_button.place(x=20, y=20)
+
+        self.exp_purches_button = customtkinter.CTkButton(self.purches_name_frame, font=customtkinter.CTkFont(size=18),
+                                                          text="Export Parches Data", width=70, height=40,
+                                                          image=self.export_image, fg_color="transparent",
+                                                          text_color="black",
+                                                          hover_color=("gray70", "gray30"))
+        self.exp_purches_button.place(x=20, y=80)
 
         self.purches_add_sale_button = customtkinter.CTkButton(self.in_purches_top_frame,
                                                             font=customtkinter.CTkFont(size=18),command=self.addsale_event,
@@ -3308,37 +3336,37 @@ class App(customtkinter.CTk):
 
     # gst
     def addgstsale_event(self):
-        call(["python", "AddSale.py"])
+        call(["python", "Add_GST_Sale.py"])
     def editgstsale_event(self):
-        call(["python", "EditGSTSale.py"])
+        call(["python", "Edit_GST_Sale.py"])
 
 
     # sale
     def addsale_event(self):
-        call(["python", "sale.py"])
+        call(["python", "Add_Sale.py"])
     def editsale_event(self):
-        call(["python", "EditSale.py"])
+        call(["python", "Edit_Sale.py"])
     def addestimate_event(self):
         call(["python", "Estimate.py"])
 
 
     # Party
     def addparty_event(self):
-        call(["python", "AddParty.py"])
+        call(["python", "Add_Party.py"])
     def editparty_event(self):
-        call(["python", "EditParty.py"])
+        call(["python", "Edit_Party.py"])
 
     # item
     def edititem_event(self):
-        call(["python", "EditItem.py"])
+        call(["python", "Edit_Item.py"])
     def additem_event(self):
-        call(["python", "AddItem.py"])
+        call(["python", "Add_Item.py"])
 
     # Purchase
     def addpurchase_event(self):
         call(["python", "Purchase.py"])
     def editparty_event(self):
-        call(["python", "EditParty.py"])
+        call(["python", "Edit_Party.py"])
 
 
 
@@ -3694,26 +3722,32 @@ class App(customtkinter.CTk):
         cur = con.cursor()
         self.itemtotalamlist.clear()
         try:
-            cur.execute(f"select itemname,openqty from itemdata ",)
+            cur.execute(f"select itemname,openqty,minqty from itemdata ",)
             rows = cur.fetchall()
             for row in rows:
-                if int(row[1]) <= 5:
+              if  row[2] == "" or row[2] == " ":
+                a=0
+              else:
+                a=int(row[2])
+
+              if int(row[1]) <= 5 or  int(row[1]) < int(a):
                  a=row[0]
                  b =int(row[1])
                  c=f"Item Name :    {a}       qty  :  {b}"
                  self.itemlowlist.append(c)
-                else:
+              else:
                  pass
+
+            if len(self.itemlowlist) < 1 :
+             self.lowStock_lable2.insert(0.0,"No Item")
+             self.lowStock_lable2.configure(state='disabled')
+            else:
+              for i in self.itemlowlist :
+                result=f"\n {i}"
+                self.lowStock_lable2.insert(0.0,result)
+                self.lowStock_lable2.configure(state='disabled')
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-        if len(self.itemlowlist) < 1 :
-            self.lowStock_lable2.insert(0.0,"No Item")
-            self.lowStock_lable2.configure(state='disabled')
-        else:
-          for i in self.itemlowlist :
-            result=f"\n {i}"
-            self.lowStock_lable2.insert(0.0,result)
-            self.lowStock_lable2.configure(state='disabled')
 
     # Party Frame Methods
     def show(self):

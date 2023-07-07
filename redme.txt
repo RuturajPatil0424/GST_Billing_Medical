@@ -14,5 +14,5 @@ pip install num2words
 pip install docx2pdf
 pip install screeninfo
 pip install ttkbootstrap
-pip install
+pip install selenium
 pip install

@@ -17,6 +17,8 @@ class saleClass(customtkinter.CTk):
         self.focus_force()
         # ==============================================================
 
+        self.get_appearance_mode_event()
+
         self.Partynames = [""]
         self.gstin = StringVar()
         self.partynumber=StringVar()
@@ -24,15 +26,14 @@ class saleClass(customtkinter.CTk):
         self.reciveamount = StringVar()
         self.resultam = StringVar()
 
-        self.get_appearance_mode_event()
 
-        self.Saleleble = customtkinter.CTkLabel(self, text="Edit Purchase", font=customtkinter.CTkFont(size=25))
+        self.Saleleble = customtkinter.CTkLabel(self, text="Sale", font=customtkinter.CTkFont(size=25))
         self.Saleleble.place(x=20, y=40)
 
         self.gstinleble = customtkinter.CTkLabel(self, text="GSTIN : ", font=customtkinter.CTkFont(size=15))
         self.gstinleble.place(x=650, y=125)
 
-        self.gstin_entry = customtkinter.CTkEntry(self, width=150, height=40, textvariable=self.gstin)
+        self.gstin_entry = customtkinter.CTkEntry(self, width=120, height=40, textvariable=self.gstin)
         self.gstin_entry.place(x=710, y=120)
 
         self.phonenumber_entry = customtkinter.CTkEntry(self, width=200, height=40, textvariable=self.partynumber)
@@ -48,7 +49,7 @@ class saleClass(customtkinter.CTk):
         self.invocie_lable.place(x=900, y=50)
 
         self.invo=StringVar()
-        self.invoice_entry = customtkinter.CTkEntry(self, width=150, height=30,textvariable=self.invo)
+        self.invoice_entry = customtkinter.CTkEntry(self, width=120, height=30,textvariable=self.invo)
         self.invoice_entry.place(x=1000, y=50)
 
         self.invoice_genrator()
@@ -57,7 +58,7 @@ class saleClass(customtkinter.CTk):
         self.date_label.place(x=900, y=90)
 
         self.date_entry = DateEntry(self,selectmode="day",date_pattern="dd/mm/y")
-        self.date_entry.place(x=1000, y=90,width=100)
+        self.date_entry.place(x=1000, y=90,width=120)
 
 
         self.ste_lable = customtkinter.CTkLabel(self, text="State of Supply")
@@ -70,19 +71,17 @@ class saleClass(customtkinter.CTk):
                                                               "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan",
                                                               "Sikkim", "Tamil Nadu", "Telangana", "Tripura",
                                                               "Uttar Pradesh", "Uttarakhand", "West Bengal"]
-        self.state_menu = customtkinter.CTkOptionMenu(self, width=150, height=30, dynamic_resizing=False,
+        self.state_menu = customtkinter.CTkOptionMenu(self, width=120, height=30, dynamic_resizing=False,
                                                       values=self.statelist)
         self.state_menu.place(x=1000, y=130)
 
         self.Payment_type_lable = customtkinter.CTkLabel(self, font=customtkinter.CTkFont(size=15), text="Payment Type")
         self.Payment_type_lable.place(x=50, y=720)
 
-        self.cashlist=["Cash", "Cheque"]
-
-        self.Payment_type_entry = customtkinter.CTkComboBox(self, width=100, values=self.cashlist,command=self.refrance)
+        self.Payment_type_entry = customtkinter.CTkComboBox(self, width=120, values=["Cash", "Cheque"],command=self.refrance)
         self.Payment_type_entry.place(x=50, y=750)
 
-        self.Cheque_entry = customtkinter.CTkEntry(self, width=150, height=30, placeholder_text="Reference No.")
+        self.Cheque_entry = customtkinter.CTkEntry(self, width=120, height=30, placeholder_text="Reference No.")
         # self.Cheque_entry.place(x=50, y=790)
 
         self.roundoff_check = customtkinter.CTkCheckBox(self, text="Round off", onvalue=1, offvalue=0,command=self.finalamount)
@@ -95,21 +94,21 @@ class saleClass(customtkinter.CTk):
         # self.roundoff.set("0")
         # self.totalam.set("0")
 
-        self.roundoff_entry = customtkinter.CTkEntry(self, width=150, height=30, textvariable=self.roundoff)
+        self.roundoff_entry = customtkinter.CTkEntry(self, width=120, height=30, textvariable=self.roundoff)
         self.roundoff_entry.place(x=1000, y=750)
         self.roundoff.trace('w',self.amountupdate)
 
         self.Total_lable = customtkinter.CTkLabel(self, text="Total")
         self.Total_lable.place(x=900, y=790)
 
-        self.Total_entry = customtkinter.CTkEntry(self, width=150, height=30, textvariable=self.totalam)
+        self.Total_entry = customtkinter.CTkEntry(self, width=120, height=30, textvariable=self.totalam)
         self.Total_entry.place(x=1000, y=790)
         self.totalam.trace('w', self.amountupdate)
 
         self.Received_lable = customtkinter.CTkLabel(self, text="Received")
         self.Received_lable.place(x=900, y=840)
 
-        self.Received_entry = customtkinter.CTkEntry(self, width=150, height=30, textvariable=self.recvam)
+        self.Received_entry = customtkinter.CTkEntry(self, width=120, height=30, textvariable=self.recvam)
         self.Received_entry.place(x=1000, y=840)
         self.recvam.trace('w', self.amountupdate)
 
@@ -122,15 +121,15 @@ class saleClass(customtkinter.CTk):
         self.Balance_entry = customtkinter.CTkLabel(self, text=self.balence)
         self.Balance_entry.place(x=1070, y=880)
 
-        self.savebtn = customtkinter.CTkButton(self, command=self.savedata, width=80, text="Update Purchase",
+        self.savebtn = customtkinter.CTkButton(self, command=self.savedata, width=80, text="Sell",
                                                font=customtkinter.CTkFont(size=16))
-        self.savebtn.place(x=1100, y=950)
+        self.savebtn.place(x=1050, y=950)
 
         # self.table_frame = customtkinter.CTkFrame(self,width=1020,height=300 ,corner_radius=0)
         # self.table_frame.place(x=20,y=200)
 
 
-        TaxList = ["With Tax", "Without Tax"]
+        TaxList = ["With Tax"]
 
 
         self.navigation_frame = customtkinter.CTkFrame(self, width=1900, height=300, border_width=1, corner_radius=0)
@@ -189,45 +188,45 @@ class saleClass(customtkinter.CTk):
         self.no9var = StringVar()
         self.no10var = StringVar()
 
-        self.no1_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250,variable=self.no1var, values=list(self.ItemList),command=self.itm1)
+        self.no1_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=300,variable=self.no1var, values=list(self.ItemList),command=self.itm1)
         self.no1_item_entry.grid(row=2, column=1, padx=5, pady=5)
         self.no1var.trace('w',self.itemlist_update1)
 
 
-        self.no2_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250,variable=self.no2var, values=self.ItemList,command=self.itm2)
+        self.no2_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=300,variable=self.no2var, values=self.ItemList,command=self.itm2)
         self.no2_item_entry.grid(row=3, column=1, padx=5, pady=5)
         self.no2var.trace('w', self.itemlist_update2)
 
 
-        self.no3_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250,variable=self.no3var, values=self.ItemList,command=self.itm3)
+        self.no3_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=300,variable=self.no3var, values=self.ItemList,command=self.itm3)
         self.no3_item_entry.grid(row=4, column=1, padx=5, pady=5)
         self.no3var.trace('w', self.itemlist_update3)
 
-        self.no4_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250,variable=self.no4var, values=self.ItemList,command=self.itm4)
+        self.no4_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=300,variable=self.no4var, values=self.ItemList,command=self.itm4)
         self.no4_item_entry.grid(row=5, column=1, padx=5, pady=5)
         self.no4var.trace('w', self.itemlist_update4)
 
-        self.no5_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250,variable=self.no5var, values=self.ItemList,command=self.itm5)
+        self.no5_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=300,variable=self.no5var, values=self.ItemList,command=self.itm5)
         self.no5_item_entry.grid(row=6, column=1, padx=5, pady=5)
         self.no5var.trace('w', self.itemlist_update5)
 
-        self.no6_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250,variable=self.no6var, values=self.ItemList,command=self.itm6)
+        self.no6_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=300,variable=self.no6var, values=self.ItemList,command=self.itm6)
         self.no6_item_entry.grid(row=7, column=1, padx=5, pady=5)
         self.no6var.trace('w', self.itemlist_update6)
 
-        self.no7_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250,variable=self.no7var, values=self.ItemList,command=self.itm7)
+        self.no7_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=300,variable=self.no7var, values=self.ItemList,command=self.itm7)
         self.no7_item_entry.grid(row=8, column=1, padx=5, pady=5)
         self.no7var.trace('w', self.itemlist_update7)
 
-        self.no8_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250,variable=self.no8var, values=self.ItemList,command=self.itm8)
+        self.no8_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=300,variable=self.no8var, values=self.ItemList,command=self.itm8)
         self.no8_item_entry.grid(row=9, column=1, padx=5, pady=5)
         self.no8var.trace('w', self.itemlist_update8)
 
-        self.no9_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250,variable=self.no9var, values=self.ItemList,command=self.itm9)
+        self.no9_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=300,variable=self.no9var, values=self.ItemList,command=self.itm9)
         self.no9_item_entry.grid(row=10, column=1, padx=5, pady=5)
         self.no9var.trace('w', self.itemlist_update9)
 
-        self.no10_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=250,variable=self.no10var, values=self.ItemList,command=self.itm10)
+        self.no10_item_entry = customtkinter.CTkComboBox(self.navigation_frame, width=300,variable=self.no10var, values=self.ItemList,command=self.itm10)
         self.no10_item_entry.grid(row=11, column=1, padx=5, pady=5)
         self.no10var.trace('w', self.itemlist_update10)
 
@@ -250,50 +249,59 @@ class saleClass(customtkinter.CTk):
         self.qty_lable = customtkinter.CTkLabel(self.navigation_frame, text="QTY")
         self.qty_lable.grid(row=0, column=2, padx=5, pady=5)
 
-        self.no1_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq1)
+        self.no1_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.iq1)
         self.no1_qty_entry.grid(row=2, column=2, padx=5, pady=5)
         self.iq1.trace('w', self.update_qtye1)
 
-        self.no2_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq2)
+        self.no2_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.iq2)
         self.no2_qty_entry.grid(row=3, column=2, padx=5, pady=5)
         self.iq2.trace('w', self.update_qtye2)
 
-        self.no3_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq3)
+        self.no3_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.iq3)
         self.no3_qty_entry.grid(row=4, column=2, padx=5, pady=5)
         self.iq3.trace('w', self.update_qtye3)
 
-        self.no4_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq4)
+        self.no4_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.iq4)
         self.no4_qty_entry.grid(row=5, column=2, padx=5, pady=5)
         self.iq4.trace('w', self.update_qtye4)
 
-        self.no5_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq5)
+        self.no5_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.iq5)
         self.no5_qty_entry.grid(row=6, column=2, padx=5, pady=5)
         self.iq5.trace('w', self.update_qtye5)
 
-        self.no6_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq6)
+        self.no6_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.iq6)
         self.no6_qty_entry.grid(row=7, column=2, padx=5, pady=5)
         self.iq6.trace('w', self.update_qtye6)
 
-        self.no7_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq7)
+        self.no7_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.iq7)
         self.no7_qty_entry.grid(row=8, column=2, padx=5, pady=5)
         self.iq7.trace('w', self.update_qtye7)
 
-        self.no8_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq8)
+        self.no8_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.iq8)
         self.no8_qty_entry.grid(row=9, column=2, padx=5, pady=5)
         self.iq8.trace('w', self.update_qtye8)
 
-        self.no9_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq9)
+        self.no9_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.iq9)
         self.no9_qty_entry.grid(row=10, column=2, padx=5, pady=5)
         self.iq9.trace('w', self.update_qtye9)
 
-        self.no10_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iq10)
+        self.no10_qty_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.iq10)
         self.no10_qty_entry.grid(row=11, column=2, padx=5, pady=5)
         self.iq10.trace('w', self.update_qtye10)
 
         self.allqty=StringVar()
         self.allqty="0"
-        self.Item_unit_List = [""]
-        self.get_item_unit_list()
+        self.Item_unit_List1 = [""]
+        self.Item_unit_List2 = [""]
+        self.Item_unit_List3 = [""]
+        self.Item_unit_List4 = [""]
+        self.Item_unit_List5 = [""]
+        self.Item_unit_List6 = [""]
+        self.Item_unit_List7 = [""]
+        self.Item_unit_List8 = [""]
+        self.Item_unit_List9 = [""]
+        self.Item_unit_List10 = [""]
+        # self.get_item_unit_list()
 
         self.total_qty_lable = customtkinter.CTkLabel(self.navigation_frame, text=self.allqty)
         self.total_qty_lable.grid(row=12, column=2, padx=5, pady=5)
@@ -301,35 +309,84 @@ class saleClass(customtkinter.CTk):
         self.unit_lable = customtkinter.CTkLabel(self.navigation_frame, text="UNIT")
         self.unit_lable.grid(row=0, column=3, padx=5, pady=5)
 
-        self.no1_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.Item_unit_List,command=self.itemshow)
+        self.no1_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=120, values=self.Item_unit_List1,command=self.itemshow)
         self.no1_unit_entry.grid(row=2, column=3, padx=5, pady=5)
 
-        self.no2_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.Item_unit_List,command=self.itemshow)
+        self.no2_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=120, values=self.Item_unit_List2,command=self.itemshow)
         self.no2_unit_entry.grid(row=3, column=3, padx=5, pady=5)
 
-        self.no3_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.Item_unit_List,command=self.itemshow)
+        self.no3_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=120, values=self.Item_unit_List3,command=self.itemshow)
         self.no3_unit_entry.grid(row=4, column=3, padx=5, pady=5)
 
-        self.no4_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.Item_unit_List,command=self.itemshow)
+        self.no4_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=120, values=self.Item_unit_List4,command=self.itemshow)
         self.no4_unit_entry.grid(row=5, column=3, padx=5, pady=5)
 
-        self.no5_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.Item_unit_List,command=self.itemshow)
+        self.no5_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=120, values=self.Item_unit_List5,command=self.itemshow)
         self.no5_unit_entry.grid(row=6, column=3, padx=5, pady=5)
 
-        self.no6_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.Item_unit_List,command=self.itemshow)
+        self.no6_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=120, values=self.Item_unit_List6,command=self.itemshow)
         self.no6_unit_entry.grid(row=7, column=3, padx=5, pady=5)
 
-        self.no7_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.Item_unit_List,command=self.itemshow)
+        self.no7_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=120, values=self.Item_unit_List7,command=self.itemshow)
         self.no7_unit_entry.grid(row=8, column=3, padx=5, pady=5)
 
-        self.no8_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.Item_unit_List,command=self.itemshow)
+        self.no8_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=120, values=self.Item_unit_List8,command=self.itemshow)
         self.no8_unit_entry.grid(row=9, column=3, padx=5, pady=5)
 
-        self.no9_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.Item_unit_List,command=self.itemshow)
+        self.no9_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=120, values=self.Item_unit_List9,command=self.itemshow)
         self.no9_unit_entry.grid(row=10, column=3, padx=5, pady=5)
 
-        self.no10_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.Item_unit_List,command=self.itemshow)
+        self.no10_unit_entry = customtkinter.CTkComboBox(self.navigation_frame, width=120, values=self.Item_unit_List10,command=self.itemshow)
         self.no10_unit_entry.grid(row=11, column=3, padx=5, pady=5)
+
+        self.ipp1 = StringVar()
+        self.ipp2 = StringVar()
+        self.ipp3 = StringVar()
+        self.ipp4 = StringVar()
+        self.ipp5 = StringVar()
+        self.ipp6 = StringVar()
+        self.ipp7 = StringVar()
+        self.ipp8 = StringVar()
+        self.ipp9 = StringVar()
+        self.ipp10 = StringVar()
+
+
+        self.unit_lable = customtkinter.CTkLabel(self.navigation_frame, text="Purchase Price")
+        self.unit_lable.grid(row=0, column=4, padx=5, pady=5)
+
+        # self.tax_unit_box = customtkinter.CTkComboBox(self.navigation_frame, width=120, values=TaxList,command=self.tax)
+        # self.tax_unit_box.grid(row=1, column=4, padx=5, pady=5)
+
+        self.no1_P_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ipp1, state="readonly")
+        self.no1_P_unitprice_entry.grid(row=2, column=4, padx=5, pady=5)
+
+        self.no2_P_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ipp2, state="readonly")
+        self.no2_P_unitprice_entry.grid(row=3, column=4, padx=5, pady=5)
+
+        self.no3_P_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ipp3, state="readonly")
+        self.no3_P_unitprice_entry.grid(row=4, column=4, padx=5, pady=5)
+
+        self.no4_P_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ipp4, state="readonly")
+        self.no4_P_unitprice_entry.grid(row=5, column=4, padx=5, pady=5)
+
+        self.no5_P_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ipp5, state="readonly")
+        self.no5_P_unitprice_entry.grid(row=6, column=4, padx=5, pady=5)
+
+        self.no6_P_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ipp6, state="readonly")
+        self.no6_P_unitprice_entry.grid(row=7, column=4, padx=5, pady=5)
+
+        self.no7_P_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ipp7, state="readonly")
+        self.no7_P_unitprice_entry.grid(row=8, column=4, padx=5, pady=5)
+
+        self.no8_P_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ipp8, state="readonly")
+        self.no8_P_unitprice_entry.grid(row=9, column=4, padx=5, pady=5)
+
+        self.no9_P_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ipp9, state="readonly")
+        self.no9_P_unitprice_entry.grid(row=10, column=4, padx=5, pady=5)
+
+        self.no10_P_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ipp10, state="readonly")
+        self.no10_P_unitprice_entry.grid(row=11, column=4, padx=5, pady=5)
+
 
         self.ip1 = StringVar()
         self.ip2 = StringVar()
@@ -344,60 +401,60 @@ class saleClass(customtkinter.CTk):
 
         self.itpri()
 
-        self.unit_lable = customtkinter.CTkLabel(self.navigation_frame, text="PRICE/UNIT")
-        self.unit_lable.grid(row=0, column=4, padx=5, pady=5)
+        self.unit_lable = customtkinter.CTkLabel(self.navigation_frame, text="Sale Price")
+        self.unit_lable.grid(row=0, column=5, padx=5, pady=5)
 
-        self.tax_unit_box = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=TaxList,command=self.tax)
-        self.tax_unit_box.grid(row=1, column=4, padx=5, pady=5)
+        # self.tax_unit_box = customtkinter.CTkComboBox(self.navigation_frame, width=120, values=TaxList,command=self.tax)
+        # self.tax_unit_box.grid(row=1, column=5, padx=5, pady=5)
 
-        self.no1_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ip1)
-        self.no1_unitprice_entry.grid(row=2, column=4, padx=5, pady=5)
+        self.no1_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ip1)
+        self.no1_unitprice_entry.grid(row=2, column=5, padx=5, pady=5)
         self.ip1.trace('w',self.itprientery)
 
-        self.no2_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ip2)
-        self.no2_unitprice_entry.grid(row=3, column=4, padx=5, pady=5)
+        self.no2_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ip2)
+        self.no2_unitprice_entry.grid(row=3, column=5, padx=5, pady=5)
         self.ip2.trace('w', self.itprientery)
 
-        self.no3_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ip3)
-        self.no3_unitprice_entry.grid(row=4, column=4, padx=5, pady=5)
+        self.no3_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ip3)
+        self.no3_unitprice_entry.grid(row=4, column=5, padx=5, pady=5)
         self.ip3.trace('w', self.itprientery)
 
-        self.no4_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ip4)
-        self.no4_unitprice_entry.grid(row=5, column=4, padx=5, pady=5)
+        self.no4_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ip4)
+        self.no4_unitprice_entry.grid(row=5, column=5, padx=5, pady=5)
         self.ip4.trace('w', self.itprientery)
 
-        self.no5_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ip5)
-        self.no5_unitprice_entry.grid(row=6, column=4, padx=5, pady=5)
+        self.no5_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ip5)
+        self.no5_unitprice_entry.grid(row=6, column=5, padx=5, pady=5)
         self.ip5.trace('w', self.itprientery)
 
-        self.no6_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ip6)
-        self.no6_unitprice_entry.grid(row=7, column=4, padx=5, pady=5)
+        self.no6_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ip6)
+        self.no6_unitprice_entry.grid(row=7, column=5, padx=5, pady=5)
         self.ip6.trace('w', self.itprientery)
 
-        self.no7_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ip7)
-        self.no7_unitprice_entry.grid(row=8, column=4, padx=5, pady=5)
+        self.no7_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ip7)
+        self.no7_unitprice_entry.grid(row=8, column=5, padx=5, pady=5)
         self.ip7.trace('w', self.itprientery)
 
-        self.no8_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ip8)
-        self.no8_unitprice_entry.grid(row=9, column=4, padx=5, pady=5)
+        self.no8_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ip8)
+        self.no8_unitprice_entry.grid(row=9, column=5, padx=5, pady=5)
         self.ip8.trace('w', self.itprientery)
 
-        self.no9_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ip9)
-        self.no9_unitprice_entry.grid(row=10, column=4, padx=5, pady=5)
+        self.no9_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ip9)
+        self.no9_unitprice_entry.grid(row=10, column=5, padx=5, pady=5)
         self.ip9.trace('w', self.itprientery)
 
-        self.no10_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ip10)
-        self.no10_unitprice_entry.grid(row=11, column=4, padx=5, pady=5)
+        self.no10_unitprice_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ip10)
+        self.no10_unitprice_entry.grid(row=11, column=5, padx=5, pady=5)
         self.ip10.trace('w', self.itprientery)
 
         self.DISCOUN_lable = customtkinter.CTkLabel(self.navigation_frame, text="DISCOUNT")
-        self.DISCOUN_lable.grid(row=0, column=5, padx=5, pady=5)
+        self.DISCOUN_lable.grid(row=0, column=6, padx=5, pady=5)
 
         self.percentage_lable = customtkinter.CTkLabel(self.navigation_frame, text="%")
-        self.percentage_lable.grid(row=1, column=5, padx=5, pady=5)
+        self.percentage_lable.grid(row=1, column=6, padx=5, pady=5)
 
         self.Amount_lable = customtkinter.CTkLabel(self.navigation_frame, text="Amount")
-        self.Amount_lable.grid(row=1, column=6, padx=5, pady=5)
+        self.Amount_lable.grid(row=1, column=7, padx=5, pady=5)
 
         self.id1 = StringVar()
         self.id2 = StringVar()
@@ -415,47 +472,47 @@ class saleClass(customtkinter.CTk):
         self.kk="0"
 
         self.Totaldic_lable = customtkinter.CTkLabel(self.navigation_frame, text=self.kk)
-        self.Totaldic_lable.grid(row=12, column=6, padx=5, pady=5)
+        self.Totaldic_lable.grid(row=12, column=7, padx=5, pady=5)
 
-        self.no1_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.id1)
-        self.no1_dec_percentagee_entry.grid(row=2, column=5, padx=5, pady=5)
+        self.no1_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.id1)
+        self.no1_dec_percentagee_entry.grid(row=2, column=6, padx=5, pady=5)
         self.id1.trace('w', self.itprientery)
 
-        self.no2_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.id2)
-        self.no2_dec_percentagee_entry.grid(row=3, column=5, padx=5, pady=5)
+        self.no2_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.id2)
+        self.no2_dec_percentagee_entry.grid(row=3, column=6, padx=5, pady=5)
         self.id2.trace('w', self.itprientery)
 
-        self.no3_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.id3)
-        self.no3_dec_percentagee_entry.grid(row=4, column=5, padx=5, pady=5)
+        self.no3_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.id3)
+        self.no3_dec_percentagee_entry.grid(row=4, column=6, padx=5, pady=5)
         self.id3.trace('w', self.itprientery)
 
-        self.no4_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.id4)
-        self.no4_dec_percentagee_entry.grid(row=5, column=5, padx=5, pady=5)
+        self.no4_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.id4)
+        self.no4_dec_percentagee_entry.grid(row=5, column=6, padx=5, pady=5)
         self.id4.trace('w', self.itprientery)
 
-        self.no5_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.id5)
-        self.no5_dec_percentagee_entry.grid(row=6, column=5, padx=5, pady=5)
+        self.no5_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.id5)
+        self.no5_dec_percentagee_entry.grid(row=6, column=6, padx=5, pady=5)
         self.id5.trace('w', self.itprientery)
 
-        self.no6_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.id6)
-        self.no6_dec_percentagee_entry.grid(row=7, column=5, padx=5, pady=5)
+        self.no6_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.id6)
+        self.no6_dec_percentagee_entry.grid(row=7, column=6, padx=5, pady=5)
         self.id6.trace('w', self.itprientery)
 
-        self.no7_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.id7)
-        self.no7_dec_percentagee_entry.grid(row=8, column=5, padx=5, pady=5)
+        self.no7_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.id7)
+        self.no7_dec_percentagee_entry.grid(row=8, column=6, padx=5, pady=5)
         self.id7.trace('w', self.itprientery)
 
-        self.no8_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.id8)
-        self.no8_dec_percentagee_entry.grid(row=9, column=5, padx=5, pady=5)
+        self.no8_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.id8)
+        self.no8_dec_percentagee_entry.grid(row=9, column=6, padx=5, pady=5)
         self.id8.trace('w', self.itprientery)
 
-        self.no9_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.id9)
-        self.no9_dec_percentagee_entry.grid(row=10, column=5, padx=5, pady=5)
+        self.no9_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.id9)
+        self.no9_dec_percentagee_entry.grid(row=10, column=6, padx=5, pady=5)
         self.id9.trace('w', self.itprientery)
 
-        self.no10_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=100,
+        self.no10_dec_percentagee_entry = customtkinter.CTkEntry(self.navigation_frame, width=120,
                                                                  textvariable=self.id10)
-        self.no10_dec_percentagee_entry.grid(row=11, column=5, padx=5, pady=5)
+        self.no10_dec_percentagee_entry.grid(row=11, column=6, padx=5, pady=5)
         self.id10.trace('w', self.itprientery)
 
         self.ida1 = StringVar()
@@ -469,144 +526,144 @@ class saleClass(customtkinter.CTk):
         self.ida9 = StringVar()
         self.ida10 = StringVar()
 
-        self.no1_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida1,state="readonly")
-        self.no1_dec_amount_entry.grid(row=2, column=6, padx=5, pady=5)
+        self.no1_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ida1,state="readonly")
+        self.no1_dec_amount_entry.grid(row=2, column=7, padx=5, pady=5)
 
-        self.no2_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida2,state="readonly")
-        self.no2_dec_amount_entry.grid(row=3, column=6, padx=5, pady=5)
+        self.no2_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ida2,state="readonly")
+        self.no2_dec_amount_entry.grid(row=3, column=7, padx=5, pady=5)
 
-        self.no3_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida3,state="readonly")
-        self.no3_dec_amount_entry.grid(row=4, column=6, padx=5, pady=5)
+        self.no3_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ida3,state="readonly")
+        self.no3_dec_amount_entry.grid(row=4, column=7, padx=5, pady=5)
 
-        self.no4_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida4,state="readonly")
-        self.no4_dec_amount_entry.grid(row=5, column=6, padx=5, pady=5)
+        self.no4_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ida4,state="readonly")
+        self.no4_dec_amount_entry.grid(row=5, column=7, padx=5, pady=5)
 
-        self.no5_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida5,state="readonly")
-        self.no5_dec_amount_entry.grid(row=6, column=6, padx=5, pady=5)
+        self.no5_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ida5,state="readonly")
+        self.no5_dec_amount_entry.grid(row=6, column=7, padx=5, pady=5)
 
-        self.no6_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida6,state="readonly")
-        self.no6_dec_amount_entry.grid(row=7, column=6, padx=5, pady=5)
+        self.no6_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ida6,state="readonly")
+        self.no6_dec_amount_entry.grid(row=7, column=7, padx=5, pady=5)
 
-        self.no7_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida7,state="readonly")
-        self.no7_dec_amount_entry.grid(row=8, column=6, padx=5, pady=5)
+        self.no7_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ida7,state="readonly")
+        self.no7_dec_amount_entry.grid(row=8, column=7, padx=5, pady=5)
 
-        self.no8_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida8,state="readonly")
-        self.no8_dec_amount_entry.grid(row=9, column=6, padx=5, pady=5)
+        self.no8_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ida8,state="readonly")
+        self.no8_dec_amount_entry.grid(row=9, column=7, padx=5, pady=5)
 
-        self.no9_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida9,state="readonly")
-        self.no9_dec_amount_entry.grid(row=10, column=6, padx=5, pady=5)
+        self.no9_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ida9,state="readonly")
+        self.no9_dec_amount_entry.grid(row=10, column=7, padx=5, pady=5)
 
-        self.no10_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ida10,state="readonly")
-        self.no10_dec_amount_entry.grid(row=11, column=6, padx=5, pady=5)
+        self.no10_dec_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ida10,state="readonly")
+        self.no10_dec_amount_entry.grid(row=11, column=7, padx=5, pady=5)
 
 
-        self.DISCOUN_lable = customtkinter.CTkLabel(self.navigation_frame, text="TAX")
-        self.DISCOUN_lable.grid(row=0, column=7, padx=5, pady=5)
+        # self.DISCOUN_lable = customtkinter.CTkLabel(self.navigation_frame, text="TAX")
+        # self.DISCOUN_lable.grid(row=0, column=7, padx=5, pady=5)
+        #
+        # self.percentage_lable = customtkinter.CTkLabel(self.navigation_frame, text="%")
+        # self.percentage_lable.grid(row=1, column=7, padx=5, pady=5)
+        #
+        # self.Amount_lable = customtkinter.CTkLabel(self.navigation_frame, text="Amount")
+        # self.Amount_lable.grid(row=1, column=8, padx=5, pady=5)
 
-        self.percentage_lable = customtkinter.CTkLabel(self.navigation_frame, text="%")
-        self.percentage_lable.grid(row=1, column=7, padx=5, pady=5)
+        # self.itax1 = ["IGST@0%", "GST@0%", "IGST@0.25%", "GST@0.25%", "IGST@3%", "GST@3%", "IGST@5%", "GST@5%",
+        #               "IGST@12%", "GST@12%", "IGST@18%", "GST@18%", "IGST@28%", "GST@28%", "EXEMPTED"]
+        # self.itax2 = ["IGST@0%", "GST@0%", "IGST@0.25%", "GST@0.25%", "IGST@3%", "GST@3%", "IGST@5%", "GST@5%",
+        #               "IGST@12%", "GST@12%", "IGST@18%", "GST@18%", "IGST@28%", "GST@28%", "EXEMPTED"]
+        # self.itax3 = ["IGST@0%", "GST@0%", "IGST@0.25%", "GST@0.25%", "IGST@3%", "GST@3%", "IGST@5%", "GST@5%",
+        #               "IGST@12%", "GST@12%", "IGST@18%", "GST@18%", "IGST@28%", "GST@28%", "EXEMPTED"]
+        # self.itax4 = ["IGST@0%", "GST@0%", "IGST@0.25%", "GST@0.25%", "IGST@3%", "GST@3%", "IGST@5%", "GST@5%",
+        #               "IGST@12%", "GST@12%", "IGST@18%", "GST@18%", "IGST@28%", "GST@28%", "EXEMPTED"]
+        # self.itax5 = ["IGST@0%", "GST@0%", "IGST@0.25%", "GST@0.25%", "IGST@3%", "GST@3%", "IGST@5%", "GST@5%",
+        #               "IGST@12%", "GST@12%", "IGST@18%", "GST@18%", "IGST@28%", "GST@28%", "EXEMPTED"]
+        # self.itax6 = ["IGST@0%", "GST@0%", "IGST@0.25%", "GST@0.25%", "IGST@3%", "GST@3%", "IGST@5%", "GST@5%",
+        #               "IGST@12%", "GST@12%", "IGST@18%", "GST@18%", "IGST@28%", "GST@28%", "EXEMPTED"]
+        # self.itax7 = ["IGST@0%", "GST@0%", "IGST@0.25%", "GST@0.25%", "IGST@3%", "GST@3%", "IGST@5%", "GST@5%",
+        #               "IGST@12%", "GST@12%", "IGST@18%", "GST@18%", "IGST@28%", "GST@28%", "EXEMPTED"]
+        # self.itax8 = ["IGST@0%", "GST@0%", "IGST@0.25%", "GST@0.25%", "IGST@3%", "GST@3%", "IGST@5%", "GST@5%",
+        #               "IGST@12%", "GST@12%", "IGST@18%", "GST@18%", "IGST@28%", "GST@28%", "EXEMPTED"]
+        # self.itax9 = ["IGST@0%", "GST@0%", "IGST@0.25%", "GST@0.25%", "IGST@3%", "GST@3%", "IGST@5%", "GST@5%",
+        #               "IGST@12%", "GST@12%", "IGST@18%", "GST@18%", "IGST@28%", "GST@28%", "EXEMPTED"]
+        # self.itax10 = ["IGST@0%", "GST@0%", "IGST@0.25%", "GST@0.25%", "IGST@3%", "GST@3%", "IGST@5%", "GST@5%",
+        #                "IGST@12%", "GST@12%", "IGST@18%", "GST@18%", "IGST@28%", "GST@28%", "EXEMPTED"]
 
-        self.Amount_lable = customtkinter.CTkLabel(self.navigation_frame, text="Amount")
-        self.Amount_lable.grid(row=1, column=8, padx=5, pady=5)
-
-        self.itax1 = ["IGST@0%", "GST@0%", "IGST@0.25%", "GST@0.25%", "IGST@3%", "GST@3%", "IGST@5%", "GST@5%",
-                      "IGST@12%", "GST@12%", "IGST@18%", "GST@18%", "IGST@28%", "GST@28%", "EXEMPTED"]
-        self.itax2 = ["IGST@0%", "GST@0%", "IGST@0.25%", "GST@0.25%", "IGST@3%", "GST@3%", "IGST@5%", "GST@5%",
-                      "IGST@12%", "GST@12%", "IGST@18%", "GST@18%", "IGST@28%", "GST@28%", "EXEMPTED"]
-        self.itax3 = ["IGST@0%", "GST@0%", "IGST@0.25%", "GST@0.25%", "IGST@3%", "GST@3%", "IGST@5%", "GST@5%",
-                      "IGST@12%", "GST@12%", "IGST@18%", "GST@18%", "IGST@28%", "GST@28%", "EXEMPTED"]
-        self.itax4 = ["IGST@0%", "GST@0%", "IGST@0.25%", "GST@0.25%", "IGST@3%", "GST@3%", "IGST@5%", "GST@5%",
-                      "IGST@12%", "GST@12%", "IGST@18%", "GST@18%", "IGST@28%", "GST@28%", "EXEMPTED"]
-        self.itax5 = ["IGST@0%", "GST@0%", "IGST@0.25%", "GST@0.25%", "IGST@3%", "GST@3%", "IGST@5%", "GST@5%",
-                      "IGST@12%", "GST@12%", "IGST@18%", "GST@18%", "IGST@28%", "GST@28%", "EXEMPTED"]
-        self.itax6 = ["IGST@0%", "GST@0%", "IGST@0.25%", "GST@0.25%", "IGST@3%", "GST@3%", "IGST@5%", "GST@5%",
-                      "IGST@12%", "GST@12%", "IGST@18%", "GST@18%", "IGST@28%", "GST@28%", "EXEMPTED"]
-        self.itax7 = ["IGST@0%", "GST@0%", "IGST@0.25%", "GST@0.25%", "IGST@3%", "GST@3%", "IGST@5%", "GST@5%",
-                      "IGST@12%", "GST@12%", "IGST@18%", "GST@18%", "IGST@28%", "GST@28%", "EXEMPTED"]
-        self.itax8 = ["IGST@0%", "GST@0%", "IGST@0.25%", "GST@0.25%", "IGST@3%", "GST@3%", "IGST@5%", "GST@5%",
-                      "IGST@12%", "GST@12%", "IGST@18%", "GST@18%", "IGST@28%", "GST@28%", "EXEMPTED"]
-        self.itax9 = ["IGST@0%", "GST@0%", "IGST@0.25%", "GST@0.25%", "IGST@3%", "GST@3%", "IGST@5%", "GST@5%",
-                      "IGST@12%", "GST@12%", "IGST@18%", "GST@18%", "IGST@28%", "GST@28%", "EXEMPTED"]
-        self.itax10 = ["IGST@0%", "GST@0%", "IGST@0.25%", "GST@0.25%", "IGST@3%", "GST@3%", "IGST@5%", "GST@5%",
-                       "IGST@12%", "GST@12%", "IGST@18%", "GST@18%", "IGST@28%", "GST@28%", "EXEMPTED"]
-
-        self.itx()
+        # self.itx()
         self.diccc=StringVar()
         self.diccc="0"
 
-        self.no1_tax_percentagee_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.itax1,command=self.tax)
-        self.no1_tax_percentagee_entry.grid(row=2, column=7, padx=5, pady=5)
+        # self.no1_tax_percentagee_entry = customtkinter.CTkComboBox(self.navigation_frame, width=120, values=self.itax1,command=self.tax)
+        # self.no1_tax_percentagee_entry.grid(row=2, column=7, padx=5, pady=5)
+        #
+        # self.no2_tax_percentagee_entry = customtkinter.CTkComboBox(self.navigation_frame, width=120, values=self.itax2,command=self.tax)
+        # self.no2_tax_percentagee_entry.grid(row=3, column=7, padx=5, pady=5)
+        #
+        # self.no3_tax_percentagee_entry = customtkinter.CTkComboBox(self.navigation_frame, width=120, values=self.itax3,command=self.tax)
+        # self.no3_tax_percentagee_entry.grid(row=4, column=7, padx=5, pady=5)
+        #
+        # self.no4_tax_percentagee_entry = customtkinter.CTkComboBox(self.navigation_frame, width=120, values=self.itax4,command=self.tax)
+        # self.no4_tax_percentagee_entry.grid(row=5, column=7, padx=5, pady=5)
+        #
+        # self.no5_tax_percentagee_entry = customtkinter.CTkComboBox(self.navigation_frame, width=120, values=self.itax5,command=self.tax)
+        # self.no5_tax_percentagee_entry.grid(row=6, column=7, padx=5, pady=5)
+        #
+        # self.no6_tax_percentagee_entry = customtkinter.CTkComboBox(self.navigation_frame, width=120, values=self.itax6,command=self.tax)
+        # self.no6_tax_percentagee_entry.grid(row=7, column=7, padx=5, pady=5)
+        #
+        # self.no7_tax_percentagee_entry = customtkinter.CTkComboBox(self.navigation_frame, width=120, values=self.itax7,command=self.tax)
+        # self.no7_tax_percentagee_entry.grid(row=8, column=7, padx=5, pady=5)
+        #
+        # self.no8_tax_percentagee_entry = customtkinter.CTkComboBox(self.navigation_frame, width=120, values=self.itax8,command=self.tax)
+        # self.no8_tax_percentagee_entry.grid(row=9, column=7, padx=5, pady=5)
+        #
+        # self.no9_tax_percentagee_entry = customtkinter.CTkComboBox(self.navigation_frame, width=120, values=self.itax9,command=self.tax)
+        # self.no9_tax_percentagee_entry.grid(row=10, column=7, padx=5, pady=5)
+        #
+        # self.no10_tax_percentagee_entry = customtkinter.CTkComboBox(self.navigation_frame, width=120,values=self.itax10,command=self.tax)
+        # self.no10_tax_percentagee_entry.grid(row=11, column=7, padx=5, pady=5)
 
-        self.no2_tax_percentagee_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.itax2,command=self.tax)
-        self.no2_tax_percentagee_entry.grid(row=3, column=7, padx=5, pady=5)
+        # self.ita1 = StringVar()
+        # self.ita2 = StringVar()
+        # self.ita3 = StringVar()
+        # self.ita4 = StringVar()
+        # self.ita5 = StringVar()
+        # self.ita6 = StringVar()
+        # self.ita7 = StringVar()
+        # self.ita8 = StringVar()
+        # self.ita9 = StringVar()
+        # self.ita10 = StringVar()
+        #
+        # self.no1_tax_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ita1)
+        # self.no1_tax_amount_entry.grid(row=2, column=8, padx=5, pady=5)
+        #
+        # self.no2_tax_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ita2)
+        # self.no2_tax_amount_entry.grid(row=3, column=8, padx=5, pady=5)
+        #
+        # self.no3_tax_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ita3)
+        # self.no3_tax_amount_entry.grid(row=4, column=8, padx=5, pady=5)
+        #
+        # self.no4_tax_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ita4)
+        # self.no4_tax_amount_entry.grid(row=5, column=8, padx=5, pady=5)
+        #
+        # self.no5_tax_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ita5)
+        # self.no5_tax_amount_entry.grid(row=6, column=8, padx=5, pady=5)
+        #
+        # self.no6_tax_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ita6)
+        # self.no6_tax_amount_entry.grid(row=7, column=8, padx=5, pady=5)
+        #
+        # self.no7_tax_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ita7)
+        # self.no7_tax_amount_entry.grid(row=8, column=8, padx=5, pady=5)
+        #
+        # self.no8_tax_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ita8)
+        # self.no8_tax_amount_entry.grid(row=9, column=8, padx=5, pady=5)
+        #
+        # self.no9_tax_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ita9)
+        # self.no9_tax_amount_entry.grid(row=10, column=8, padx=5, pady=5)
+        #
+        # self.no10_tax_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.ita10)
+        # self.no10_tax_amount_entry.grid(row=11, column=8, padx=5, pady=5)
 
-        self.no3_tax_percentagee_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.itax3,command=self.tax)
-        self.no3_tax_percentagee_entry.grid(row=4, column=7, padx=5, pady=5)
-
-        self.no4_tax_percentagee_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.itax4,command=self.tax)
-        self.no4_tax_percentagee_entry.grid(row=5, column=7, padx=5, pady=5)
-
-        self.no5_tax_percentagee_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.itax5,command=self.tax)
-        self.no5_tax_percentagee_entry.grid(row=6, column=7, padx=5, pady=5)
-
-        self.no6_tax_percentagee_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.itax6,command=self.tax)
-        self.no6_tax_percentagee_entry.grid(row=7, column=7, padx=5, pady=5)
-
-        self.no7_tax_percentagee_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.itax7,command=self.tax)
-        self.no7_tax_percentagee_entry.grid(row=8, column=7, padx=5, pady=5)
-
-        self.no8_tax_percentagee_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.itax8,command=self.tax)
-        self.no8_tax_percentagee_entry.grid(row=9, column=7, padx=5, pady=5)
-
-        self.no9_tax_percentagee_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100, values=self.itax9,command=self.tax)
-        self.no9_tax_percentagee_entry.grid(row=10, column=7, padx=5, pady=5)
-
-        self.no10_tax_percentagee_entry = customtkinter.CTkComboBox(self.navigation_frame, width=100,values=self.itax10,command=self.tax)
-        self.no10_tax_percentagee_entry.grid(row=11, column=7, padx=5, pady=5)
-
-        self.ita1 = StringVar()
-        self.ita2 = StringVar()
-        self.ita3 = StringVar()
-        self.ita4 = StringVar()
-        self.ita5 = StringVar()
-        self.ita6 = StringVar()
-        self.ita7 = StringVar()
-        self.ita8 = StringVar()
-        self.ita9 = StringVar()
-        self.ita10 = StringVar()
-
-        self.no1_tax_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ita1)
-        self.no1_tax_amount_entry.grid(row=2, column=8, padx=5, pady=5)
-
-        self.no2_tax_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ita2)
-        self.no2_tax_amount_entry.grid(row=3, column=8, padx=5, pady=5)
-
-        self.no3_tax_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ita3)
-        self.no3_tax_amount_entry.grid(row=4, column=8, padx=5, pady=5)
-
-        self.no4_tax_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ita4)
-        self.no4_tax_amount_entry.grid(row=5, column=8, padx=5, pady=5)
-
-        self.no5_tax_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ita5)
-        self.no5_tax_amount_entry.grid(row=6, column=8, padx=5, pady=5)
-
-        self.no6_tax_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ita6)
-        self.no6_tax_amount_entry.grid(row=7, column=8, padx=5, pady=5)
-
-        self.no7_tax_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ita7)
-        self.no7_tax_amount_entry.grid(row=8, column=8, padx=5, pady=5)
-
-        self.no8_tax_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ita8)
-        self.no8_tax_amount_entry.grid(row=9, column=8, padx=5, pady=5)
-
-        self.no9_tax_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ita9)
-        self.no9_tax_amount_entry.grid(row=10, column=8, padx=5, pady=5)
-
-        self.no10_tax_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.ita10)
-        self.no10_tax_amount_entry.grid(row=11, column=8, padx=5, pady=5)
-
-        self.Totaltax_lable = customtkinter.CTkLabel(self.navigation_frame, text=self.diccc)
-        self.Totaltax_lable.grid(row=12, column=8, padx=5, pady=5)
+        # self.Totaltax_lable = customtkinter.CTkLabel(self.navigation_frame, text=self.diccc)
+        # self.Totaltax_lable.grid(row=12, column=8, padx=5, pady=5)
 
         self.iam1 = StringVar()
         self.iam2 = StringVar()
@@ -631,43 +688,43 @@ class saleClass(customtkinter.CTk):
         self.iam10.set("0")
 
         self.Amount_lable = customtkinter.CTkLabel(self.navigation_frame, text="Amount")
-        self.Amount_lable.grid(row=0, column=9, padx=5, pady=5)
+        self.Amount_lable.grid(row=0, column=8, padx=5, pady=5)
 
-        self.no1_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iam1)
-        self.no1_amount_entry.grid(row=2, column=9, padx=5, pady=5)
+        self.no1_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.iam1)
+        self.no1_amount_entry.grid(row=2, column=8, padx=5, pady=5)
 
-        self.no2_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iam2)
-        self.no2_amount_entry.grid(row=3, column=9, padx=5, pady=5)
+        self.no2_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.iam2)
+        self.no2_amount_entry.grid(row=3, column=8, padx=5, pady=5)
 
-        self.no3_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iam3)
-        self.no3_amount_entry.grid(row=4, column=9, padx=5, pady=5)
+        self.no3_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.iam3)
+        self.no3_amount_entry.grid(row=4, column=8, padx=5, pady=5)
 
-        self.no4_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iam4)
-        self.no4_amount_entry.grid(row=5, column=9, padx=5, pady=5)
+        self.no4_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.iam4)
+        self.no4_amount_entry.grid(row=5, column=8, padx=5, pady=5)
 
-        self.no5_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iam5)
-        self.no5_amount_entry.grid(row=6, column=9, padx=5, pady=5)
+        self.no5_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.iam5)
+        self.no5_amount_entry.grid(row=6, column=8, padx=5, pady=5)
 
-        self.no6_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iam6)
-        self.no6_amount_entry.grid(row=7, column=9, padx=5, pady=5)
+        self.no6_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.iam6)
+        self.no6_amount_entry.grid(row=7, column=8, padx=5, pady=5)
 
-        self.no7_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iam7)
-        self.no7_amount_entry.grid(row=8, column=9, padx=5, pady=5)
+        self.no7_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.iam7)
+        self.no7_amount_entry.grid(row=8, column=8, padx=5, pady=5)
 
-        self.no8_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iam8)
-        self.no8_amount_entry.grid(row=9, column=9, padx=5, pady=5)
+        self.no8_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.iam8)
+        self.no8_amount_entry.grid(row=9, column=8, padx=5, pady=5)
 
-        self.no9_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iam9)
-        self.no9_amount_entry.grid(row=10, column=9, padx=5, pady=5)
+        self.no9_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.iam9)
+        self.no9_amount_entry.grid(row=10, column=8, padx=5, pady=5)
 
-        self.no10_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=100, textvariable=self.iam10)
-        self.no10_amount_entry.grid(row=11, column=9, padx=5, pady=5)
+        self.no10_amount_entry = customtkinter.CTkEntry(self.navigation_frame, width=120, textvariable=self.iam10)
+        self.no10_amount_entry.grid(row=11, column=8, padx=5, pady=5)
 
         self.fi=StringVar()
         self.fi="0"
 
         self.Total_amount_lable = customtkinter.CTkLabel(self.navigation_frame, text=self.fi)
-        self.Total_amount_lable.grid(row=12, column=9, padx=5, pady=5)
+        self.Total_amount_lable.grid(row=12, column=8, padx=5, pady=5)
 
         self.get_party_data()
 
@@ -678,7 +735,7 @@ class saleClass(customtkinter.CTk):
 
         self.get_party_gstin()
         self.get_party_number()
-        self.get_data()
+
 
     def add_party_event(self):
         self.get_party_gstin()
@@ -700,13 +757,13 @@ class saleClass(customtkinter.CTk):
             elif self.no1_item_entry.get() == "None":
                 print("Please select at list one item!")
             else:
-                cur.execute("Select * from gstpurchase")
+                cur.execute("Select * from sale")
 
                 if self.cash_switch.get() == 1:
                     crstete = "Credit"
                 else:
                     crstete = "Cash"
-                cur.execute(f"Update gstpurchase set gstpurchase partyname=?,phonenumber=?,gstin=?,cashorcr=?,invoiceno=?,invoicedate=?,steteofsuply=?,paymentype=?,refreceno=?,total=?,received=?,balance=?,item1name=?,qty1=?,unit1=?,unitprice1=?,dec1=?,desamount1=?,tax1=?,gstamount1=?,amount1=?,item2name=?,qty2=?,unit2=?,unitprice2=?,dec2=?,desamount2=?,tax2=?,gstamount2=?,amount2=?,item3name=?,qty3=?,unit3=?,unitprice3=?,dec3=?,desamount3=?,tax3=?,gstamount3=?,amount3=?,item4name=?,qty4=?,unit4=?,unitprice4=?,dec4=?,desamount4=?,tax4=?,gstamount4=?,amount4=?,item5name=?,qty5=?,unit5=?,unitprice5=?,dec5=?,desamount5=?,tax5=?,gstamount5=?,amount5=?,item6name=?,qty6=?,unit6=?,unitprice6=?,dec6=?,desamount6=?,tax6=?,gstamount6=?,amount6=?,item7name=?,qty7=?,unit7=?,unitprice7=?,dec7=?,desamount7=?,tax7=?,gstamount7=?,amount7=?,item8name=?,qty8=?,unit8=?,unitprice8=?,dec8=?,desamount8=?,tax8=?,gstamount8=?,amount8=?,item9name=?,qty9=?,unit9=?,unitprice9=?,dec9=?,desamount9=?,tax9=?,gstamount9=?,amount9=?,item10name=?,qty10=?,unit10=?,unitprice10=?,dec10=?,desamount10=?,tax10=?,gstamount10=?,amount10=? where sid={self.invoice_entry.get()}",
+                cur.execute("Insert into sale (partyname,phonenumber,gstin,cashorcr,invoiceno,invoicedate,steteofsuply,paymentype,refreceno,total,received,balance,item1name,qty1,unit1,unitprice1,dec1,desamount1,amount1,item2name,qty2,unit2,unitprice2,dec2,desamount2,amount2,item3name,qty3,unit3,unitprice3,dec3,desamount3,amount3,item4name,qty4,unit4,unitprice4,dec4,desamount4,amount4,item5name,qty5,unit5,unitprice5,dec5,desamount5,amount5,item6name,qty6,unit6,unitprice6,dec6,desamount6,amount6,item7name,qty7,unit7,unitprice7,dec7,desamount7,amount7,item8name,qty8,unit8,unitprice8,dec8,desamount8,amount8,item9name,qty9,unit9,unitprice9,dec9,desamount9,amount9,item10name,qty10,unit10,unitprice10,dec10,desamount10,amount10) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     (
 
                         self.partyname_entry.get(),
@@ -728,8 +785,6 @@ class saleClass(customtkinter.CTk):
                         self.no1_unitprice_entry.get(),
                         self.no1_dec_percentagee_entry.get(),
                         self.no1_dec_amount_entry.get(),
-                        self.no1_tax_percentagee_entry.get(),
-                        self.no1_tax_amount_entry.get(),
                         self.no1_amount_entry.get(),
 
                         self.no2_item_entry.get(),
@@ -738,8 +793,6 @@ class saleClass(customtkinter.CTk):
                         self.no2_unitprice_entry.get(),
                         self.no2_dec_percentagee_entry.get(),
                         self.no2_dec_amount_entry.get(),
-                        self.no2_tax_percentagee_entry.get(),
-                        self.no2_tax_amount_entry.get(),
                         self.no2_amount_entry.get(),
 
                         self.no3_item_entry.get(),
@@ -748,8 +801,6 @@ class saleClass(customtkinter.CTk):
                         self.no3_unitprice_entry.get(),
                         self.no3_dec_percentagee_entry.get(),
                         self.no3_dec_amount_entry.get(),
-                        self.no3_tax_percentagee_entry.get(),
-                        self.no3_tax_amount_entry.get(),
                         self.no3_amount_entry.get(),
 
                         self.no4_item_entry.get(),
@@ -758,8 +809,6 @@ class saleClass(customtkinter.CTk):
                         self.no4_unitprice_entry.get(),
                         self.no4_dec_percentagee_entry.get(),
                         self.no4_dec_amount_entry.get(),
-                        self.no4_tax_percentagee_entry.get(),
-                        self.no4_tax_amount_entry.get(),
                         self.no4_amount_entry.get(),
 
                         self.no5_item_entry.get(),
@@ -768,8 +817,6 @@ class saleClass(customtkinter.CTk):
                         self.no5_unitprice_entry.get(),
                         self.no5_dec_percentagee_entry.get(),
                         self.no5_dec_amount_entry.get(),
-                        self.no5_tax_percentagee_entry.get(),
-                        self.no5_tax_amount_entry.get(),
                         self.no5_amount_entry.get(),
 
                         self.no6_item_entry.get(),
@@ -778,8 +825,6 @@ class saleClass(customtkinter.CTk):
                         self.no6_unitprice_entry.get(),
                         self.no6_dec_percentagee_entry.get(),
                         self.no6_dec_amount_entry.get(),
-                        self.no6_tax_percentagee_entry.get(),
-                        self.no6_tax_amount_entry.get(),
                         self.no6_amount_entry.get(),
 
                         self.no7_item_entry.get(),
@@ -788,8 +833,6 @@ class saleClass(customtkinter.CTk):
                         self.no7_unitprice_entry.get(),
                         self.no7_dec_percentagee_entry.get(),
                         self.no7_dec_amount_entry.get(),
-                        self.no7_tax_percentagee_entry.get(),
-                        self.no7_tax_amount_entry.get(),
                         self.no7_amount_entry.get(),
 
                         self.no8_item_entry.get(),
@@ -798,8 +841,6 @@ class saleClass(customtkinter.CTk):
                         self.no8_unitprice_entry.get(),
                         self.no8_dec_percentagee_entry.get(),
                         self.no8_dec_amount_entry.get(),
-                        self.no8_tax_percentagee_entry.get(),
-                        self.no8_tax_amount_entry.get(),
                         self.no8_amount_entry.get(),
 
                         self.no9_item_entry.get(),
@@ -808,8 +849,6 @@ class saleClass(customtkinter.CTk):
                         self.no9_unitprice_entry.get(),
                         self.no9_dec_percentagee_entry.get(),
                         self.no9_dec_amount_entry.get(),
-                        self.no9_tax_percentagee_entry.get(),
-                        self.no9_tax_amount_entry.get(),
                         self.no9_amount_entry.get(),
 
                         self.no10_item_entry.get(),
@@ -818,27 +857,32 @@ class saleClass(customtkinter.CTk):
                         self.no10_unitprice_entry.get(),
                         self.no10_dec_percentagee_entry.get(),
                         self.no10_dec_amount_entry.get(),
-                        self.no10_tax_percentagee_entry.get(),
-                        self.no10_tax_amount_entry.get(),
                         self.no10_amount_entry.get(),
 
                     ))
                 con.commit()
                 messagebox.showinfo("Success", "supplier Addedd Successfully", parent=self)
                 self.add_amount()
+                self.invoice_updator()
+                self.invoice_genrator()
+                self.invoice_event()
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
     def add_amount(self):
-     pay=float(self.resultam.get())
-     rwsult=pay
-
      try:
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
 
-        cur.execute(f"Select paybalence from partydata where pid={self.gstin_entry.get()}")
-        cur.execute(f"Update partydata set paybalence=? where pid={self.gstin_entry.get()}",(
-             rwsult,
+        cur.execute(f"Update saleinvopartyam  set partyam=?,partyamtotal=? where no=1", (
+            self.reciveamount.get(),
+            self.resultam.get(),
+        ))
+        con.commit()
+
+        cur.execute(f"Select recivebalence from partydata where gstin={self.gstin_entry.get()}")
+        cur.execute(
+            "Update partydata set recivebalence=?",(
+             self.resultam.get(),
             ))
         con.commit()
 
@@ -866,20 +910,13 @@ class saleClass(customtkinter.CTk):
             elif self.no1_item_entry.get() == "None":
                 messagebox.showerror("Error", "Please select at list one item!", parent=self)
             else:
-                cur.execute("Select * from invopurchasesale where sid=1")
-
-                if self.cash_switch.get() == 1:
-                    crstete = "Credit"
-                else:
-                    crstete = "Cash"
-                cur.execute(
-                    "Update invopurchasesale set partyname=?,phonenumber=?,gstin=?,cashorcr=?,invoiceno=?,invoicedate=?,steteofsuply=?,paymentype=?,refreceno=?,total=?,received=?,balance=?,totaltac=?,totaldec=?,totalqty=?,item1name=?,qty1=?,unit1=?,unitprice1=?,dec1=?,desamount1=?,tax1=?,gstamount1=?,amount1=?,item2name=?,qty2=?,unit2=?,unitprice2=?,dec2=?,desamount2=?,tax2=?,gstamount2=?,amount2=?,item3name=?,qty3=?,unit3=?,unitprice3=?,dec3=?,desamount3=?,tax3=?,gstamount3=?,amount3=?,item4name=?,qty4=?,unit4=?,unitprice4=?,dec4=?,desamount4=?,tax4=?,gstamount4=?,amount4=?,item5name=?,qty5=?,unit5=?,unitprice5=?,dec5=?,desamount5=?,tax5=?,gstamount5=?,amount5=?,item6name=?,qty6=?,unit6=?,unitprice6=?,dec6=?,desamount6=?,tax6=?,gstamount6=?,amount6=?,item7name=?,qty7=?,unit7=?,unitprice7=?,dec7=?,desamount7=?,tax7=?,gstamount7=?,amount7=?,item8name=?,qty8=?,unit8=?,unitprice8=?,dec8=?,desamount8=?,tax8=?,gstamount8=?,amount8=?,item9name=?,qty9=?,unit9=?,unitprice9=?,dec9=?,desamount9=?,tax9=?,gstamount9=?,amount9=?,item10name=?,qty10=?,unit10=?,unitprice10=?,dec10=?,desamount10=?,tax10=?,gstamount10=?,amount10=?",
+                cur.execute("Select * from invosale where sid=1")
+                cur.execute("Update invosale set partyname=?,phonenumber=?,gstin=?,invoiceno=?,invoicedate=?,steteofsuply=?,paymentype=?,refreceno=?,total=?,received=?,balance=?,totaltac=?,totaldec=?,totalqty=?,item1name=?,qty1=?,unit1=?,unitprice1=?,dec1=?,desamount1=?,amount1=?,item2name=?,qty2=?,unit2=?,unitprice2=?,dec2=?,desamount2=?,amount2=?,item3name=?,qty3=?,unit3=?,unitprice3=?,dec3=?,desamount3=?,amount3=?,item4name=?,qty4=?,unit4=?,unitprice4=?,dec4=?,desamount4=?,amount4=?,item5name=?,qty5=?,unit5=?,unitprice5=?,dec5=?,desamount5=?,amount5=?,item6name=?,qty6=?,unit6=?,unitprice6=?,dec6=?,desamount6=?,amount6=?,item7name=?,qty7=?,unit7=?,unitprice7=?,dec7=?,desamount7=?,amount7=?,item8name=?,qty8=?,unit8=?,unitprice8=?,dec8=?,desamount8=?,amount8=?,item9name=?,qty9=?,unit9=?,unitprice9=?,dec9=?,desamount9=?,amount9=?,item10name=?,qty10=?,unit10=?,unitprice10=?,dec10=?,desamount10=?,amount10=?",
                     (
 
                         self.partyname_entry.get(),
                         self.phonenumber_entry.get(),
                         self.gstin_entry.get(),
-                        crstete,
                         self.invoice_entry.get(),
                         self.date_entry.get(),
                         self.state_menu.get(),
@@ -898,8 +935,6 @@ class saleClass(customtkinter.CTk):
                         self.no1_unitprice_entry.get(),
                         self.no1_dec_percentagee_entry.get(),
                         self.no1_dec_amount_entry.get(),
-                        self.no1_tax_percentagee_entry.get(),
-                        self.no1_tax_amount_entry.get(),
                         self.no1_amount_entry.get(),
 
                         self.no2_item_entry.get(),
@@ -908,8 +943,6 @@ class saleClass(customtkinter.CTk):
                         self.no2_unitprice_entry.get(),
                         self.no2_dec_percentagee_entry.get(),
                         self.no2_dec_amount_entry.get(),
-                        self.no2_tax_percentagee_entry.get(),
-                        self.no2_tax_amount_entry.get(),
                         self.no2_amount_entry.get(),
 
                         self.no3_item_entry.get(),
@@ -918,8 +951,6 @@ class saleClass(customtkinter.CTk):
                         self.no3_unitprice_entry.get(),
                         self.no3_dec_percentagee_entry.get(),
                         self.no3_dec_amount_entry.get(),
-                        self.no3_tax_percentagee_entry.get(),
-                        self.no3_tax_amount_entry.get(),
                         self.no3_amount_entry.get(),
 
                         self.no4_item_entry.get(),
@@ -928,8 +959,6 @@ class saleClass(customtkinter.CTk):
                         self.no4_unitprice_entry.get(),
                         self.no4_dec_percentagee_entry.get(),
                         self.no4_dec_amount_entry.get(),
-                        self.no4_tax_percentagee_entry.get(),
-                        self.no4_tax_amount_entry.get(),
                         self.no4_amount_entry.get(),
 
                         self.no5_item_entry.get(),
@@ -938,8 +967,6 @@ class saleClass(customtkinter.CTk):
                         self.no5_unitprice_entry.get(),
                         self.no5_dec_percentagee_entry.get(),
                         self.no5_dec_amount_entry.get(),
-                        self.no5_tax_percentagee_entry.get(),
-                        self.no5_tax_amount_entry.get(),
                         self.no5_amount_entry.get(),
 
                         self.no6_item_entry.get(),
@@ -948,8 +975,6 @@ class saleClass(customtkinter.CTk):
                         self.no6_unitprice_entry.get(),
                         self.no6_dec_percentagee_entry.get(),
                         self.no6_dec_amount_entry.get(),
-                        self.no6_tax_percentagee_entry.get(),
-                        self.no6_tax_amount_entry.get(),
                         self.no6_amount_entry.get(),
 
                         self.no7_item_entry.get(),
@@ -958,8 +983,6 @@ class saleClass(customtkinter.CTk):
                         self.no7_unitprice_entry.get(),
                         self.no7_dec_percentagee_entry.get(),
                         self.no7_dec_amount_entry.get(),
-                        self.no7_tax_percentagee_entry.get(),
-                        self.no7_tax_amount_entry.get(),
                         self.no7_amount_entry.get(),
 
                         self.no8_item_entry.get(),
@@ -968,8 +991,6 @@ class saleClass(customtkinter.CTk):
                         self.no8_unitprice_entry.get(),
                         self.no8_dec_percentagee_entry.get(),
                         self.no8_dec_amount_entry.get(),
-                        self.no8_tax_percentagee_entry.get(),
-                        self.no8_tax_amount_entry.get(),
                         self.no8_amount_entry.get(),
 
                         self.no9_item_entry.get(),
@@ -978,8 +999,6 @@ class saleClass(customtkinter.CTk):
                         self.no9_unitprice_entry.get(),
                         self.no9_dec_percentagee_entry.get(),
                         self.no9_dec_amount_entry.get(),
-                        self.no9_tax_percentagee_entry.get(),
-                        self.no9_tax_amount_entry.get(),
                         self.no9_amount_entry.get(),
 
                         self.no10_item_entry.get(),
@@ -988,26 +1007,21 @@ class saleClass(customtkinter.CTk):
                         self.no10_unitprice_entry.get(),
                         self.no10_dec_percentagee_entry.get(),
                         self.no10_dec_amount_entry.get(),
-                        self.no10_tax_percentagee_entry.get(),
-                        self.no10_tax_amount_entry.get(),
                         self.no10_amount_entry.get(),
 
                     ))
                 con.commit()
-                self.update_iqt()
+                # self.update_iqt()
                 self.invoice_genrator()
-
+                self.add_party_event()
 
         except Exception as ex:
             print(ex)
             # messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
     def invoice_event(self):
-        call(["python", "purachseinvo.py"])
+        call(["python", "Sale_Invoice.py"])
     def savedata(self):
         self.add_invoice_event()
-        self.invoice_updator()
-        self.add_party_event()
-        self.invoice_event()
 
 
     def change_appearance_mode_event(self, new_appearance_mode):
@@ -1085,7 +1099,7 @@ class saleClass(customtkinter.CTk):
          cur = con.cursor()
          try:
 
-            cur.execute("select paybalence from partydata where partyname=?", (self.partyname_entry.get(),))
+            cur.execute("select recivebalence from partydata where partyname=?", (self.partyname_entry.get(),))
             rows = cur.fetchall()
             # self.productTable.delete(*self.productTable.get_children())
 
@@ -1106,7 +1120,7 @@ class saleClass(customtkinter.CTk):
          cur = con.cursor()
          try:
 
-            cur.execute("select recivebalence from partydata where partyname=?", (self.partyname_entry.get(),))
+            cur.execute("select paybalence from partydata where partyname=?", (self.partyname_entry.get(),))
             rows = cur.fetchall()
 
 
@@ -1163,114 +1177,183 @@ class saleClass(customtkinter.CTk):
         recivee = float(self.reciveamount.get())
         payed = int(self.Received_entry.get())
         total = float(self.totalam.get())
-        print(recivee)
-        print(payed)
-        print(total)
         esult = recivee + (total - payed)
         result =str(esult)
         self.resultam.set(result)
 
 
 
-    def get_item_unit_list(self):
-        con = sqlite3.connect(database=r'DataBase/ims.db')
-        cur = con.cursor()
-        try:
+    # def get_item_unit_list(self):
+    #     con = sqlite3.connect(database=r'DataBase/ims.db')
+    #     cur = con.cursor()
+    #     try:
+    #
+    #         cur.execute("select location from itemdata")
+    #         rows = cur.fetchall()
+    #         # self.productTable.delete(*self.productTable.get_children())
+    #
+    #         for row in rows:
+    #             for i in row:
+    #                 self.Item_unit_List.append(i)
+    #
+    #     except Exception as ex:
+    #         messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
-            cur.execute("select location from itemdata")
-            rows = cur.fetchall()
-            # self.productTable.delete(*self.productTable.get_children())
-
-            for row in rows:
-                for i in row:
-                    self.Item_unit_List.append(i)
-
-        except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
-    def get_item_tax(self, iname, iseto):
-        if iname.get() == "":
-            iseto.insert(0, "None")
-
-
-        else:
-          con = sqlite3.connect(database=r'DataBase/ims.db')
-          cur = con.cursor()
-          try:
-
-            cur.execute("select gsttax from itemdata where itemname=?", (iname.get(),))
-            rows = cur.fetchall()
-            # self.productTable.delete(*self.productTable.get_children())
-            m=StringVar()
-            for row in rows:
-                for i in row:
-                    iseto.insert(0, i)
-
-
-          except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    # def get_item_tax(self, iname, iseto):
+    #     if iname.get() == "":
+    #         iseto.insert(0, "None")
+    #
+    #
+    #     else:
+    #       con = sqlite3.connect(database=r'DataBase/ims.db')
+    #       cur = con.cursor()
+    #       try:
+    #
+    #         cur.execute("select gsttax from itemdata where itemname=?", (iname.get(),))
+    #         rows = cur.fetchall()
+    #         # self.productTable.delete(*self.productTable.get_children())
+    #         m=StringVar()
+    #         for row in rows:
+    #             for i in row:
+    #                 iseto.insert(0, i)
+    #
+    #
+    #       except Exception as ex:
+    #         messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
     def get_item_qty(self, iname, iseto):
-      if iname == "":
+     try:
+       if iname == "":
           iseto.set(" ")
 
-      else:
+       else:
 
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
-        iseto.set("1")
+        stock=0
 
+        cur.execute("select openqty from itemdata where itemname=?", (iname,))
+        datas = cur.fetchall()
+        # self.productTable.delete(*self.productTable.get_children())
+
+        for data in datas:
+                for d in data:
+                    if d == "":
+                        stock=0
+                    else:
+                        stock=int(d)
+
+        cur.execute("select minqty from itemdata where itemname=?", (iname,))
+        rows = cur.fetchall()
+
+        for row in rows:
+
+                for i in row:
+                    if i == "":
+                        if str(stock) >= "":
+                            if stock >= 1:
+                              iseto.set("1")
+                            else:
+                               iseto.set("0")
+                               messagebox.showerror("Aleart", f"Product {iname} is out of stock!", parent=self)
+
+                        elif stock >= 1:
+                          i = 1
+                          iseto.set(str(i))
+                        elif stock == 0:
+                            iseto.set("0")
+                            messagebox.showerror("Aleart", f"Product is in stock {stock} and minum sell qty is {i}!", parent=self)
+                    else:
+                        if stock == 0:
+                          iseto.set(str(i))
+                          messagebox.showerror("Aleart", f"Product is out of stock!", parent=self)
+                        elif stock >= int(i):
+                          iseto.set(str(i))
+                        else:
+                            iseto.set(stock)
+                            messagebox.showerror("Aleart", f"Product is in stock {stock} and minum sell qty is {i}!", parent=self)
+
+     except Exception as ex:
+            print("Error", f"Error due to : {str(ex)}")
+
+    def get_item_qtyentery(self, iname,qaunty):
+     try:
+       if iname == "":
+          qaunty.set(" ")
+
+       else:
+
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        stock=0
+        qty=int(qaunty.get())
+
+        cur.execute("select openqty from itemdata where itemname=?", (iname,))
+        datas = cur.fetchall()
+
+        for data in datas:
+                for d in data:
+
+                    if d == "":
+                        stock=0
+                    else:
+                        stock=int(d)
+        if stock >= qty:
+               qaunty.set(qty)
+        elif str(stock) == "":
+                qaunty.set("0")
+        else:
+                qaunty.set(stock)
+                messagebox.showerror("Aleart", f"Product is in stock {stock} and you want to sell qty is {qty}!", parent=self)
+        self.qtty()
+
+     except Exception as ex:
+            print("Error", f"Error due to : {str(ex)}")
 
     def qtty(self):
         self.itemtable()
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        self.totaltaxam()
+        # #self.totaltaxam()
 
     def itprientery(self,event,*args):
             self.itemtable()
             self.finalamount()
             self.totalqty()
             self.totaldesam()
-            self.totaltaxam()
+            # #self.totaltaxam()
 
     def itemshow(self,event):
+        # self.iqt()
+        # self.itpri()
+        # self.secper()
+        # self.itx()
         self.itemtable()
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        self.totaltaxam()
+        # #self.totaltaxam()
     def update_qtye1(self,event,*args):
-        self.qtty()
-        # self.get_item_qtyentery(self.no1_item_entry.get(), self.iq1)
+        self.get_item_qtyentery(self.no1_item_entry.get(), self.iq1)
     def update_qtye2(self,event,*args):
-        self.qtty()
-        # self.get_item_qtyentery(self.no2_item_entry.get(), self.iq2)
+        self.get_item_qtyentery(self.no2_item_entry.get(), self.iq2)
     def update_qtye3(self,event,*args):
-        self.qtty()
-        #self.get_item_qtyentery(self.no3_item_entry.get(), self.iq3)
+        self.get_item_qtyentery(self.no3_item_entry.get(), self.iq3)
     def update_qtye4(self,event,*args):
-        self.qtty()
-        #self.get_item_qtyentery(self.no4_item_entry.get(), self.iq4)
+        self.get_item_qtyentery(self.no4_item_entry.get(), self.iq4)
     def update_qtye5(self,event,*args):
-        self.qtty()
-        #self.get_item_qtyentery(self.no5_item_entry.get(), self.iq5)
+        self.get_item_qtyentery(self.no5_item_entry.get(), self.iq5)
     def update_qtye6(self,event,*args):
-        self.qtty()
-        #self.get_item_qtyentery(self.no6_item_entry.get(), self.iq6)
+        self.get_item_qtyentery(self.no6_item_entry.get(), self.iq6)
     def update_qtye7(self,event,*args):
-        self.qtty()
-        #self.get_item_qtyentery(self.no7_item_entry.get(), self.iq7)
+        self.get_item_qtyentery(self.no7_item_entry.get(), self.iq7)
     def update_qtye8(self,event,*args):
-        self.qtty()
-        #self.get_item_qtyentery(self.no8_item_entry.get(), self.iq8)
+        self.get_item_qtyentery(self.no8_item_entry.get(), self.iq8)
     def update_qtye9(self,event,*args):
-        self.qtty()
-        #self.get_item_qtyentery(self.no9_item_entry.get(), self.iq9)
+        self.get_item_qtyentery(self.no9_item_entry.get(), self.iq9)
     def update_qtye10(self,event,*args):
-        self.qtty()
-        #self.get_item_qtyentery(self.no10_item_entry.get(), self.iq10)
+        self.get_item_qtyentery(self.no10_item_entry.get(), self.iq10)
 
 
     # # todo: Update Qty
@@ -1308,6 +1391,9 @@ class saleClass(customtkinter.CTk):
                     if i == "":
                         i = "0"
                         iseto.set(i)
+                    elif i == None:
+                        i = "0"
+                        iseto.set(i)
 
                     else:
                         iseto.set(i)
@@ -1338,127 +1424,60 @@ class saleClass(customtkinter.CTk):
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
-    def itemgstbill(self, qty, price, disc, discamo, wtax, tax, taxamout, amount):
-       if qty == " " and disc ==" ":
+    def itemgstbill(self, qty, price, disc, discamo, amount):
+     try:
+       if qty == " " and disc ==" " :
            discamo.set(" ")
-           taxamout.set(" ")
            amount.set("0")
 
 
        else:
-        try:
 
-         price = int(price)
-         q=qty.replace(" ","")
-         qty = int(q)
-         itemprice = qty * price
-
-         if "0" in tax or "0.25" in tax or "3" in tax or "5" in tax or "12" in tax or "18" in tax or "28" in tax or "None" in tax:
-
-            rtax=tax.replace("IGST@","")
-            rtax=rtax.replace("GST@","")
-            rtax=rtax.replace("GST@","")
-            ktax=rtax.replace("%","")
-            mtax=ktax.replace("None","0")
-            gsttax=float(mtax)
+        price = int(price)
+        q=qty.replace(" ","")
+        qty = int(q)
+        itemprice = qty * price
 
 
-            if wtax.get() == "With Tax":
-                if "%" in disc:
+        if "%" in disc:
                     decf = disc.replace("%", "")
                     decq = decf.replace(" ", "0")
                     disca = float(decq)
 
-
-                    #find gst
-                    withbase = itemprice - (itemprice*(100/(100+gsttax)))
-                    it=itemprice-withbase
-                    rit=round(it,2)
-
-
                     #add discount
-                    dicam=rit*disca/100
+                    dicam=itemprice*disca/100
                     rdicam=round(dicam,2)
                     discamo.set(rdicam)
-                    decrem=rit-rdicam
+                    decrem=itemprice-rdicam
                     rdecrem=round(decrem,2)
 
-                    #add gst
-                    withotrem = rdecrem * gsttax / 100
-                    rwithotrem=round(withotrem,2)
-                    taxamout.set(rwithotrem)
-
-                    finalamount=rdecrem+rwithotrem
+                    finalamount=rdecrem
                     rfinalamount=round(finalamount,2)
                     amount.set(rfinalamount)
 
-
-
-
-                else:
+        else:
                     disc.replace(" ","0")
                     disca = float(disc)
 
-                    #find gst
-                    withbase = itemprice - (itemprice*(100/(100+gsttax)))
-                    it=itemprice-withbase
-                    rit=round(it,2)
-
-
                     #add discount
-                    dicam=rit-disca
-                    rr=rit-dicam
+                    dicam=itemprice-disca
+                    rr=itemprice-dicam
                     rdicam=round(dicam,2)
 
                     discamo.set(rr)
 
-                    #add gst
-                    withotrem = rdicam * gsttax / 100
-                    rwithotrem=round(withotrem,2)
-                    taxamout.set(rwithotrem)
-
-                    finalamount=rdicam+rwithotrem
+                    finalamount=rdicam
                     rfinalamount=round(finalamount,2)
                     amount.set(rfinalamount)
+     except Exception as e:
+       print(e)
 
 
 
-            elif wtax.get() == "Without Tax":
-                if "%" in disc:
-                    decf = disc.replace("%", "")
-                    decq = decf.replace(" ", "")
-                    disca = float(decq)
 
-                    dicam=itemprice*disca/100
-                    discamo.set(dicam)
-                    decrem=itemprice-dicam
 
-                    withbase = (decrem * gsttax) / 100
-                    rwithbase = round(withbase,2)
-                    taxamout.set(rwithbase)
-
-                    finalamount=decrem+withbase
-                    amount.set(finalamount)
-                else:
-                    decf = disc.replace("%", "")
-                    decq = decf.replace(" ", "")
-                    disca = float(decq)
-
-                    dicam=itemprice-disca
-
-                    decrem=itemprice-dicam
-                    discamo.set(decrem)
-
-                    withbase = (dicam * gsttax) / 100
-                    rwithbase = round(withbase,2)
-                    taxamout.set(rwithbase)
-
-                    finalamount=dicam+withbase
-                    amount.set(finalamount)
-        except Exception as e:
-            print(e)
     def finalamount(self):
-
+     try:
 
         sitam1=self.no1_amount_entry.get()
         sitam2=self.no2_amount_entry.get()
@@ -1497,13 +1516,16 @@ class saleClass(customtkinter.CTk):
             self.totalam.set(ro)
 
             a=self.Received_entry.get()
-            m=float(a)
+            m=int(a)
             res=finalamount-m
             rres=res
             self.balence=rres
             self.Balance_entry.configure(text=self.balence)
+     except Exception as e:
+        print(e)
 
     def totalqty(self):
+     try:
 
         sitam1=self.no1_qty_entry.get()
         sitam2=self.no2_qty_entry.get()
@@ -1550,9 +1572,12 @@ class saleClass(customtkinter.CTk):
         else:
             self.allqty=finalamount
             self.total_qty_lable.configure(text=self.allqty)
+     except Exception as e:
+        print(e)
 
 
     def totaldesam(self):
+     try:
 
         sitam1=self.no1_dec_amount_entry.get()
         sitam2=self.no2_dec_amount_entry.get()
@@ -1575,69 +1600,65 @@ class saleClass(customtkinter.CTk):
         itam8=sitam8.replace(" ","0")
         itam9=sitam9.replace(" ","0")
         itam10=sitam10.replace(" ","0")
-        try:
-          item1=float(itam1)
-          item2=float(itam2)
-          item3=float(itam3)
-          item4=float(itam4)
-          item5=float(itam5)
-          item6=float(itam6)
-          item7=float(itam7)
-          item8=float(itam8)
-          item9=float(itam9)
-          item10=float(itam10)
 
+        item1=float(itam1)
+        item2=float(itam2)
+        item3=float(itam3)
+        item4=float(itam4)
+        item5=float(itam5)
+        item6=float(itam6)
+        item7=float(itam7)
+        item8=float(itam8)
+        item9=float(itam9)
+        item10=float(itam10)
 
-          finalamount=(item1+item2+item3+item4+item5+item6+item7+item8+item9+item10)
+        finalamount=(item1+item2+item3+item4+item5+item6+item7+item8+item9+item10)
 
-          self.kk=str(finalamount)
-          self.Totaldic_lable.configure(text=self.kk)
-
-        except Exception as e:
+        self.kk=str(finalamount)
+        self.Totaldic_lable.configure(text=self.kk)
+     except Exception as e:
          print(e)
 
-    def totaltaxam(self):
 
-        sitam1=self.no1_tax_amount_entry.get()
-        sitam2=self.no2_tax_amount_entry.get()
-        sitam3=self.no3_tax_amount_entry.get()
-        sitam4=self.no4_tax_amount_entry.get()
-        sitam5=self.no5_tax_amount_entry.get()
-        sitam6=self.no6_tax_amount_entry.get()
-        sitam7=self.no7_tax_amount_entry.get()
-        sitam8=self.no8_tax_amount_entry.get()
-        sitam9=self.no9_tax_amount_entry.get()
-        sitam10=self.no10_tax_amount_entry.get()
-
-        itam1=sitam1.replace(" ","0")
-        itam2=sitam2.replace(" ","0")
-        itam3=sitam3.replace(" ","0")
-        itam4=sitam4.replace(" ","0")
-        itam5=sitam5.replace(" ","0")
-        itam6=sitam6.replace(" ","0")
-        itam7=sitam7.replace(" ","0")
-        itam8=sitam8.replace(" ","0")
-        itam9=sitam9.replace(" ","0")
-        itam10=sitam10.replace(" ","0")
-
-        try:
-          item1=float(itam1)
-          item2=float(itam2)
-          item3=float(itam3)
-          item4=float(itam4)
-          item5=float(itam5)
-          item6=float(itam6)
-          item7=float(itam7)
-          item8=float(itam8)
-          item9=float(itam9)
-          item10=float(itam10)
-
-          finalamount=(item1+item2+item3+item4+item5+item6+item7+item8+item9+item10)
-          rfinalamount=round(finalamount,2)
-          self.diccc=str(rfinalamount)
-          self.Totaltax_lable.configure(text=self.diccc)
-        except Exception as e:
-          print(e)
+    # def totaltaxam(self):
+    #
+    #     sitam1=self.no1_tax_amount_entry.get()
+    #     sitam2=self.no2_tax_amount_entry.get()
+    #     sitam3=self.no3_tax_amount_entry.get()
+    #     sitam4=self.no4_tax_amount_entry.get()
+    #     sitam5=self.no5_tax_amount_entry.get()
+    #     sitam6=self.no6_tax_amount_entry.get()
+    #     sitam7=self.no7_tax_amount_entry.get()
+    #     sitam8=self.no8_tax_amount_entry.get()
+    #     sitam9=self.no9_tax_amount_entry.get()
+    #     sitam10=self.no10_tax_amount_entry.get()
+    #
+    #     itam1=sitam1.replace(" ","0")
+    #     itam2=sitam2.replace(" ","0")
+    #     itam3=sitam3.replace(" ","0")
+    #     itam4=sitam4.replace(" ","0")
+    #     itam5=sitam5.replace(" ","0")
+    #     itam6=sitam6.replace(" ","0")
+    #     itam7=sitam7.replace(" ","0")
+    #     itam8=sitam8.replace(" ","0")
+    #     itam9=sitam9.replace(" ","0")
+    #     itam10=sitam10.replace(" ","0")
+    #
+    #     item1=float(itam1)
+    #     item2=float(itam2)
+    #     item3=float(itam3)
+    #     item4=float(itam4)
+    #     item5=float(itam5)
+    #     item6=float(itam6)
+    #     item7=float(itam7)
+    #     item8=float(itam8)
+    #     item9=float(itam9)
+    #     item10=float(itam10)
+    #
+    #     finalamount=(item1+item2+item3+item4+item5+item6+item7+item8+item9+item10)
+    #     rfinalamount=round(finalamount,2)
+    #     self.diccc=str(rfinalamount)
+    #     self.Totaltax_lable.configure(text=self.diccc)
 
 
 
@@ -1654,18 +1675,18 @@ class saleClass(customtkinter.CTk):
         self.get_item_price(self.no9_item_entry.get(), self.ip9)
         self.get_item_price(self.no10_item_entry.get(), self.ip10)
 
-    def itx(self):
-
-        self.get_item_tax(self.no1_item_entry, self.itax1)
-        self.get_item_tax(self.no2_item_entry, self.itax2)
-        self.get_item_tax(self.no3_item_entry, self.itax3)
-        self.get_item_tax(self.no4_item_entry, self.itax4)
-        self.get_item_tax(self.no5_item_entry, self.itax5)
-        self.get_item_tax(self.no6_item_entry, self.itax6)
-        self.get_item_tax(self.no7_item_entry, self.itax7)
-        self.get_item_tax(self.no8_item_entry, self.itax8)
-        self.get_item_tax(self.no9_item_entry, self.itax9)
-        self.get_item_tax(self.no10_item_entry, self.itax10)
+    # def itx(self):
+    #
+    #     self.get_item_tax(self.no1_item_entry, self.itax1)
+    #     self.get_item_tax(self.no2_item_entry, self.itax2)
+    #     self.get_item_tax(self.no3_item_entry, self.itax3)
+    #     self.get_item_tax(self.no4_item_entry, self.itax4)
+    #     self.get_item_tax(self.no5_item_entry, self.itax5)
+    #     self.get_item_tax(self.no6_item_entry, self.itax6)
+    #     self.get_item_tax(self.no7_item_entry, self.itax7)
+    #     self.get_item_tax(self.no8_item_entry, self.itax8)
+    #     self.get_item_tax(self.no9_item_entry, self.itax9)
+    #     self.get_item_tax(self.no10_item_entry, self.itax10)
 
 
     def iqt(self):
@@ -1694,25 +1715,25 @@ class saleClass(customtkinter.CTk):
 
     def itemtable(self):
         self.itemgstbill(self.no1_qty_entry.get(), self.no1_unitprice_entry.get(), self.no1_dec_percentagee_entry.get(),
-                         self.ida1, self.tax_unit_box, self.no1_tax_percentagee_entry.get(), self.ita1, self.iam1)
+                         self.ida1,  self.iam1)
         self.itemgstbill(self.no2_qty_entry.get(), self.no2_unitprice_entry.get(), self.no2_dec_percentagee_entry.get(),
-                         self.ida2, self.tax_unit_box, self.no2_tax_percentagee_entry.get(), self.ita2, self.iam2)
+                         self.ida2,  self.iam2)
         self.itemgstbill(self.no3_qty_entry.get(), self.no3_unitprice_entry.get(), self.no3_dec_percentagee_entry.get(),
-                         self.ida3, self.tax_unit_box, self.no3_tax_percentagee_entry.get(), self.ita3, self.iam3)
+                         self.ida3, self.iam3)
         self.itemgstbill(self.no4_qty_entry.get(), self.no4_unitprice_entry.get(), self.no4_dec_percentagee_entry.get(),
-                         self.ida4, self.tax_unit_box, self.no4_tax_percentagee_entry.get(), self.ita4, self.iam4)
+                         self.ida4,  self.iam4)
         self.itemgstbill(self.no5_qty_entry.get(), self.no5_unitprice_entry.get(), self.no5_dec_percentagee_entry.get(),
-                         self.ida5, self.tax_unit_box, self.no5_tax_percentagee_entry.get(), self.ita5, self.iam5)
+                         self.ida5, self.iam5)
         self.itemgstbill(self.no6_qty_entry.get(), self.no6_unitprice_entry.get(), self.no6_dec_percentagee_entry.get(),
-                         self.ida6, self.tax_unit_box, self.no6_tax_percentagee_entry.get(), self.ita6, self.iam6)
+                         self.ida6,  self.iam6)
         self.itemgstbill(self.no7_qty_entry.get(), self.no7_unitprice_entry.get(), self.no7_dec_percentagee_entry.get(),
-                         self.ida7, self.tax_unit_box, self.no7_tax_percentagee_entry.get(), self.ita7, self.iam7)
+                         self.ida7,  self.iam7)
         self.itemgstbill(self.no8_qty_entry.get(), self.no8_unitprice_entry.get(), self.no8_dec_percentagee_entry.get(),
-                         self.ida8, self.tax_unit_box, self.no8_tax_percentagee_entry.get(), self.ita8, self.iam8)
+                         self.ida8,  self.iam8)
         self.itemgstbill(self.no9_qty_entry.get(), self.no9_unitprice_entry.get(), self.no9_dec_percentagee_entry.get(),
-                         self.ida9, self.tax_unit_box, self.no9_tax_percentagee_entry.get(), self.ita9, self.iam9)
+                         self.ida9,  self.iam9)
         self.itemgstbill(self.no10_qty_entry.get(), self.no10_unitprice_entry.get(), self.no10_dec_percentagee_entry.get(),
-                         self.ida10, self.tax_unit_box, self.no10_tax_percentagee_entry.get(), self.ita10, self.iam10)
+                         self.ida10, self.iam10)
 
     def party(self,event):
         self.get_party_data()
@@ -1722,7 +1743,7 @@ class saleClass(customtkinter.CTk):
 
     def show(self,event):
         self.itpri()
-        self.itx()
+        # self.itx()
         self.get_party_data()
         self.itemtable()
         self.finalamount()
@@ -1736,7 +1757,6 @@ class saleClass(customtkinter.CTk):
 
             cur.execute("select itemname from itemdata")
             rows = cur.fetchall()
-            # self.productTable.delete(*self.productTable.get_children())
             self.ItemList.clear()
             for row in rows:
                 for i in row:
@@ -1809,136 +1829,211 @@ class saleClass(customtkinter.CTk):
 
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    def get_P_item_price(self, name, seto):
+        if name == "":
+            seto.set(" ")
+        else:
+
+          con = sqlite3.connect(database=r'DataBase/ims.db')
+          cur = con.cursor()
+          try:
+
+            cur.execute("select purchesprice from itemdata where itemname=?", (name,))
+            rows = cur.fetchall()
+            # self.productTable.delete(*self.productTable.get_children())
+
+            for row in rows:
+                for i in row:
+                    seto.set(i)
+
+          except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    def get_item_unitdata_name(self, name, seto,box):
+        seto.clear()
+        if name.get() == "":
+            seto.insert(0,"")
+            box.set(" ")
+            box.configure(values=seto)
+        else:
+          con = sqlite3.connect(database=r'DataBase/ims.db')
+          cur = con.cursor()
+          try:
+            cur.execute("select unit from itemdata")
+            rowss = cur.fetchall()
+            # self.productTable.delete(*self.productTable.get_children())
+
+            for rowd in rowss:
+                for fi in rowd:
+                    if fi == "":
+                      pass
+                    elif fi == " ":
+                      pass
+                    else:
+                      seto.append(fi)
+
+            cur.execute("select unit from itemdata where itemname=?", (name.get(),))
+            rows = cur.fetchall()
+            # self.productTable.delete(*self.productTable.get_children())
+
+            for row in rows:
+                for i in row:
+                    seto.insert(0,i)
+                    box.set(i)
+                    rs=[*set(seto)]
+                    box.configure(values=rs)
+
+          except Exception as ex:
+            print("Error", f"Error due to : {ex}")
 
 
     def itm1(self,event):
         self.get_item_qty(self.no1_item_entry.get(), self.iq1)
+        self.get_item_unitdata_name(self.no1_item_entry, self.Item_unit_List1, self.no1_unit_entry)
+        self.get_P_item_price(self.no1_item_entry.get(),self.ipp1)
         self.get_item_price(self.no1_item_entry.get(), self.ip1)
-        self.get_item_tax(self.no1_item_entry, self.itax1)
+        # self.get_item_tax(self.no1_item_entry, self.itax1)
         self.get_item_dec(self.no1_item_entry.get(), self.id1)
         # self.itx()
         self.itemgstbill(self.no1_qty_entry.get(), self.no1_unitprice_entry.get(), self.no1_dec_percentagee_entry.get(),
-                         self.ida1, self.tax_unit_box, self.no1_tax_percentagee_entry.get(), self.ita1, self.iam1)
+                         self.ida1,self.iam1)
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        self.totaltaxam()
+        #self.totaltaxam()
 
 
     def itm2(self,event):
         self.get_item_qty(self.no2_item_entry.get(), self.iq2)
+        self.get_item_unitdata_name(self.no2_item_entry, self.Item_unit_List2, self.no2_unit_entry)
+        self.get_P_item_price(self.no2_item_entry.get(), self.ipp2)
         self.get_item_price(self.no2_item_entry.get(), self.ip2)
-        self.get_item_tax(self.no2_item_entry, self.itax2)
+        # self.get_item_tax(self.no2_item_entry, self.itax2)
         self.get_item_dec(self.no2_item_entry.get(), self.id2)
         self.itemgstbill(self.no2_qty_entry.get(), self.no2_unitprice_entry.get(), self.no2_dec_percentagee_entry.get(),
                          self.ida2, self.tax_unit_box, self.no2_tax_percentagee_entry.get(), self.ita2, self.iam2)
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        self.totaltaxam()
+        #self.totaltaxam()
 
     def itm3(self,event):
         self.get_item_qty(self.no3_item_entry.get(), self.iq3)
+        self.get_item_unitdata_name(self.no3_item_entry, self.Item_unit_List3, self.no3_unit_entry)
+        self.get_P_item_price(self.no3_item_entry.get(), self.ipp3)
         self.get_item_price(self.no3_item_entry.get(), self.ip3)
-        self.get_item_tax(self.no3_item_entry, self.itax3)
+        # self.get_item_tax(self.no3_item_entry, self.itax3)
         self.get_item_dec(self.no3_item_entry.get(), self.id3)
         self.itemgstbill(self.no3_qty_entry.get(), self.no3_unitprice_entry.get(), self.no3_dec_percentagee_entry.get(),
                          self.ida3, self.tax_unit_box, self.no3_tax_percentagee_entry.get(), self.ita3, self.iam3)
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        self.totaltaxam()
+        #self.totaltaxam()
 
     def itm4(self,event):
         self.get_item_qty(self.no4_item_entry.get(), self.iq4)
+        self.get_item_unitdata_name(self.no4_item_entry, self.Item_unit_List4, self.no4_unit_entry)
+        self.get_P_item_price(self.no4_item_entry.get(), self.ipp4)
         self.get_item_price(self.no4_item_entry.get(), self.ip4)
-        self.get_item_tax(self.no4_item_entry, self.itax4)
+        # self.get_item_tax(self.no4_item_entry, self.itax4)
         self.get_item_dec(self.no4_item_entry.get(), self.id4)
         self.itemgstbill(self.no4_qty_entry.get(), self.no4_unitprice_entry.get(), self.no4_dec_percentagee_entry.get(),
-                         self.ida4, self.tax_unit_box, self.no4_tax_percentagee_entry.get(), self.ita4, self.iam4)
+                         self.ida4, self.iam4)
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        self.totaltaxam()
+        #self.totaltaxam()
 
     def itm5(self,event):
         self.get_item_qty(self.no5_item_entry.get(), self.iq5)
+        self.get_item_unitdata_name(self.no5_item_entry, self.Item_unit_List5, self.no5_unit_entry)
+        self.get_P_item_price(self.no5_item_entry.get(), self.ipp5)
         self.get_item_price(self.no5_item_entry.get(), self.ip5)
-        self.get_item_tax(self.no5_item_entry, self.itax5)
+        # self.get_item_tax(self.no5_item_entry, self.itax5)
         self.get_item_dec(self.no5_item_entry.get(), self.id5)
         self.itemgstbill(self.no5_qty_entry.get(), self.no5_unitprice_entry.get(), self.no5_dec_percentagee_entry.get(),
-                         self.ida5, self.tax_unit_box, self.no5_tax_percentagee_entry.get(), self.ita5, self.iam5)
+                         self.ida5, self.iam5)
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        self.totaltaxam()
+        #self.totaltaxam()
 
     def itm6(self,event):
         self.get_item_qty(self.no6_item_entry.get(), self.iq6)
+        self.get_item_unitdata_name(self.no6_item_entry, self.Item_unit_List6, self.no6_unit_entry)
+        self.get_P_item_price(self.no6_item_entry.get(), self.ipp6)
         self.get_item_price(self.no6_item_entry.get(), self.ip6)
-        self.get_item_tax(self.no6_item_entry, self.itax6)
+        # self.get_item_tax(self.no6_item_entry, self.itax6)
         self.get_item_dec(self.no6_item_entry.get(), self.id6)
         self.itemgstbill(self.no6_qty_entry.get(), self.no6_unitprice_entry.get(), self.no6_dec_percentagee_entry.get(),
-                         self.ida6, self.tax_unit_box, self.no6_tax_percentagee_entry.get(), self.ita6, self.iam6)
+                         self.ida6, self.iam6)
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        self.totaltaxam()
+        #self.totaltaxam()
 
     def itm7(self,event):
         self.get_item_qty(self.no7_item_entry.get(), self.iq7)
+        self.get_item_unitdata_name(self.no7_item_entry, self.Item_unit_List7, self.no7_unit_entry)
+        self.get_P_item_price(self.no7_item_entry.get(), self.ipp7)
         self.get_item_price(self.no7_item_entry.get(), self.ip7)
-        self.get_item_tax(self.no7_item_entry, self.itax7)
+        # self.get_item_tax(self.no7_item_entry, self.itax7)
         self.get_item_dec(self.no7_item_entry.get(), self.id7)
         self.itemgstbill(self.no7_qty_entry.get(), self.no7_unitprice_entry.get(), self.no7_dec_percentagee_entry.get(),
-                         self.ida7, self.tax_unit_box, self.no7_tax_percentagee_entry.get(), self.ita7, self.iam7)
+                         self.ida7, self.iam7)
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        self.totaltaxam()
+        #self.totaltaxam()
 
     def itm8(self,event):
         self.get_item_qty(self.no8_item_entry.get(), self.iq8)
+        self.get_item_unitdata_name(self.no8_item_entry, self.Item_unit_List8, self.no8_unit_entry)
+        self.get_P_item_price(self.no8_item_entry.get(), self.ipp8)
         self.get_item_price(self.no8_item_entry.get(), self.ip8)
-        self.get_item_tax(self.no8_item_entry, self.itax8)
+        # self.get_item_tax(self.no8_item_entry, self.itax8)
         self.get_item_dec(self.no8_item_entry.get(), self.id8)
         self.itemgstbill(self.no8_qty_entry.get(), self.no8_unitprice_entry.get(), self.no8_dec_percentagee_entry.get(),
-                         self.ida8, self.tax_unit_box, self.no8_tax_percentagee_entry.get(), self.ita8, self.iam8)
+                         self.ida8, self.iam8)
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        self.totaltaxam()
+        #self.totaltaxam()
 
     def itm9(self,event):
         self.get_item_qty(self.no9_item_entry.get(), self.iq9)
+        self.get_item_unitdata_name(self.no9_item_entry, self.Item_unit_List9, self.no9_unit_entry)
+        self.get_P_item_price(self.no9_item_entry.get(), self.ipp9)
         self.get_item_price(self.no9_item_entry.get(), self.ip9)
-        self.get_item_tax(self.no9_item_entry, self.itax9)
+        # self.get_item_tax(self.no9_item_entry, self.itax9)
         self.get_item_dec(self.no9_item_entry.get(), self.id9)
         self.itemgstbill(self.no9_qty_entry.get(), self.no9_unitprice_entry.get(), self.no9_dec_percentagee_entry.get(),
-                         self.ida9, self.tax_unit_box, self.no9_tax_percentagee_entry.get(), self.ita9, self.iam9)
+                         self.ida9, self.iam9)
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        self.totaltaxam()
+        #self.totaltaxam()
 
     def itm10(self,event):
         self.get_item_qty(self.no10_item_entry.get(), self.iq10)
+        self.get_item_unitdata_name(self.no10_item_entry, self.Item_unit_List10, self.no10_unit_entry)
+        self.get_P_item_price(self.no10_item_entry.get(), self.ipp10)
         self.get_item_price(self.no10_item_entry.get(), self.ip10)
-        self.get_item_tax(self.no10_item_entry, self.itax10)
+        # self.get_item_tax(self.no10_item_entry, self.itax10)
         self.get_item_dec(self.no10_item_entry.get(), self.id10)
         self.itemgstbill(self.no10_qty_entry.get(), self.no10_unitprice_entry.get(), self.no10_dec_percentagee_entry.get(),
-                         self.ida10, self.tax_unit_box, self.no10_tax_percentagee_entry.get(), self.ita10, self.iam10)
+                         self.ida10, self.iam10)
         self.finalamount()
         self.totalqty()
         self.totaldesam()
-        self.totaltaxam()
+        #self.totaltaxam()
 
-    def tax(self,event):
-        self.itemtable()
-        self.finalamount()
-        self.totalqty()
-        self.totaldesam()
-        self.totaltaxam()
+    # def tax(self,event):
+    #     self.itemtable()
+    #     self.finalamount()
+    #     self.totalqty()
+    #     self.totaldesam()
+    #     self.totaltaxam()
 
     def invoice_genrator(self):
 
@@ -1946,7 +2041,7 @@ class saleClass(customtkinter.CTk):
         cur = con.cursor()
         try:
 
-                cur.execute("select invoice from purinvo where no=1",)
+                cur.execute("select invoice from invosalenon where no=1",)
                 rows = cur.fetchall()
                 # self.productTable.delete(*self.productTable.get_children())
                 for row in rows:
@@ -1972,9 +2067,9 @@ class saleClass(customtkinter.CTk):
         cur = con.cursor()
         try:
 
-            cur.execute("Select no from purinvo where no=?", (p,))
+            cur.execute("Select no from invosalenon where no=?", (p,))
             row = cur.fetchone()
-            cur.execute("Update purinvo set invoice=? where no=?", (
+            cur.execute("Update invosalenon set invoice=? where no=?", (
                 self.incre,
                 p,
             ))
@@ -1982,7 +2077,7 @@ class saleClass(customtkinter.CTk):
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
-    def update_item_qty(self, name, seto,pri,unit,gst):
+    def update_item_qty(self, name, seto):
         if name == "":
             seto.set("")
         else:
@@ -1995,15 +2090,11 @@ class saleClass(customtkinter.CTk):
               else:
                   cur.execute("select openqty from itemdata where itemname=?", (name,))
                   rows = cur.fetchall()
-
+                  # self.productTable.delete(*self.productTable.get_children())
                   b=seto.get()
-                  price=pri.get()
-                  un=unit.get()
-                  date=self.date_entry.get()
-                  tax=gst.get()
                   for row in rows:
                      for i in row:
-                       resualt=int(i)+int(b)
+                       resualt=int(i)-int(b)
                        cur.execute("select pid from itemdata where itemname=?", (name,))
                        pids = cur.fetchall()
                        for pid in pids:
@@ -2011,13 +2102,9 @@ class saleClass(customtkinter.CTk):
 
                               cur.execute("Select pid from itemdata where pid=?", (p,))
                               row = cur.fetchone()
-                              cur.execute("Update itemdata set openqty=?,purchesprice=?,date=?,location=?,gsttax=? where pid=?", (
+                              cur.execute("Update itemdata set openqty=? where pid=?", (
                                resualt,
-                               price,
-                               date,
-                               un,
-                               tax,
-                               p,
+                                p,
                                 ))
                               con.commit()
 
@@ -2025,16 +2112,16 @@ class saleClass(customtkinter.CTk):
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
     def update_iqt(self):
-        self.update_item_qty(self.no1_item_entry.get(), self.iq1, self.ip1, self.no1_unit_entry, self.no1_tax_percentagee_entry)
-        self.update_item_qty(self.no2_item_entry.get(), self.iq2, self.ip2, self.no2_unit_entry, self.no2_tax_percentagee_entry)
-        self.update_item_qty(self.no3_item_entry.get(), self.iq3, self.ip3, self.no3_unit_entry, self.no3_tax_percentagee_entry)
-        self.update_item_qty(self.no4_item_entry.get(), self.iq4, self.ip4, self.no4_unit_entry, self.no4_tax_percentagee_entry)
-        self.update_item_qty(self.no5_item_entry.get(), self.iq5, self.ip5, self.no5_unit_entry, self.no5_tax_percentagee_entry)
-        self.update_item_qty(self.no6_item_entry.get(), self.iq6, self.ip6, self.no6_unit_entry, self.no6_tax_percentagee_entry)
-        self.update_item_qty(self.no7_item_entry.get(), self.iq7, self.ip7, self.no7_unit_entry, self.no7_tax_percentagee_entry)
-        self.update_item_qty(self.no8_item_entry.get(), self.iq8, self.ip8, self.no8_unit_entry, self.no8_tax_percentagee_entry)
-        self.update_item_qty(self.no9_item_entry.get(), self.iq9, self.ip9, self.no9_unit_entry, self.no9_tax_percentagee_entry)
-        self.update_item_qty(self.no10_item_entry.get(), self.iq10, self.ip10, self.no10_unit_entry, self.no10_tax_percentagee_entry)
+        self.update_item_qty(self.no1_item_entry.get(), self.iq1)
+        self.update_item_qty(self.no2_item_entry.get(), self.iq2)
+        self.update_item_qty(self.no3_item_entry.get(), self.iq3)
+        self.update_item_qty(self.no4_item_entry.get(), self.iq4)
+        self.update_item_qty(self.no5_item_entry.get(), self.iq5)
+        self.update_item_qty(self.no6_item_entry.get(), self.iq6)
+        self.update_item_qty(self.no7_item_entry.get(), self.iq7)
+        self.update_item_qty(self.no8_item_entry.get(), self.iq8)
+        self.update_item_qty(self.no9_item_entry.get(), self.iq9)
+        self.update_item_qty(self.no10_item_entry.get(), self.iq10)
 
     def amountupdate(self,*args):
         self.finalamount()
@@ -2054,159 +2141,6 @@ class saleClass(customtkinter.CTk):
                 for r in row:
                     new_scaling_float = int(r.replace("%", "")) / 100
                     customtkinter.set_widget_scaling(new_scaling_float)
-
-        except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
-    def get_data(self):
-        items_datalist = []
-        con = sqlite3.connect(database=r'DataBase/ims.db')
-        cur = con.cursor()
-        try:
-
-            cur.execute(
-                "select partyname,phonenumber,gstin,cashorcr,invoiceno,invoicedate,steteofsuply,paymentype,refreceno,total,received,balance,item1name,qty1,unit1,unitprice1,dec1,desamount1,tax1,gstamount1,amount1,item2name,qty2,unit2,unitprice2,dec2,desamount2,tax2,gstamount2,amount2,item3name,qty3,unit3,unitprice3,dec3,desamount3,tax3,gstamount3,amount3,item4name,qty4,unit4,unitprice4,dec4,desamount4,tax4,gstamount4,amount4,item5name,qty5,unit5,unitprice5,dec5,desamount5,tax5,gstamount5,amount5,item6name,qty6,unit6,unitprice6,dec6,desamount6,tax6,gstamount6,amount6,item7name,qty7,unit7,unitprice7,dec7,desamount7,tax7,gstamount7,amount7,item8name,qty8,unit8,unitprice8,dec8,desamount8,tax8,gstamount8,amount8,item9name,qty9,unit9,unitprice9,dec9,desamount9,tax9,gstamount9,amount9,item10name,qty10,unit10,unitprice10,dec10,desamount10,tax10,gstamount10,amount10 from editgstpurchase where sid=?",
-                (1,))
-            rows = cur.fetchall()
-            for row in rows:
-                for r in row:
-                    items_datalist.append(r)
-
-            self.partyname_entry.set(value=items_datalist[0])
-            self.partynumber.set(items_datalist[1])
-            self.phonenumber_entry.configure(textvariable=self.partynumber)
-            self.gstin.set(items_datalist[2])
-            self.gstin_entry.configure(textvariable=self.gstin)
-            self.invo.set(items_datalist[3])
-            self.invoice_entry.configure(textvariable=self.invo)
-            self.date_entry.set_date(items_datalist[5])
-            self.statelist.insert(0,items_datalist[6])
-            self.state_menu.set(items_datalist[6])
-            self.state_menu.configure(values=self.statelist)
-            self.cashlist.insert(0, items_datalist[7])
-            self.Payment_type_entry.set(items_datalist[7])
-            self.Payment_type_entry.configure(values=self.cashlist)
-            self.recvam.set(items_datalist[10])
-            self.Received_entry.configure(textvariable=self.recvam)
-
-
-            if items_datalist[4] == "Credit":
-                self.cash_switch.select()
-            elif items_datalist[4] == "Cash":
-                self.cash_switch.deselect()
-
-            self.no1var.set(items_datalist[12])
-            self.iq1.set(items_datalist[13])
-            self.Item_unit_List.insert(0,items_datalist[14])
-            self.no1_unit_entry.set(items_datalist[14])
-            self.no1_unit_entry.configure(values=self.Item_unit_List)
-            self.ip1.set(items_datalist[15])
-            self.id1.set(items_datalist[16])
-            self.itax1.insert(0,items_datalist[18])
-            self.no1_tax_percentagee_entry.configure(values=self.itax1)
-            self.no1_tax_percentagee_entry.set(items_datalist[18])
-
-            self.no2var.set(items_datalist[21])
-            self.iq2.set(items_datalist[22])
-            self.Item_unit_List.insert(0, items_datalist[23])
-            self.no2_unit_entry.set(items_datalist[23])
-            self.no2_unit_entry.configure(values=self.Item_unit_List)
-            self.ip2.set(items_datalist[24])
-            self.id2.set(items_datalist[25])
-            self.itax2.insert(0, items_datalist[27])
-            self.no2_tax_percentagee_entry.configure(values=self.itax2)
-            self.no2_tax_percentagee_entry.set(items_datalist[27])
-
-            self.no3var.set(items_datalist[30])
-            self.iq3.set(items_datalist[31])
-            self.Item_unit_List.insert(0, items_datalist[32])
-            self.no3_unit_entry.set(items_datalist[32])
-            self.no3_unit_entry.configure(values=self.Item_unit_List)
-            self.ip3.set(items_datalist[33])
-            self.id3.set(items_datalist[34])
-            self.itax3.insert(0, items_datalist[36])
-            self.no3_tax_percentagee_entry.configure(values=self.itax3)
-            self.no3_tax_percentagee_entry.set(items_datalist[36])
-
-            self.no4var.set(items_datalist[39])
-            self.iq4.set(items_datalist[40])
-            self.Item_unit_List.insert(0, items_datalist[41])
-            self.no4_unit_entry.set(items_datalist[41])
-            self.no4_unit_entry.configure(values=self.Item_unit_List)
-            self.ip4.set(items_datalist[42])
-            self.id4.set(items_datalist[43])
-            self.itax4.insert(0, items_datalist[45])
-            self.no4_tax_percentagee_entry.configure(values=self.itax4)
-            self.no4_tax_percentagee_entry.set(items_datalist[45])
-
-            self.no5var.set(items_datalist[48])
-            self.iq5.set(items_datalist[49])
-            self.Item_unit_List.insert(0, items_datalist[50])
-            self.no5_unit_entry.set(items_datalist[50])
-            self.no5_unit_entry.configure(values=self.Item_unit_List)
-            self.ip5.set(items_datalist[51])
-            self.id5.set(items_datalist[52])
-            self.itax5.insert(0, items_datalist[54])
-            self.no5_tax_percentagee_entry.configure(values=self.itax5)
-            self.no5_tax_percentagee_entry.set(items_datalist[54])
-
-            self.no6var.set(items_datalist[57])
-            self.iq6.set(items_datalist[58])
-            self.Item_unit_List.insert(0, items_datalist[59])
-            self.no6_unit_entry.set(items_datalist[59])
-            self.no6_unit_entry.configure(values=self.Item_unit_List)
-            self.ip6.set(items_datalist[60])
-            self.id6.set(items_datalist[61])
-            self.itax6.insert(0, items_datalist[63])
-            self.no6_tax_percentagee_entry.configure(values=self.itax6)
-            self.no6_tax_percentagee_entry.set(items_datalist[63])
-
-            self.no7var.set(items_datalist[66])
-            self.iq7.set(items_datalist[67])
-            self.Item_unit_List.insert(0, items_datalist[68])
-            self.no7_unit_entry.set(items_datalist[68])
-            self.no7_unit_entry.configure(values=self.Item_unit_List)
-            self.ip7.set(items_datalist[69])
-            self.id7.set(items_datalist[70])
-            self.itax7.insert(0, items_datalist[72])
-            self.no7_tax_percentagee_entry.configure(values=self.itax7)
-            self.no7_tax_percentagee_entry.set(items_datalist[72])
-
-            self.no8var.set(items_datalist[75])
-            self.iq8.set(items_datalist[76])
-            self.Item_unit_List.insert(0, items_datalist[77])
-            self.no8_unit_entry.set(items_datalist[77])
-            self.no8_unit_entry.configure(values=self.Item_unit_List)
-            self.ip8.set(items_datalist[78])
-            self.id8.set(items_datalist[79])
-            self.itax8.insert(0, items_datalist[81])
-            self.no8_tax_percentagee_entry.configure(values=self.itax8)
-            self.no8_tax_percentagee_entry.set(items_datalist[81])
-
-            self.no9var.set(items_datalist[84])
-            self.iq9.set(items_datalist[85])
-            self.Item_unit_List.insert(0, items_datalist[86])
-            self.no9_unit_entry.set(items_datalist[86])
-            self.no9_unit_entry.configure(values=self.Item_unit_List)
-            self.ip9.set(items_datalist[87])
-            self.id9.set(items_datalist[88])
-            self.itax9.insert(0, items_datalist[90])
-            self.no9_tax_percentagee_entry.configure(values=self.itax9)
-            self.no9_tax_percentagee_entry.set(items_datalist[90])
-
-            self.no10var.set(items_datalist[93])
-            self.iq10.set(items_datalist[94])
-            self.Item_unit_List.insert(0, items_datalist[95])
-            self.no10_unit_entry.set(items_datalist[95])
-            self.no10_unit_entry.configure(values=self.Item_unit_List)
-            self.ip10.set(items_datalist[96])
-            self.id10.set(items_datalist[97])
-            self.itax10.insert(0, items_datalist[99])
-            self.no10_tax_percentagee_entry.configure(values=self.itax10)
-            self.no10_tax_percentagee_entry.set(items_datalist[99])
-
-            self.qtty()
-
 
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
