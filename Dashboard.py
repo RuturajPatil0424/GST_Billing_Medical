@@ -313,6 +313,9 @@ class App(customtkinter.CTk):
         self.in_home_lowitem_top_frame = customtkinter.CTkFrame(self.home_frame, width=400, height=270)
         self.in_home_lowitem_top_frame.place(x=10, y=720)
 
+        self.in_home_outofitem_top_frame = customtkinter.CTkFrame(self.home_frame, width=400, height=270)
+        self.in_home_outofitem_top_frame.place(x=420, y=720)
+
         self.in_home_cheques_frame = customtkinter.CTkFrame(self.home_frame, width=460, height=120)
         self.in_home_cheques_frame.place(x=1255, y=540)
 
@@ -424,6 +427,7 @@ class App(customtkinter.CTk):
         self.stockam = StringVar()
         self.stockam = "₹ 00.00"
         self.itemtotalamlist=[]
+        self.itemoutlist = []
 
         self.stock_amount_lable = customtkinter.CTkLabel(self.in_home_stock_frame, text=self.stockam,
                                                         font=customtkinter.CTkFont(size=20))
@@ -550,7 +554,7 @@ class App(customtkinter.CTk):
 
         # todo: home low Stock frame
         self.itemlowlist=[]
-        self.lowStock_lable = customtkinter.CTkLabel(self.in_home_lowitem_top_frame, text=" Low Stock",text_color="red",
+        self.lowStock_lable = customtkinter.CTkLabel(self.in_home_lowitem_top_frame, text=" Low Stock",text_color="#FF8C00",
                                                       font=customtkinter.CTkFont(size=25), image=self.stock_image,
                                                       compound="left", anchor="w")
         self.lowStock_lable.place(x=10, y=10)
@@ -558,6 +562,19 @@ class App(customtkinter.CTk):
         self.lowStock_lable2 = customtkinter.CTkTextbox(self.in_home_lowitem_top_frame,width=350,
                                                        font=customtkinter.CTkFont(size=15))
         self.lowStock_lable2.place(x=25, y=50)
+
+
+        # todo: home Outof Stock frame
+        self.itemoutoflist = []
+        self.outofStock_lable = customtkinter.CTkLabel(self.in_home_outofitem_top_frame, text=" Out Of Stock",
+                                                     text_color="red",
+                                                     font=customtkinter.CTkFont(size=25), image=self.stock_image,
+                                                     compound="left", anchor="w")
+        self.outofStock_lable.place(x=10, y=10)
+
+        self.outofStock_lable2 = customtkinter.CTkTextbox(self.in_home_outofitem_top_frame, width=350,
+                                                        font=customtkinter.CTkFont(size=15))
+        self.outofStock_lable2.place(x=25, y=50)
         self.getdate()
         self.getlowitem()
 
@@ -3337,15 +3354,24 @@ class App(customtkinter.CTk):
     # gst
     def addgstsale_event(self):
         call(["python", "Add_GST_Sale.py"])
+        self.gstcalgetsaletotalamount()
+        self.gstsaletrans()
     def editgstsale_event(self):
         call(["python", "Edit_GST_Sale.py"])
+        self.gstcalgetsaletotalamount()
+        self.gstsaletrans()
+
 
 
     # sale
     def addsale_event(self):
         call(["python", "Add_Sale.py"])
+        self.calgetsaletotalamount()
+        self.saletrans()
     def editsale_event(self):
         call(["python", "Edit_Sale.py"])
+        self.calgetsaletotalamount()
+        self.saletrans()
     def addestimate_event(self):
         call(["python", "Estimate.py"])
 
@@ -3721,20 +3747,29 @@ class App(customtkinter.CTk):
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         self.itemtotalamlist.clear()
+        self.itemoutlist.clear()
         try:
-            cur.execute(f"select itemname,openqty,minqty from itemdata ",)
+            cur.execute(f"select itemname,openqty,minstockmanten from itemdata ",)
             rows = cur.fetchall()
+
             for row in rows:
-              if  row[2] == "" or row[2] == " ":
+              rowlis = list(row)
+              if  rowlis[2] == "" or rowlis[2] == " ":
                 a=0
               else:
-                a=int(row[2])
+                a=int(rowlis[2])
 
-              if int(row[1]) <= 5 or  int(row[1]) < int(a):
-                 a=row[0]
-                 b =int(row[1])
-                 c=f"Item Name :    {a}       qty  :  {b}"
+              if int(rowlis[1]) <= 5 and int(rowlis[1]) != 0 or  int(rowlis[1]) <= int(a) and int(rowlis[1]) != 0:
+                 ab=rowlis[0]
+                 bb =int(rowlis[1])
+                 c=f"Item Name :    {ab}       qty  :  {bb}"
                  self.itemlowlist.append(c)
+
+              elif int(rowlis[1]) == 0:
+                 ab=rowlis[0]
+                 bb =int(rowlis[1])
+                 c=f"Item Name :    {ab}       qty  :  {bb}"
+                 self.itemoutlist.append(c)
               else:
                  pass
 
@@ -3745,9 +3780,19 @@ class App(customtkinter.CTk):
               for i in self.itemlowlist :
                 result=f"\n {i}"
                 self.lowStock_lable2.insert(0.0,result)
-                self.lowStock_lable2.configure(state='disabled')
+              self.lowStock_lable2.configure(state='disabled')
+
+            if len(self.itemoutlist) < 1 :
+             self.outofStock_lable2.insert(0.0,"No Item")
+             self.outofStock_lable2.configure(state='disabled')
+            else:
+              for m in self.itemoutlist :
+                result=f"\n {m}"
+                self.outofStock_lable2.insert(0.0,result)
+              self.outofStock_lable2.configure(state='disabled')
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+
 
     # Party Frame Methods
     def show(self):
