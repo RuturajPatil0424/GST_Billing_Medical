@@ -2205,6 +2205,12 @@ class App(customtkinter.CTk):
         self.sale_pur_edit_button = customtkinter.CTkButton(self.sale_transiction_frame, width=70, height=30,
                                                              text="Edit", command=self.editsale_event)
         self.sale_pur_edit_button.place(x=100, y=60)
+        self.sale_pur_delet_button = customtkinter.CTkButton(self.sale_transiction_frame,
+                                                                width=70,
+                                                                height=30,
+                                                                text="Delete",
+                                                                command=self.sale_trans_delete)
+        self.sale_pur_delet_button.place(x=180, y=60)
 
 
         #todo:sale estimate
@@ -4210,12 +4216,13 @@ class App(customtkinter.CTk):
 
 
     # GST Sale Frame Methods
-
     def gst_trans_delete(self):
       try:
         f = self.gstsaletransictionTable.focus()
         content = (self.gstsaletransictionTable.item(f))
         mow = content['values']
+        totalam=float(mow[4])
+        recived=float(mow[5])
         invoice_zero = 6 - len(str(mow[1]))
         a = 1
         mm = "0"
@@ -4229,16 +4236,33 @@ class App(customtkinter.CTk):
 
         cur.execute("Select * from gstsale where invoiceno=?",(strfinal,))
         row=cur.fetchone()
-        if row==None:
+        if row == None:
             messagebox.showerror("Error","Invalid Invoice No",parent=self)
         else :
             op=messagebox.askyesno("Confirm","Do you really want to delete?",parent=self)
             if op==True:
-               cur.execute("delete from gstsale where invoiceno=?",(strfinal,))
-               con.commit()
-               messagebox.showinfo("Delete",f"Invoice No {strfinal} Deleted Successfully",parent=self)
-               self.gstsaletrans()
-               self.gstcalgetsaletotalamount()
+                cur.execute("Select gstin from gstsale where invoiceno=?", (strfinal,))
+                rowk = cur.fetchone()
+                for rk in rowk:
+                    gstno = rk
+
+                cur.execute("Select recivebalence from partydata where gstin=?", (gstno,))
+                rowm = cur.fetchone()
+                for rm in rowm:
+                    recivedDBam = float(rm)
+                    finall = int(totalam) - int(recived)
+                    updateamo = int(recivedDBam) - finall
+
+                cur.execute("Update partydata set recivebalence=? where gstin=?", (
+                    updateamo,
+                    gstno,
+                ))
+                con.commit()
+                cur.execute("delete from gstsale where invoiceno=?",(strfinal,))
+                con.commit()
+                messagebox.showinfo("Delete",f"Invoice No {strfinal} Deleted Successfully",parent=self)
+                self.gstsaletrans()
+                self.gstcalgetsaletotalamount()
       except Exception as ex:
              messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=self)
     def gstgetsaletotalamount(self):
@@ -4797,6 +4821,61 @@ class App(customtkinter.CTk):
 
 
     # Sale Frame Methods
+    def sale_trans_delete(self):
+      try:
+        f = self.saletransictionTable.focus()
+        content = (self.saletransictionTable.item(f))
+        mow = content['values']
+        totalam = float(mow[4])
+        recived = float(mow[5])
+
+
+        invoice_zero = 6 - len(str(mow[1]))
+        a = 1
+        mm = "0"
+        while a < invoice_zero:
+            mm = mm + "0"
+            a += 1
+        final = f"{mm}{mow[1]}"
+        strfinal = str(final)
+        con=sqlite3.connect(database=r'DataBase/ims.db')
+        cur=con.cursor()
+
+        cur.execute("Select * from sale where invoiceno=?",(strfinal,))
+        row=cur.fetchone()
+        if row == None:
+            messagebox.showerror("Error","Invalid Invoice No",parent=self)
+        else :
+            op=messagebox.askyesno("Confirm","Do you really want to delete?",parent=self)
+            if op==True:
+               cur.execute("Select gstin from sale where invoiceno=?", (strfinal,))
+               rowk = cur.fetchone()
+               for rk in rowk:
+                   gstno = rk
+
+
+               cur.execute("Select recivebalence from partydata where gstin=?", (gstno,))
+               rowm = cur.fetchone()
+               for rm in rowm:
+                   recivedDBam = float(rm)
+                   final=int(totalam)-int(recived)
+                   updateamo=int(recivedDBam)-final
+
+
+               cur.execute("Update partydata set recivebalence=? where gstin=?", (
+                   updateamo,
+                   gstno,
+               ))
+               con.commit()
+               cur.execute("delete from sale where invoiceno=?", (strfinal,))
+               con.commit()
+
+
+               messagebox.showinfo("Delete",f"Invoice No {strfinal} Deleted Successfully",parent=self)
+               self.calgetsaletotalamount()
+               self.saletrans()
+      except Exception as ex:
+             messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=self)
     def saletrans(self):
             self.involista1.clear()
             con = sqlite3.connect(database=r'DataBase/ims.db')

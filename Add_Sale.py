@@ -1206,43 +1206,7 @@ class saleClass(customtkinter.CTk):
 
 
 
-    # def get_item_unit_list(self):
-    #     con = sqlite3.connect(database=r'DataBase/ims.db')
-    #     cur = con.cursor()
-    #     try:
-    #
-    #         cur.execute("select location from itemdata")
-    #         rows = cur.fetchall()
-    #         # self.productTable.delete(*self.productTable.get_children())
-    #
-    #         for row in rows:
-    #             for i in row:
-    #                 self.Item_unit_List.append(i)
-    #
-    #     except Exception as ex:
-    #         messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
-    # def get_item_tax(self, iname, iseto):
-    #     if iname.get() == "":
-    #         iseto.insert(0, "None")
-    #
-    #
-    #     else:
-    #       con = sqlite3.connect(database=r'DataBase/ims.db')
-    #       cur = con.cursor()
-    #       try:
-    #
-    #         cur.execute("select gsttax from itemdata where itemname=?", (iname.get(),))
-    #         rows = cur.fetchall()
-    #         # self.productTable.delete(*self.productTable.get_children())
-    #         m=StringVar()
-    #         for row in rows:
-    #             for i in row:
-    #                 iseto.insert(0, i)
-    #
-    #
-    #       except Exception as ex:
-    #         messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
     def get_item_qty(self, iname, iseto):
      try:
