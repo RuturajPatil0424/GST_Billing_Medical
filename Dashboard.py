@@ -1262,6 +1262,12 @@ class App(customtkinter.CTk):
         self.gstsale_pur_edit_button = customtkinter.CTkButton(self.gstsale_transiction_frame, width=70, height=30,
                                                                text="Edit", command=self.editgstsale_event)
         self.gstsale_pur_edit_button.place(x=100, y=60)
+        self.gstsale_pur_delet_button = customtkinter.CTkButton(self.gstsale_transiction_frame,
+                                                                          width=70,
+                                                                          height=30,
+                                                                          text="Delete",
+                                                                          command=self.gst_trans_delete)
+        self.gstsale_pur_delet_button.place(x=180, y=60)
 
 
 
@@ -4204,6 +4210,37 @@ class App(customtkinter.CTk):
 
 
     # GST Sale Frame Methods
+
+    def gst_trans_delete(self):
+      try:
+        f = self.gstsaletransictionTable.focus()
+        content = (self.gstsaletransictionTable.item(f))
+        mow = content['values']
+        invoice_zero = 6 - len(str(mow[1]))
+        a = 1
+        mm = "0"
+        while a < invoice_zero:
+            mm = mm + "0"
+            a += 1
+        final = f"{mm}{mow[1]}"
+        strfinal = str(final)
+        con=sqlite3.connect(database=r'DataBase/ims.db')
+        cur=con.cursor()
+
+        cur.execute("Select * from gstsale where invoiceno=?",(strfinal,))
+        row=cur.fetchone()
+        if row==None:
+            messagebox.showerror("Error","Invalid Invoice No",parent=self)
+        else :
+            op=messagebox.askyesno("Confirm","Do you really want to delete?",parent=self)
+            if op==True:
+               cur.execute("delete from gstsale where invoiceno=?",(strfinal,))
+               con.commit()
+               messagebox.showinfo("Delete",f"Invoice No {strfinal} Deleted Successfully",parent=self)
+               self.gstsaletrans()
+               self.gstcalgetsaletotalamount()
+      except Exception as ex:
+             messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=self)
     def gstgetsaletotalamount(self):
         self.gstsale_paidamount_mlist.clear()
         self.gstsale_totalamount_mlist.clear()
@@ -4390,8 +4427,7 @@ class App(customtkinter.CTk):
             elif self.Var_gstsale_searchtxt.get() == "":
                 messagebox.showerror("Error", "Search input should be required", parent=self)
             else:
-                cur.execute(
-                    "select invoicedate,invoiceno,partyname,paymentype,total,received,refreceno from gstsale where " + sss + " LIKE '%" + self.Var_gstsale_searchtxt.get() + "%'")
+                cur.execute("select invoicedate,invoiceno,partyname,paymentype,total,received,refreceno from gstsale where " + sss + " LIKE '%" + self.Var_gstsale_searchtxt.get() + "%'")
                 rows = cur.fetchall()
                 if len(rows) != 0:
                     self.gstsaletransictionTable.delete(*self.gstsaletransictionTable.get_children())
@@ -4451,18 +4487,18 @@ class App(customtkinter.CTk):
             # rpwr = round(pwr, 2)
        except Exception as e:
         print(e)
-    def getitemdatapri(self,list,discslist,taxslist):
+    def getitemdatapri(self, list, discslist, taxslist):
       try:
-        self.wotgst( list[13], list[15], list[16], list[17], list[18],discslist,taxslist)
-        self.wotgst( list[20], list[22], list[23], list[24], list[25],discslist,taxslist)
-        self.wotgst( list[27], list[29], list[30], list[31], list[32],discslist,taxslist)
-        self.wotgst( list[34], list[36], list[37], list[38], list[39],discslist,taxslist)
-        self.wotgst( list[41], list[43], list[44], list[45], list[46],discslist,taxslist)
-        self.wotgst( list[48], list[50], list[51], list[52], list[53],discslist,taxslist)
-        self.wotgst( list[55], list[57], list[58], list[59], list[60],discslist,taxslist)
-        self.wotgst( list[62], list[64], list[65], list[66], list[67],discslist,taxslist)
-        self.wotgst( list[69], list[71], list[72], list[73], list[74],discslist,taxslist)
-        self.wotgst( list[76], list[78], list[79], list[80], list[81],discslist,taxslist)
+        self.wotgst(list[13], list[15], list[16], list[17], list[18], discslist, taxslist)
+        self.wotgst(list[20], list[22], list[23], list[24], list[25], discslist, taxslist)
+        self.wotgst(list[27], list[29], list[30], list[31], list[32], discslist, taxslist)
+        self.wotgst(list[34], list[36], list[37], list[38], list[39], discslist, taxslist)
+        self.wotgst(list[41], list[43], list[44], list[45], list[46], discslist, taxslist)
+        self.wotgst(list[48], list[50], list[51], list[52], list[53], discslist, taxslist)
+        self.wotgst(list[55], list[57], list[58], list[59], list[60], discslist, taxslist)
+        self.wotgst(list[62], list[64], list[65], list[66], list[67], discslist, taxslist)
+        self.wotgst(list[69], list[71], list[72], list[73], list[74], discslist, taxslist)
+        self.wotgst(list[76], list[78], list[79], list[80], list[81], discslist, taxslist)
       except Exception as e:
         print(e)
 
