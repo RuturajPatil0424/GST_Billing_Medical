@@ -22,7 +22,7 @@ class App(customtkinter.CTk):
         self.grid_columnconfigure(1, weight=1)
 
         # load images with light and dark mode image
-        image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_images")
+        image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "DataBase/images")
         self.logo_image = customtkinter.CTkImage(Image.open(os.path.join(image_path, "CustomTkinter_logo_single.png")),
                                                  size=(26, 26))
         self.image_icon_image = customtkinter.CTkImage(Image.open(os.path.join(image_path, "home.png")),
@@ -103,6 +103,14 @@ class App(customtkinter.CTk):
         self.calculator_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "calculator.png")),
                                                 dark_image=Image.open(os.path.join(image_path, "calculator.png")),
                                                 size=(30, 30))
+        self.exit_image = customtkinter.CTkImage(
+            light_image=Image.open(os.path.join(image_path, "exit.png")),
+            dark_image=Image.open(os.path.join(image_path, "exit.png")),
+            size=(30, 30))
+        self.close_image = customtkinter.CTkImage(
+            light_image=Image.open(os.path.join(image_path, "close.png")),
+            dark_image=Image.open(os.path.join(image_path, "close.png")),
+            size=(30, 30))
         self.import_image = customtkinter.CTkImage(
             light_image=Image.open(os.path.join(image_path, "import.png")),
             dark_image=Image.open(os.path.join(image_path, "import.png")),
@@ -128,7 +136,7 @@ class App(customtkinter.CTk):
         # create navigation frame
         self.navigation_frame = customtkinter.CTkFrame(self, corner_radius=0)
         self.navigation_frame.grid(row=0, column=0, sticky="nsew")
-        self.navigation_frame.grid_rowconfigure(22, weight=1)
+        self.navigation_frame.grid_rowconfigure(23, weight=1)
 
         self.navigation_frame_label = customtkinter.CTkLabel(self.navigation_frame, text="  Cyber tech",
                                                              image=self.logo_image,
@@ -243,8 +251,18 @@ class App(customtkinter.CTk):
                                                       command=self.Setting_button_event)
         self.Setting_button.grid(row=13, column=0, sticky="ew")
 
+
+
         self.scaling_label = customtkinter.CTkLabel(self.navigation_frame,image=self.mode_image,compound="left",anchor="w", text="   Dark Mode", font=customtkinter.CTkFont(size=15))
         self.scaling_label.grid(row=14, column=0, padx=20, pady=(10, 0))
+
+        self.exit_button = customtkinter.CTkButton(self.navigation_frame, corner_radius=0, height=40,
+                                                   border_spacing=5, text="Exit",
+                                                   fg_color="transparent", font=customtkinter.CTkFont(size=15),
+                                                   text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
+                                                   image=self.exit_image, anchor="w",
+                                                   command=self.cancel_desktop_event)
+        self.exit_button.grid(row=18, column=0, sticky="ew")
 
         self.apmodelist =["Light", "Dark", "System"]
         self.appearancelis2 = ["Light", "Dark", "System"]
@@ -426,7 +444,7 @@ class App(customtkinter.CTk):
         self.Stock_lable.place(x=10, y=10)
         self.stockam = StringVar()
         self.stockam = "₹ 00.00"
-        self.itemtotalamlist=[]
+        self.itemtotalamlist = []
         self.itemoutlist = []
 
         self.stock_amount_lable = customtkinter.CTkLabel(self.in_home_stock_frame, text=self.stockam,
@@ -619,11 +637,11 @@ class App(customtkinter.CTk):
                                                         hover_color=("gray70", "gray30"))
         self.add_party_button.place(x=360, y=20)
 
-        self.edit_party_button = customtkinter.CTkButton(self.party_name_frame, command=self.editparty_event,
-                                                        font=customtkinter.CTkFont(size=15), text="Edit Party", width=70,
-                                                        height=40, image=self.edit_image, fg_color="transparent",
+        self.delete_party_button = customtkinter.CTkButton(self.party_name_frame, command=self.deleteparty,
+                                                        font=customtkinter.CTkFont(size=15), text="Delete Party", width=70,
+                                                        height=40, image=self.close_image, fg_color="transparent",
                                                         hover_color=("gray70", "gray30"))
-        self.edit_party_button.place(x=360, y=80)
+        self.delete_party_button.place(x=360, y=80)
 
 
         self.imp_party_button = customtkinter.CTkButton(self.party_name_frame, font=customtkinter.CTkFont(size=18),
@@ -688,8 +706,8 @@ class App(customtkinter.CTk):
         self.productTable.heading("pay", text="Pay")
         self.productTable.heading("receive", text="Receive")
         self.productTable["show"] = "headings"
-        self.productTable.column("party", width=130, )
-        self.productTable.column("gstin", width=100)
+        self.productTable.column("party", width=120, )
+        self.productTable.column("gstin", width=130)
         self.productTable.column("pay", width=100)
         self.productTable.column("receive", width=100)
         self.productTable.pack(fill=BOTH, expand=1)
@@ -703,6 +721,7 @@ class App(customtkinter.CTk):
         self.partycrlimit = StringVar()
         self.partyaddress = StringVar()
         self.partygstin = StringVar()
+        self.partypayamount = StringVar()
 
         self.party_name_lable = customtkinter.CTkLabel(self.party_detail_frame, textvariable=self.partyname,font=customtkinter.CTkFont(size=18))
         self.party_name_lable.place(x=15, y=10)
@@ -726,9 +745,23 @@ class App(customtkinter.CTk):
                                                         font=customtkinter.CTkFont(size=12))
         self.party_gstin_lable.place(x=1000, y=85)
 
+        self.party_payamount_lable = customtkinter.CTkLabel(self.party_detail_frame, textvariable=self.partypayamount,
+                                                        font=customtkinter.CTkFont(size=12))
+        self.party_payamount_lable.place(x=1000, y=110)
+
+        self.edit_party_button = customtkinter.CTkButton(self.party_detail_frame, command=self.editparty_event,
+                                                         font=customtkinter.CTkFont(size=15), text="",
+                                                         width=50,
+                                                         height=40, image=self.edit_image, fg_color="transparent",
+                                                         hover_color=("gray70", "gray30"))
+
+
+
         self.party_gstin_lable = customtkinter.CTkLabel(self.party_transiction_frame, text="TRANSACTION",
                                                         font=customtkinter.CTkFont(size=14))
         self.party_gstin_lable.place(x=10, y=10)
+
+
 
         transiction_Frame = ttk.Frame(self.party_transiction_frame, relief=RIDGE)
         transiction_Frame.place(x=20, y=100, width=1170, height=580)
@@ -840,14 +873,14 @@ class App(customtkinter.CTk):
                                                         command=self.import_Party_Data)
         self.exp_item_button.place(x=20, y=80)
 
-        self.edit_item_button = customtkinter.CTkButton(self.item_name_frame,
-                                                       font=customtkinter.CTkFont(size=15), text="Edit Item",
-                                                       command=self.edititem_event,
-                                                       width=70,
-                                                       height=40, image=self.edit_image, fg_color="transparent",
-                                                       text_color="black",
-                                                       hover_color=("gray70", "gray30"))
-        self.edit_item_button.place(x=360, y=80)
+
+
+        self.delete_item_button = customtkinter.CTkButton(self.item_name_frame, command=self.deleteitem,
+                                                          font=customtkinter.CTkFont(size=15), text="Delete Item",
+                                                          width=70,
+                                                          height=40, image=self.close_image, fg_color="transparent",
+                                                          hover_color=("gray70", "gray30"))
+        self.delete_item_button.place(x=360, y=80)
 
         self.home_add_sale_button = customtkinter.CTkButton(self.in_item_top_frame,
                                                             font=customtkinter.CTkFont(size=18),
@@ -880,6 +913,8 @@ class App(customtkinter.CTk):
                                                                       fg_color="transparent",
                                                                       command=self.opencalcu)
         self.home_calculator_item_button.place(x=1610, y=20)
+
+
 
         self.lablename_item_lable = customtkinter.CTkLabel(self.in_item_top_frame,
                                                               font=customtkinter.CTkFont(size=18), text="Name",
@@ -916,11 +951,11 @@ class App(customtkinter.CTk):
         self.itemshow()
 
         self.itemname = StringVar()
-        self.itemnumber = StringVar()
-        self.itememail = StringVar()
-        self.itemcrlimit = StringVar()
-        self.itemaddress = StringVar()
-        self.itemgstin = StringVar()
+        self.itemhsn = StringVar()
+        self.itemcode = StringVar()
+        self.itemtax = StringVar()
+        self.itemsaleprice = StringVar()
+        self.itemwholesaleprice = StringVar()
         self.itemstock = StringVar()
         self.itemstockprice = StringVar()
         self.itempurchase = StringVar()
@@ -929,24 +964,24 @@ class App(customtkinter.CTk):
                                                          font=customtkinter.CTkFont(size=18))
         self.item_name_lable.place(x=15, y=10)
 
-        self.item_number_lable = customtkinter.CTkLabel(self.item_detail_frame, textvariable=self.itemnumber,
-                                                           font=customtkinter.CTkFont(size=12))
+        self.item_number_lable = customtkinter.CTkLabel(self.item_detail_frame, textvariable=self.itemhsn,
+                                                        font=customtkinter.CTkFont(size=12))
         self.item_number_lable.place(x=15, y=60)
 
-        self.item_email_lable = customtkinter.CTkLabel(self.item_detail_frame, textvariable=self.itememail,
-                                                          font=customtkinter.CTkFont(size=12))
+        self.item_email_lable = customtkinter.CTkLabel(self.item_detail_frame, textvariable=self.itemcode,
+                                                       font=customtkinter.CTkFont(size=12))
         self.item_email_lable.place(x=15, y=85)
 
-        self.item_crlimit_lable = customtkinter.CTkLabel(self.item_detail_frame, textvariable=self.itemcrlimit,
-                                                            font=customtkinter.CTkFont(size=12))
+        self.item_crlimit_lable = customtkinter.CTkLabel(self.item_detail_frame, textvariable=self.itemtax,
+                                                         font=customtkinter.CTkFont(size=12))
         self.item_crlimit_lable.place(x=15, y=110)
 
-        self.item_address_lable = customtkinter.CTkLabel(self.item_detail_frame, textvariable=self.itemaddress,
-                                                            font=customtkinter.CTkFont(size=12))
+        self.item_address_lable = customtkinter.CTkLabel(self.item_detail_frame, textvariable=self.itemsaleprice,
+                                                         font=customtkinter.CTkFont(size=12))
         self.item_address_lable.place(x=1000, y=60)
 
-        self.item_gstin_lable = customtkinter.CTkLabel(self.item_detail_frame, textvariable=self.itemgstin,
-                                                          font=customtkinter.CTkFont(size=12))
+        self.item_gstin_lable = customtkinter.CTkLabel(self.item_detail_frame, textvariable=self.itemwholesaleprice,
+                                                       font=customtkinter.CTkFont(size=12))
         self.item_gstin_lable.place(x=1000, y=85)
 
         self.item_stock_lable = customtkinter.CTkLabel(self.item_detail_frame, textvariable=self.itemstock,
@@ -957,9 +992,19 @@ class App(customtkinter.CTk):
                                                        font=customtkinter.CTkFont(size=13))
         self.item_stock_price_lable.place(x=1000, y=35)
 
+        self.edit_item_button = customtkinter.CTkButton(self.item_detail_frame,
+                                                        font=customtkinter.CTkFont(size=15), text="",
+                                                        command=self.edititem_event,width=50,
+                                                        height=30, image=self.edit_image, fg_color="transparent",
+                                                        text_color="black",
+                                                        hover_color=("gray70", "gray30"))
+
+
         self.item_purchase_lable = customtkinter.CTkLabel(self.item_detail_frame, textvariable=self.itempurchase,
                                                           font=customtkinter.CTkFont(size=12))
         self.item_purchase_lable.place(x=1000, y=110)
+
+
 
         self.item_gstin_lable = customtkinter.CTkLabel(self.item_transiction_frame, text="TRANSACTION",
                                                           font=customtkinter.CTkFont(size=14, ))
@@ -3807,6 +3852,20 @@ class App(customtkinter.CTk):
 
 
     # Party Frame Methods
+    def deleteparty(self):
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        gst = self.partygstin.get()
+        gstin=gst.replace("GSTIN : ","")
+        pname=self.partyname.get()
+        try:
+          cur.execute("delete from partydata where gstin=?", (gstin,))
+          con.commit()
+          messagebox.showinfo("Delete", f"{pname} Party Data Deleted Successfully", parent=self)
+          self.show()
+        except Exception as e :
+            messagebox.showerror("Error", f"Error due to : {str(e)}", parent=self)
+
     def show(self):
       con = sqlite3.connect(database=r'DataBase/ims.db')
       cur = con.cursor()
@@ -3844,7 +3903,7 @@ class App(customtkinter.CTk):
         cur = con.cursor()
         try:
             cur.execute(
-                "select partyname,phonenumber,emailid,recivebalence,billaddress,gstin from partydata where pid=?",
+                "select partyname,phonenumber,emailid,recivebalence,billaddress,gstin,paybalence from partydata where gstin=?",
                 (row[1],))
             rows = cur.fetchall()
             self.productTable.delete(*self.productTable.get_children())
@@ -3852,9 +3911,10 @@ class App(customtkinter.CTk):
                 self.partyname.set(row[0])
                 self.partynumber.set(f"Phone No. : {row[1]}")
                 self.partyemail.set(f"Email : {row[2]}")
-                self.partycrlimit.set(f"Receiving Amount : ₹{row[3]}")
+                self.partycrlimit.set(f"Receiving Amount : ₹ {row[3]}")
                 self.partyaddress.set(f"Address : {row[4]}")
                 self.partygstin.set(f"GSTIN : {row[5]}")
+                self.partypayamount.set(f"Pay Amount : ₹ {row[6]}")
                 self.show()
                 self.get_transiction_data()
                 self.patyclear()
@@ -3885,8 +3945,9 @@ class App(customtkinter.CTk):
                     partydatalist[16],
                 ))
             con.commit()
+            self.edit_party_button.place(x=1150, y=10)
         except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+            print("Error", f"Error due to : {str(ex)}")
     def add_amount(self, ev):
         f = self.transictionTable.focus()
         content = (self.transictionTable.item(f))
@@ -4000,6 +4061,19 @@ class App(customtkinter.CTk):
 
 
    # Item Frame methods
+    def deleteitem(self):
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        gst = self.itemhsn.get()
+        Hsn=gst.replace("HSN No. : ","")
+        iname=self.itemname.get()
+        try:
+          cur.execute("delete from itemdata where hsn=?", (Hsn,))
+          con.commit()
+          messagebox.showinfo("Delete", f"{iname} Item Data Deleted Successfully", parent=self)
+          self.itemshow()
+        except Exception as e :
+            messagebox.showerror("Error", f"Error due to : {str(e)}", parent=self)
     def itemshow(self):
       con = sqlite3.connect(database=r'DataBase/ims.db')
       cur = con.cursor()
@@ -4032,11 +4106,11 @@ class App(customtkinter.CTk):
             self.itemTable.delete(*self.itemTable.get_children())
             for row in rows:
                 self.itemname.set(row[0])
-                self.itemnumber.set(f"HSN No. : {row[1]}")
-                self.itememail.set(f"Item Code. : {row[2]}")
-                self.itemcrlimit.set(f"Tax Rate : {row[3]}")
-                self.itemaddress.set(f"Sale Price : ₹{row[4]}")
-                self.itemgstin.set(f"Wholesale Price : ₹{row[5]}")
+                self.itemhsn.set(f"HSN No. : {row[1]}")
+                self.itemcode.set(f"Item Code. : {row[2]}")
+                self.itemtax.set(f"Tax Rate : {row[3]}")
+                self.itemsaleprice.set(f"Sale Price : ₹{row[4]}")
+                self.itemwholesaleprice.set(f"Wholesale Price : ₹{row[5]}")
                 self.itempurchase.set(f"Purchase Price : ₹{row[6]}")
                 self.itemstock.set(f"In Stock : {row[7]}")
                 self.stoclprice(row[4],row[7],self.itemstockprice)
@@ -4071,8 +4145,9 @@ class App(customtkinter.CTk):
                     itemdatalist[19],
                 ))
             con.commit()
+            self.edit_item_button.place(x=1150, y=5)
         except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+            print("Error", f"Error due to : {str(ex)}")
     def itemsearch(self):
         select=self.item_search.get()
         ssk=select.replace("Name","itemname")
@@ -4101,11 +4176,11 @@ class App(customtkinter.CTk):
         self.Vark_item_searchtxt.set(""),
         self.itemshow()
     def add_itemamount(self, ev):
-        f = self.itemtransictionTable.focus()
-        content = (self.itemtransictionTable.item(f))
-        row = content['values']
-        invo = row[0]
         try:
+            f = self.itemtransictionTable.focus()
+            content = (self.itemtransictionTable.item(f))
+            row = content['values']
+            invo = row[0]
             con = sqlite3.connect(database=r'DataBase/ims.db')
             cur = con.cursor()
 
@@ -5157,21 +5232,6 @@ class App(customtkinter.CTk):
                 self.estimatee_sale_totalamount_list.append(rosw)
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-    # def calgetsaleestimatetotalamount(self):
-    #     self.estimate_sale_paidamount_mlist = []
-    #     self.estimate_sale_unpaidamount_mlist = []
-    #     self.estimate_sale_totalamount_mlist = []
-    #     self.getsaleestimatetotalamount()
-    #     for m in self.estimatee_sale_totalamount_list:
-    #         for k in m:
-    #          if k == "":
-    #              pass
-    #          else:
-    #            b=float(k)
-    #            self.sale_totalamount_mlist.append(b)
-    #     sumtotal = sum(self.sale_totalamount_mlist)
-    #     self.estimatee_sale_totalamount=f"₹{sumtotal}"
-    #     self.estimatee_sale_detail_total_amount_lable.configure(text=self.estimatee_sale_totalamount)
 
     # sale payment
     def salepaymentintrans(self):
@@ -5456,6 +5516,9 @@ class App(customtkinter.CTk):
         self.purches_pur_search.set("Select"),
         self.Var_pur_searchtxt.set(""),
         self.get_purchese_data()
+
+    def cancel_desktop_event(self):
+        app.destroy()
 
 
     # def calculate_growth_rate(initial_value, final_value):

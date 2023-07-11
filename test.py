@@ -117,44 +117,63 @@
 # # Print the selected file path
 # print("Selected File:", file_path)
 
-def wotgst(price,qty,tax,disc,total):
-    print(tax)
+# def wotgst(price,qty,tax,disc,total):
+#     print(tax)
+#
+#     if "0" in tax or "0.25" in tax or "3" in tax or "5" in tax or "12" in tax or "18" in tax or "28" in tax or "None" in tax:
+#         rtax = tax.replace("IGST@", "")
+#         rtax = rtax.replace("GST@", "")
+#         rtax = rtax.replace("GST@", "")
+#         ktax = rtax.replace("%", "")
+#         mtax = ktax.replace("None", "0")
+#         di = str(disc)
+#         ddm = di.replace("%", "")
+#         itemprice = float(price)
+#         totalpr = float(total)
+#         qtyy = int(qty)
+#         gsttax = float(mtax)
+#         disca = float(ddm)
+#
+#         wodec = totalpr - (totalpr * (100 / (100 + gsttax)))
+#         it = totalpr - wodec
+#         rit = it / qtyy
+#         rrit = round(rit, 2)
+#         print(rrit)
+#
+#         discountedprice = rrit * qty
+#         itemtotalrice = itemprice * qty
+#         if "%" in di:
+#             dicpricess = itemtotalrice * disca / 100
+#             dicprice = itemtotalrice - dicpricess
+#         else:
+#             dicprice = itemtotalrice - discountedprice
+#
+#         print(itemtotalrice)
+#         print(discountedprice)
+#         print(dicprice)
+#
+#         rwodec = round(wodec, 2)
+#         print(rwodec)
+#
+#         pwr = wodec / 2
+#         rpwr = round(pwr, 2)
+# wotgst(1000,2,"IGST@18","10%",2124)
 
-    if "0" in tax or "0.25" in tax or "3" in tax or "5" in tax or "12" in tax or "18" in tax or "28" in tax or "None" in tax:
-        rtax = tax.replace("IGST@", "")
-        rtax = rtax.replace("GST@", "")
-        rtax = rtax.replace("GST@", "")
-        ktax = rtax.replace("%", "")
-        mtax = ktax.replace("None", "0")
-        di = str(disc)
-        ddm = di.replace("%", "")
-        itemprice = float(price)
-        totalpr = float(total)
-        qtyy = int(qty)
-        gsttax = float(mtax)
-        disca = float(ddm)
+import re
 
-        wodec = totalpr - (totalpr * (100 / (100 + gsttax)))
-        it = totalpr - wodec
-        rit = it / qtyy
-        rrit = round(rit, 2)
-        print(rrit)
+def validate_gstin(gstin):
+    # Regular expression pattern for GSTIN validation
+    pattern = r'^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Za-z]{1}[Z]{1}[0-9A-Z]{1}$'
 
-        discountedprice = rrit * qty
-        itemtotalrice = itemprice * qty
-        if "%" in di:
-            dicpricess = itemtotalrice * disca / 100
-            dicprice = itemtotalrice - dicpricess
-        else:
-            dicprice = itemtotalrice - discountedprice
+    # Check if the GSTIN matches the pattern
+    if re.match(pattern, gstin):
+        return True
+    else:
+        return False
 
-        print(itemtotalrice)
-        print(discountedprice)
-        print(dicprice)
-
-        rwodec = round(wodec, 2)
-        print(rwodec)
-
-        pwr = wodec / 2
-        rpwr = round(pwr, 2)
-wotgst(1000,2,"IGST@18","10%",2124)
+# Test the function
+gstin = input("Enter a GSTIN number: ")
+if validate_gstin(gstin):
+    print("Valid GSTIN number")
+else:
+    print("Invalid GSTIN number")

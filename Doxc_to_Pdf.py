@@ -7,7 +7,7 @@ driver = webdriver.Chrome()
 driver.get("https://web.whatsapp.com")
 
 no="8830136942"
-filepath= "../invoices/Ruturaj_4562.pdf"
+filepath= "../GSTInvoices/Ruturaj_4562.pdf"
 sleep(30)
 # user = driver.find_element()
 

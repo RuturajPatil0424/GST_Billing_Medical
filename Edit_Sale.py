@@ -25,6 +25,31 @@ class saleClass(customtkinter.CTk):
         self.payamount = StringVar()
         self.reciveamount = StringVar()
         self.resultam = StringVar()
+        self.resultam = StringVar()
+        self.dtotalam = StringVar()
+        self.dreciveamount = StringVar()
+
+        self.pastqty1 = StringVar()
+        self.pastqty2 = StringVar()
+        self.pastqty3 = StringVar()
+        self.pastqty4 = StringVar()
+        self.pastqty5 = StringVar()
+        self.pastqty6 = StringVar()
+        self.pastqty7 = StringVar()
+        self.pastqty8 = StringVar()
+        self.pastqty9 = StringVar()
+        self.pastqty10 = StringVar()
+
+        self.fpastqty1 = StringVar()
+        self.fpastqty2 = StringVar()
+        self.fpastqty3 = StringVar()
+        self.fpastqty4 = StringVar()
+        self.fpastqty5 = StringVar()
+        self.fpastqty6 = StringVar()
+        self.fpastqty7 = StringVar()
+        self.fpastqty8 = StringVar()
+        self.fpastqty9 = StringVar()
+        self.fpastqty10 = StringVar()
 
         self.Saleleble = customtkinter.CTkLabel(self, text="Sale", font=customtkinter.CTkFont(size=25))
         self.Saleleble.place(x=20, y=40)
@@ -699,8 +724,8 @@ class saleClass(customtkinter.CTk):
 
 
     def add_party_event(self):
-        self.get_party_gstin()
-        self.get_amount()
+        # self.get_party_gstin()
+
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
@@ -820,8 +845,8 @@ class saleClass(customtkinter.CTk):
 
                     ))
                 con.commit()
-                messagebox.showinfo("Success", "supplier Addedd Successfully", parent=self)
-                self.add_amount()
+                messagebox.showinfo("Success", "Sale Updated Successfully", parent=self)
+                # self.add_amount()
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
     def add_amount(self):
@@ -961,12 +986,151 @@ class saleClass(customtkinter.CTk):
                     ))
                 con.commit()
                 # self.update_iqt()
+                self.getqqty()
+                self.getdataamount()
                 #self.invoice_genrator()
 
 
         except Exception as ex:
             print(ex)
             # messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+
+    # Party amount update
+    def get_final_total (self, input, output):
+      try:
+        inqty = float(input.get())
+
+        fffam=0
+        if float(output.get()) < float(inqty):
+            finalqty = float(inqty) - float(output.get())
+            ffin = float(finalqty)
+            fffam = ffin
+
+        elif float(output.get()) > float(inqty):
+            finalqty = float(output.get()) - float(inqty)
+            ffin =-float(finalqty)
+            fffam = ffin
+
+        return fffam
+
+      except Exception as e:
+         print(e)
+
+    def get_final_amount (self, input, output,total):
+      try:
+        inqty = float(input.get())
+        fffam=0
+        if float(output.get()) < float(inqty):
+            finalqty = float(inqty) - float(output.get())
+            ffin =float(total) - float(finalqty)
+            fffam = ffin
+
+        elif float(output.get()) > float(inqty):
+            finalqty = float(output.get()) - float(inqty)
+            ffin =float(total) + float(finalqty)
+            fffam = ffin
+
+        self.updatefinalam( self.gstin, fffam)
+
+      except Exception as e:
+         print(e)
+    def updatefinalam(self, name, amo):
+      if name.get() == "":
+            pass
+      else:
+       try:
+
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        item_name=name.get()
+        cur.execute("select recivebalence from partydata where gstin=?", (item_name,))
+        rows = cur.fetchall()
+        for row in rows:
+            for i in row:
+
+                resualt = float(i) - float(amo)
+
+                cur.execute(f"Update partydata set recivebalence=? where gstin={item_name}", (
+                  resualt,
+                ))
+                con.commit()
+       except Exception as e:
+          print(e)
+    def getdataamount(self):
+        totalammm=self.get_final_total(self.Total_entry, self.dtotalam)
+        self.get_final_amount(self.Received_entry,self.dreciveamount,totalammm)
+
+
+
+    def get_final_qty(self, entery, input, output):
+      try:
+        if entery.get() == "":
+            output.set("")
+        inqty = int(entery.get())
+        if int(input.get()) < int(inqty):
+            finalqty = int(inqty) - int(input.get())
+            output.set(finalqty)
+        elif int(input.get()) > int(inqty):
+            finalqty = int(input.get()) - int(inqty)
+            ffin=-int(finalqty)
+            output.set(ffin)
+      except Exception as e:
+         print(e)
+    def updateqty(self,name,qtyy):
+      if name.get() == "":
+            pass
+      else:
+       try:
+
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        item_name=name.get()
+        cur.execute("select openqty from itemdata where itemname=?", (item_name,))
+        rows = cur.fetchall()
+        for row in rows:
+            for i in row:
+
+                resualt = int(i) - int(qtyy.get())
+
+                cur.execute("select pid from itemdata where itemname=?", (item_name,))
+                pidds = cur.fetchall()
+                for pqid in pidds:
+                    for p in pqid:
+                     pidd=p
+
+                     cur.execute("Select pid from itemdata where pid=?", (pidd,))
+                     row = cur.fetchone()
+                     cur.execute("Update itemdata set openqty=? where pid=?", (
+                         resualt,
+                         p,
+                     ))
+                     con.commit()
+       except Exception as e:
+          print(e)
+    def qqty(self):
+        self.get_final_qty(self.no1_qty_entry, self.pastqty1, self.fpastqty1)
+        self.get_final_qty(self.no2_qty_entry, self.pastqty2, self.fpastqty2)
+        self.get_final_qty(self.no3_qty_entry, self.pastqty3, self.fpastqty3)
+        self.get_final_qty(self.no4_qty_entry, self.pastqty4, self.fpastqty4)
+        self.get_final_qty(self.no5_qty_entry, self.pastqty5, self.fpastqty5)
+        self.get_final_qty(self.no6_qty_entry, self.pastqty6, self.fpastqty6)
+        self.get_final_qty(self.no7_qty_entry, self.pastqty7, self.fpastqty7)
+        self.get_final_qty(self.no8_qty_entry, self.pastqty8, self.fpastqty8)
+        self.get_final_qty(self.no9_qty_entry, self.pastqty9, self.fpastqty9)
+        self.get_final_qty(self.no10_qty_entry, self.pastqty10, self.fpastqty10)
+    def getqqty(self):
+        self.qqty()
+
+        self.updateqty(self.no1_item_entry, self.fpastqty1)
+        self.updateqty(self.no2_item_entry, self.fpastqty2)
+        self.updateqty(self.no3_item_entry, self.fpastqty3)
+        self.updateqty(self.no4_item_entry, self.fpastqty4)
+        self.updateqty(self.no5_item_entry, self.fpastqty5)
+        self.updateqty(self.no6_item_entry, self.fpastqty6)
+        self.updateqty(self.no7_item_entry, self.fpastqty7)
+        self.updateqty(self.no8_item_entry, self.fpastqty8)
+        self.updateqty(self.no9_item_entry, self.fpastqty9)
+        self.updateqty(self.no10_item_entry, self.fpastqty10)
     def invoice_event(self):
         call(["python", "Sale_Invoice.py"])
     def savedata(self):
@@ -995,7 +1159,7 @@ class saleClass(customtkinter.CTk):
 
 
         except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+            print("Error", f"Error due to : {str(ex)}")
 
     def get_party_gstin(self):
 
@@ -1015,7 +1179,7 @@ class saleClass(customtkinter.CTk):
 
 
          except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+            print("Error", f"Error due to : {str(ex)}")
 
          self.get_party_payamount()
          self.get_party_reciveamount()
@@ -1040,7 +1204,7 @@ class saleClass(customtkinter.CTk):
 
 
          except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+            print("Error", f"Error due to : {str(ex)}")
 
     def get_party_payamount(self):
 
@@ -1061,7 +1225,7 @@ class saleClass(customtkinter.CTk):
 
 
          except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+            print("Error", f"Error due to : {str(ex)}")
 
     def get_party_reciveamount(self):
 
@@ -1081,7 +1245,7 @@ class saleClass(customtkinter.CTk):
                     self.payamount.set(i)
 
          except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+            print("Error", f"Error due to : {str(ex)}")
 
     def get_party_number(self):
 
@@ -1102,7 +1266,7 @@ class saleClass(customtkinter.CTk):
 
 
           except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+            print("Error", f"Error due to : {str(ex)}")
 
     def get_item_price(self, name, seto):
         if name == "":
@@ -1122,7 +1286,7 @@ class saleClass(customtkinter.CTk):
                         seto.set(i)
 
             except Exception as ex:
-                messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+                print("Error", f"Error due to : {str(ex)}")
 
     def get_amount(self):
         # pay = int(self.payamount.get())
@@ -1154,7 +1318,7 @@ class saleClass(customtkinter.CTk):
                     self.Item_unit_List.append(i)
 
         except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+            print("Error", f"Error due to : {str(ex)}")
 
 
 
@@ -1245,8 +1409,7 @@ class saleClass(customtkinter.CTk):
                     qaunty.set("0")
                 else:
                     qaunty.set(stock)
-                    messagebox.showerror("Aleart", f"Product is in stock {stock} and you want to sell qty is {qty}!",
-                                         parent=self)
+                    print("Aleart", f"Product is in stock {stock} and you want to sell qty is {qty}!")
                 self.qtty()
         except Exception as e:
             print(e)
@@ -1326,7 +1489,7 @@ class saleClass(customtkinter.CTk):
 
 
         except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+            print("Error", f"Error due to : {str(ex)}")
 
     def get_item_unit(self, iname, iseto):
       if iname == "":
@@ -1348,7 +1511,7 @@ class saleClass(customtkinter.CTk):
 
 
         except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+            print("Error", f"Error due to : {str(ex)}")
 
     def itemgstbill(self, qty, price, disc, discamo, amount):
       try:
@@ -1639,7 +1802,7 @@ class saleClass(customtkinter.CTk):
                     self.ItemList.append(i)
 
         except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+            print("Error", f"Error due to : {str(ex)}")
 
     def itemlist_update1(self,event,*args):
         self.update_combobox(self.no1_item_entry,self.itm1)
@@ -1680,7 +1843,7 @@ class saleClass(customtkinter.CTk):
             entery.configure(values=self.ItemList)
             self.get_item_name()
         except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+            print("Error", f"Error due to : {str(ex)}")
 
     def updateparty(self,*args):
         self.Partynames.clear()
@@ -1704,7 +1867,7 @@ class saleClass(customtkinter.CTk):
             self.partyname_entry.configure(values=self.Partynames)
 
         except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+            print("Error", f"Error due to : {str(ex)}")
 
     def itm1(self, event):
         self.get_item_qty(self.no1_item_entry.get(), self.iq1)
@@ -1848,54 +2011,6 @@ class saleClass(customtkinter.CTk):
         self.totaldesam()
         # self.totaltaxam()
 
-    # def tax(self,event):
-    #     self.itemtable()
-    #     self.finalamount()
-    #     self.totalqty()
-    #     self.totaldesam()
-    #     self.totaltaxam()
-
-    # def invoice_genrator(self):
-    #
-    #     con = sqlite3.connect(database=r'DataBase/ims.db')
-    #     cur = con.cursor()
-    #     try:
-    #
-    #             cur.execute("select invoice from invosalenon where no=1",)
-    #             rows = cur.fetchall()
-    #             
-    #             for row in rows:
-    #                 for i in row:
-    #                     invoice_zero=6-len(i)
-    #                     self.incre=int(i)+1
-    #                     a=1
-    #                     mm = "0"
-    #                     while a<invoice_zero:
-    #                         mm=mm+"0"
-    #                         a+=1
-    #                     final=f"{mm}{self.incre}"
-    #                     strfinal=str(final)
-    #                     self.invo.set(strfinal)
-    #                     self.invoice_entry.configure(textvariable=self.invo)
-    #
-    #     except Exception as ex:
-    #         messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
-    # def invoice_updator(self):
-    #     p = 1
-    #     con = sqlite3.connect(database=r'DataBase/ims.db')
-    #     cur = con.cursor()
-    #     try:
-    #
-    #         cur.execute("Select no from invosalenon where no=?", (p,))
-    #         row = cur.fetchone()
-    #         cur.execute("Update invosalenon set invoice=? where no=?", (
-    #             self.incre,
-    #             p,
-    #         ))
-    #         con.commit()
-    #     except Exception as ex:
-    #         messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
     def update_item_qty(self, name, seto):
         if name == "":
@@ -1929,7 +2044,7 @@ class saleClass(customtkinter.CTk):
                               con.commit()
 
           except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+            print("Error", f"Error due to : {str(ex)}")
 
     def update_iqt(self):
         self.update_item_qty(self.no1_item_entry.get(), self.iq1)
@@ -1963,7 +2078,7 @@ class saleClass(customtkinter.CTk):
                     customtkinter.set_widget_scaling(new_scaling_float)
 
         except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+            print("Error", f"Error due to : {str(ex)}")
 
     def get_data(self):
         items_datalist = []
@@ -2088,7 +2203,7 @@ class saleClass(customtkinter.CTk):
 
 
         except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+            print("Error", f"Error due to : {str(ex)}")
 
     def refrance(self,event):
         if self.Payment_type_entry.get() == "Cheque":
@@ -2254,7 +2369,7 @@ class saleClass(customtkinter.CTk):
                     seto.set(i)
 
           except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+            print("Error", f"Error due to : {str(ex)}")
 
     def get_item_unitdata_name(self, name, seto,box):
         seto.clear()

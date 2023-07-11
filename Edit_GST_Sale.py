@@ -803,7 +803,6 @@ class saleClass(customtkinter.CTk):
 
         self.get_party_gstin()
         self.get_party_number()
-
         self.get_data()
         self.calP_Price()
         self.qtty()
@@ -842,8 +841,7 @@ class saleClass(customtkinter.CTk):
 
 
     def add_party_event(self):
-        self.get_party_gstin()
-
+        # self.get_party_gstin()
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         try:
@@ -860,7 +858,6 @@ class saleClass(customtkinter.CTk):
             elif self.no1_item_entry.get() == "None":
                 print("Please select at list one item!")
             else:
-                cur.execute(f"Select * from gstsale where gstin={self.gstin.get()}")
 
                 if self.cash_switch.get() == 1:
                     crstete = "Credit"
@@ -994,9 +991,7 @@ class saleClass(customtkinter.CTk):
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
 
-        cur.execute(f"Select recivebalence from partydata where gstin={self.gstin_entry.get()}")
-        cur.execute(
-            "Update partydata set recivebalence=?",(
+        cur.execute(f"Update partydata set recivebalence=? where gstin={self.gstin_entry.get()}",(
              self.resultam.get(),
             ))
         con.commit()
@@ -1024,7 +1019,6 @@ class saleClass(customtkinter.CTk):
             elif self.no1_item_entry.get() == "None":
                 messagebox.showerror("Error", "Please select at list one item!", parent=self)
             else:
-                cur.execute("Select * from editinvogstsale where sid=1")
 
                 if self.cash_switch.get() == 1:
                     crstete = "Credit"
@@ -1221,7 +1215,7 @@ class saleClass(customtkinter.CTk):
          cur = con.cursor()
          try:
 
-            cur.execute("select state from partydata where partyname=?", (self.partyname_entry.get(),))
+            cur.execute("select state from partydata where gstin=?", (self.gstin.get(),))
             rows = cur.fetchall()
 
             for row in rows:
@@ -1243,7 +1237,7 @@ class saleClass(customtkinter.CTk):
          cur = con.cursor()
          try:
 
-            cur.execute("select recivebalence from partydata where partyname=?", (self.partyname_entry.get(),))
+            cur.execute("select recivebalence from partydata where gstin=?", (self.gstin.get(),))
             rows = cur.fetchall()
             # self.productTable.delete(*self.productTable.get_children())
 
@@ -1264,7 +1258,7 @@ class saleClass(customtkinter.CTk):
          cur = con.cursor()
          try:
 
-            cur.execute("select paybalence from partydata where partyname=?", (self.partyname_entry.get(),))
+            cur.execute("select paybalence from partydata where gstin=?", (self.gstin.get(),))
             rows = cur.fetchall()
 
             for row in rows:
@@ -1282,7 +1276,7 @@ class saleClass(customtkinter.CTk):
           cur = con.cursor()
           try:
 
-            cur.execute("select phonenumber from partydata where partyname=?", (self.partyname_entry.get(),))
+            cur.execute("select phonenumber from partydata where gstin=?", (self.gstin.get(),))
             rows = cur.fetchall()
             # self.productTable.delete(*self.productTable.get_children())
 
@@ -1432,6 +1426,7 @@ class saleClass(customtkinter.CTk):
             finalqty = float(output.get()) - float(inqty)
             ffin =-float(finalqty)
             fffam = ffin
+        print(fffam)
 
         return fffam
 
@@ -1478,7 +1473,7 @@ class saleClass(customtkinter.CTk):
             for i in row:
 
                 resualt = float(i) - float(amo)
-
+                print(resualt)
                 cur.execute(f"Update partydata set recivebalence=? where gstin={item_name}", (
                   resualt,
                 ))
@@ -2408,47 +2403,7 @@ class saleClass(customtkinter.CTk):
         self.totaldesam()
         self.totaltaxam()
 
-    # def invoice_genrator(self):
-    #
-    #     con = sqlite3.connect(database=r'DataBase/ims.db')
-    #     cur = con.cursor()
-    #     try:
-    #
-    #             cur.execute("select invoice from invo where no=1",)
-    #             rows = cur.fetchall()
-    #             # self.productTable.delete(*self.productTable.get_children())
-    #             for row in rows:
-    #                 for i in row:
-    #                     invoice_zero=6-len(i)
-    #                     self.incre=int(i)+1
-    #                     a=1
-    #                     mm = "0"
-    #                     while a<invoice_zero:
-    #                         mm=mm+"0"
-    #                         a+=1
-    #                     final=f"{mm}{self.incre}"
-    #                     strfinal=str(final)
-    #                     self.invo.set(strfinal)
-    #                     self.invoice_entry.configure(textvariable=self.invo)
-    #
-    #     except Exception as ex:
-    #         messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
-    # def invoice_updator(self):
-    #     p = 1
-    #     con = sqlite3.connect(database=r'DataBase/ims.db')
-    #     cur = con.cursor()
-    #     try:
-    #
-    #         cur.execute("Select no from invo where no=?", (p,))
-    #         row = cur.fetchone()
-    #         cur.execute("Update invo set invoice=? where no=?", (
-    #             self.incre,
-    #             p,
-    #         ))
-    #         con.commit()
-    #     except Exception as ex:
-    #         messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
     def update_item_qty(self, name, seto):
         if name == "":

@@ -1,8 +1,9 @@
 from tkinter import StringVar
 from tkinter import messagebox, END
 import customtkinter
-from tkcalendar import Calendar, DateEntry
+from tkcalendar import DateEntry
 import sqlite3
+import re
 class supplierClass(customtkinter.CTk):
 
 
@@ -29,6 +30,10 @@ class supplierClass(customtkinter.CTk):
         self.party_add2Var = StringVar()
         self.party_add3Var = StringVar()
 
+        self.paybalence = 0
+        self.recivebalence = 0
+        self.customlimit = 0
+
 
         self.addpartleble = customtkinter.CTkLabel(self, text="Edit party_",font=customtkinter.CTkFont(size=25))
         self.addpartleble.place(x=320,y=40)
@@ -53,6 +58,10 @@ class supplierClass(customtkinter.CTk):
 
         self.savebtn = customtkinter.CTkButton(self, command=self.add_party__event, width=80, text="Update", font=customtkinter.CTkFont(size=16))
         self.savebtn.place(x=680,y=560)
+
+        self.cancelbtn = customtkinter.CTkButton(self, command=self.cancel_party_event, width=80, text="Cancel",
+                                                 font=customtkinter.CTkFont(size=16))
+        self.cancelbtn.place(x=590, y=560)
 
 
         #todo: create tabview
@@ -106,7 +115,7 @@ class supplierClass(customtkinter.CTk):
 
         self.party_recivebalance_lable = customtkinter.CTkLabel(self.tabview.tab("Credit & Balance"), width=200,
                                                                height=40,
-                                                               text="Recive  Balance :")
+                                                               text="Receive  Balance :")
         self.party_recivebalance_lable.place(x=240, y=10)
 
         self.recivebalance_entry = customtkinter.CTkEntry(self.tabview.tab("Credit & Balance"), width=200, height=40,
@@ -121,7 +130,7 @@ class supplierClass(customtkinter.CTk):
         self.date_entry = DateEntry(self.tabview.tab("Credit & Balance"), width=10, height=40, selectmode="day",date_pattern="dd/mm/y")
         self.date_entry.place(x=120,y=110)
 
-        self.date_lable = customtkinter.CTkLabel(self.tabview.tab("Credit & Balance"), width=10, height=40, text="As Of Date :")
+        self.date_lable = customtkinter.CTkLabel(self.tabview.tab("Credit & Balance"), width=10, height=40, text="As Of Date  :")
         self.date_lable.place(x=40, y=100)
 
         self.customlimit_entry = customtkinter.CTkEntry(self.tabview.tab("Credit & Balance"), width=200, height=40, textvariable=self.party_customlismitVar)
@@ -145,9 +154,10 @@ class supplierClass(customtkinter.CTk):
         self.edit_party__event()
 
     def edit_party__event(self):
-        party_datalist=[]
+        party_datalist = []
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
+
         try:
 
                 cur.execute("select pid,partyname,gstin,phonenumber,gsttype,state,emailid,billaddress,shipaddress,paybalence,recivebalence,date,creditlim,add1,add2,add3,add4 from editpartydata where pid=?",(1,))
@@ -155,7 +165,6 @@ class supplierClass(customtkinter.CTk):
                 for row in rows:
                     for r in row:
                       party_datalist.append(r)
-                      print(r)
 
 
                 self.party_nameVar.set(party_datalist[1])
@@ -182,19 +191,39 @@ class supplierClass(customtkinter.CTk):
             messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=self)
 
     def add_party__event(self):
-        print(self.state_menu.get())
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
-        # try:
-        if self.gstn_entry.get() == "":
-                messagebox.showerror("Error" , "GSTIN must be required" , parent=self)
-        else:
-                cur.execute("Select * from partydata where gstin=?", (self.gstn_entry.get(),))
-                row = cur.fetchone()
-                if row == None:
-                    messagebox.showerror("Error", "Invalid Party GSTIN", parent=self)
-                else :
-                    cur.execute(f"Update partydata set partyname=?,gstin=?,phonenumber=?,gsttype=?,state=?,emailid=?,billaddress=?,shipaddress=?,paybalence=?,recivebalence=?,date=?,creditlim=?,add1=?,add2=?,add3=? where gstin={self.gstn_entry.get()}",(
+        gstinnoo=self.gstn_entry.get()
+        shipadd = self.shipingadd_entry.get('1.0', END)
+        billadd = self.billingaddress_entry.get('1.0', END)
+        try:
+         if self.party_name_entry.get() == "":
+            messagebox.showerror("Error", "Party Name must be required!", parent=self)
+         elif gstinnoo == "":
+            messagebox.showerror("Error", "GSTIN must be required!", parent=self)
+         elif len(gstinnoo) != 15:
+            messagebox.showerror("Error", "Please enter valid GSTIN!", parent=self)
+         elif self.validate_gstin(gstinnoo) == False:
+            messagebox.showerror("Error", "Please enter valid GSTIN!", parent=self)
+         elif self.number_entry.get() == "":
+            messagebox.showerror("Error", "Phone No. must be required!", parent=self)
+         elif len(self.number_entry.get()) != 10:
+            messagebox.showerror("Error", "Please enter valid Phone No.!", parent=self)
+         elif self.state_menu.get() == "None":
+            messagebox.showerror("Error", "Please select State!", parent=self)
+         elif self.email_entry.get() == "":
+            messagebox.showerror("Error", "Email ID must be required!", parent=self)
+         elif ".com" in self.email_entry.get():
+            messagebox.showerror("Error", "Please enter valid Email ID!", parent=self)
+         elif billadd == "":
+            messagebox.showerror("Error", "Billing Address must be required!", parent=self)
+         elif shipadd == "":
+             messagebox.showerror("Error", "Shipping Address must be required!", parent=self)
+         else:
+
+                # cur.execute("Select * from partydata where gstin=?", (self.gstn_entry.get(),))
+                # row = cur.fetchone()
+                cur.execute(f"Update partydata set partyname=?,gstin=?,phonenumber=?,gsttype=?,state=?,emailid=?,billaddress=?,shipaddress=?,paybalence=?,recivebalence=?,date=?,creditlim=?,add1=?,add2=?,add3=? where gstin={self.gstn_entry.get()}",(
 
                         self.party_name_entry.get(),
                         self.gstn_entry.get(),
@@ -212,12 +241,36 @@ class supplierClass(customtkinter.CTk):
                         self.add2_entry.get(),
                         self.add3_entry.get(),
 
+                ))
+                con.commit()
+                messagebox.showinfo("Success","Party Data Updated Successfully",parent=self)
+        except Exception as ex:
+             messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=self)
 
-                    ))
-                    con.commit()
-                    messagebox.showinfo("Success","supplier Addedd Successfully",parent=self)
-        # except Exception as ex:
-        #     messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=self)
+    def validate_email(self,email):
+        # Regular expression pattern for email validation
+        pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+
+        # Check if the email matches the pattern
+        if re.match(pattern, email):
+            return True
+        else:
+            return False
+
+
+    def validate_gstin(self,gstin):
+        # Regular expression pattern for GSTIN validation
+        pattern = r'^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Za-z]{1}[Z]{1}[0-9A-Z]{1}$'
+
+        # Check if the GSTIN matches the pattern
+        if re.match(pattern, gstin):
+            return True
+        else:
+            return False
+
+
+    def cancel_party_event(self):
+        app.destroy()
 
     def get_appearance_mode_event(self):
         con = sqlite3.connect(database=r'DataBase/ims.db')
