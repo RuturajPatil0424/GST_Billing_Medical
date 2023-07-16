@@ -1033,6 +1033,7 @@ class saleClass(customtkinter.CTk):
         dbam = float(dbrecivedam.get())
         total = float(totala)
         dbtotal = float(self.dtotalam.get())
+        cktptalam = float(self.Total_entry.get())
         fffam=0
         print("input")
         print(recivedam.get())
@@ -1040,42 +1041,45 @@ class saleClass(customtkinter.CTk):
         print(dbrecivedam.get())
         print("Total")
         print(total)
+        print("Ck Total")
+        print(cktptalam)
         tota = str(total)
         totalam = tota.replace("-", "")
         totalom = float(totalam)
         if dbam < ream:
-            if totalom < dbtotal:
+            if cktptalam < dbtotal:
               print("incresed")
               finalqty = ream - dbam
-              self.subupdatefinalam(self.phonenumber_entry,totalam ,finalqty,1)
-            elif totalom > dbtotal:
+              self.subupdatefinalam(self.phonenumber_entry,totalom ,finalqty,1)
+            elif cktptalam > dbtotal:
                 print("incresed")
                 finalqty = ream - dbam
-                self.subupdatefinalam(self.phonenumber_entry,totalam, finalqty,2)
-            elif totalom == dbtotal:
-                finalqty = dbam
-                self.subupdatefinalam(self.phonenumber_entry, totalam, finalqty, 5)
+                self.subupdatefinalam(self.phonenumber_entry,totalom, finalqty,2)
+            elif cktptalam == dbtotal:
+                finalqty = ream - dbam
+                self.subupdatefinalam(self.phonenumber_entry, totalom, finalqty, 5)
         elif dbam > ream:
-          if totalom < dbtotal:
+          if cktptalam < dbtotal:
               print("incresed")
               finalqty = dbam - ream
-              self.subupdatefinalam(self.phonenumber_entry,totalam,finalqty,3)
+              print(finalqty)
+              self.subupdatefinalam(self.phonenumber_entry,totalom,finalqty,3)
 
-          elif totalom > dbtotal:
+          elif cktptalam > dbtotal:
               print("decresed")
               finalqty = dbam - ream
-              self.subupdatefinalam(self.phonenumber_entry, totalam, finalqty, 4)
-          elif totalom == dbtotal:
-              finalqty = dbam
-              self.subupdatefinalam(self.phonenumber_entry, totalam, finalqty, 6)
+              self.subupdatefinalam(self.phonenumber_entry, totalom, finalqty, 4)
+          elif cktptalam == dbtotal:
+              finalqty = dbam - ream
+              self.subupdatefinalam(self.phonenumber_entry, totalom, finalqty, 6)
         elif dbam == ream:
             finalqty=0
-            if totalom < dbtotal:
-                self.subupdatefinalam(self.phonenumber_entry, totalam, finalqty, 7)
-            elif totalom > dbtotal:
-                self.subupdatefinalam(self.phonenumber_entry, totalam, finalqty, 8)
-            elif totalom == dbtotal:
-                self.subupdatefinalam(self.phonenumber_entry, totalam, finalqty, 9)
+            if cktptalam < dbtotal:
+                self.subupdatefinalam(self.phonenumber_entry, totalom, finalqty, 7)
+            elif cktptalam > dbtotal:
+                self.subupdatefinalam(self.phonenumber_entry, totalom, finalqty, 8)
+            elif cktptalam == dbtotal:
+                self.subupdatefinalam(self.phonenumber_entry, totalom, finalqty, 9)
 
         # self.updatefinalam( self.phonenumber_entry, fffam)
 
@@ -1119,54 +1123,64 @@ class saleClass(customtkinter.CTk):
             for i in row:
                 iam=float(i)
         print(iam)
+        print(subamo)
+        print(recived)
         if type == 1:
+                print(1)
                 decresdamo = iam - float(subamo)
-                reciveamodec = float(decresdamo) - float(recived)
+                reciveamodec =int( float(decresdamo) - float(recived))
                 print("sub enterd")
                 print(decresdamo)
                 print(reciveamodec)
                 print("emd")
         elif type == 2:
+                print(2)
                 decresdamo = iam + float(subamo)
-                reciveamodec = float(decresdamo) - float(recived)
+                reciveamodec =int( float(decresdamo) - float(recived))
                 print("sub enterd")
                 print(decresdamo)
                 print(reciveamodec)
                 print("emd")
         elif type == 3:
+                    print(3)
                     decresdamo = iam - float(subamo)
-                    reciveamodec = float(decresdamo) + float(recived)
+                    reciveamodec =int( float(decresdamo) + float(recived))
                     print("sub enterd")
                     print(decresdamo)
                     print(reciveamodec)
                     print("emd")
         elif type == 4:
-                    reciveamodec = (iam + float(subamo)) + float(recived)
+                    print(4)
+                    reciveamodec =int( (iam + float(subamo)) + float(recived))
                     # reciveamodec = float(decresdamo) + float(recived)
                     print("sub enterd")
                     print(reciveamodec)
                     print("emd")
         elif type == 5:
-                    reciveamodec = iam - float(recived)
+                    print(5)
+                    reciveamodec =int( iam - float(recived))
                     print("sub enterd")
                     print(reciveamodec)
                     print("emd")
 
         elif type == 6:
-                    reciveamodec = iam + float(recived)
+                    print(6)
+                    reciveamodec =int( iam + float(recived))
                     print("sub enterd")
                     print(reciveamodec)
                     print("emd")
         elif type == 7:
-                    reciveamodec = iam - float(subamo)
+                    print(7)
+                    reciveamodec =int( iam - float(subamo))
                     print("sub enterd")
         elif type == 8:
-                    reciveamodec = iam + float(subamo)
+                    print(8)
+                    reciveamodec =int( iam + float(subamo))
                     print("sub enterd")
         elif type == 9:
-                    reciveamodec = iam
+                    print(9)
+                    reciveamodec = int(iam)
                     print("sub enterd")
-
 
         cur.execute(f"Update partydata set recivebalence=? where phonenumber={phone_no}", (
           reciveamodec,
@@ -1199,7 +1213,6 @@ class saleClass(customtkinter.CTk):
             pass
       else:
        try:
-
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         item_name=name.get()
@@ -1210,19 +1223,18 @@ class saleClass(customtkinter.CTk):
 
                 resualt = int(i) - int(qtyy.get())
 
-                cur.execute("select pid from itemdata where itemname=?", (item_name,))
-                pidds = cur.fetchall()
-                for pqid in pidds:
-                    for p in pqid:
-                     pidd=p
+        # cur.execute("select pid from itemdata where itemname=?", (item_name,))
+        # pidds = cur.fetchall()
+        # for pqid in pidds:
+        #     for p in pqid:
+        #       pidd=p
 
-                     cur.execute("Select pid from itemdata where pid=?", (pidd,))
-                     row = cur.fetchone()
-                     cur.execute("Update itemdata set openqty=? where pid=?", (
-                         resualt,
-                         p,
-                     ))
-                     con.commit()
+        # cur.execute("Select pid from itemdata where itemname=?", (pidd,))
+        # row = cur.fetchone()
+        cur.execute(f"Update itemdata set openqty=? where itemname={item_name}", (
+          resualt,
+        ))
+        con.commit()
        except Exception as e:
           print(e)
     def qqty(self):
