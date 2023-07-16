@@ -1415,7 +1415,9 @@ class saleClass(customtkinter.CTk):
     def get_final_total (self, input, output):
       try:
         inqty = float(input.get())
-
+        print("getfinal")
+        print(input)
+        print(output)
         fffam=0
         if float(output.get()) < float(inqty):
             finalqty = float(inqty) - float(output.get())

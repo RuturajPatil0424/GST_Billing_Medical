@@ -30,6 +30,10 @@ class supplierClass(customtkinter.CTk):
         self.party_add2Var = StringVar()
         self.party_add3Var = StringVar()
 
+        self.ckpname=StringVar()
+        self.ckpnumber=StringVar()
+        self.ckpgstin=StringVar()
+
         self.paybalence = 0
         self.recivebalence = 0
         self.customlimit = 0
@@ -168,8 +172,11 @@ class supplierClass(customtkinter.CTk):
 
 
                 self.party_nameVar.set(party_datalist[1])
+                self.ckpname.set(party_datalist[1])
                 self.party_gstinVar.set(party_datalist[2])
+                self.ckpgstin.set(party_datalist[2])
                 self.party_noVar.set(party_datalist[3])
+                self.ckpnumber.set(party_datalist[3])
                 self.party_gsttypeVar.insert(0,party_datalist[4])
                 self.gsttype_menu.configure(values=self.party_gsttypeVar)
                 self.gsttype_menu.set(party_datalist[4])
@@ -185,6 +192,10 @@ class supplierClass(customtkinter.CTk):
                 self.party_add1Var.set(party_datalist[12])
                 self.party_add2Var.set(party_datalist[13])
                 self.party_add3Var.set(party_datalist[14])
+
+
+
+
 
 
         except Exception as ex:
@@ -213,39 +224,73 @@ class supplierClass(customtkinter.CTk):
             messagebox.showerror("Error", "Please select State!", parent=self)
          elif self.email_entry.get() == "":
             messagebox.showerror("Error", "Email ID must be required!", parent=self)
-         elif ".com" in self.email_entry.get():
+         elif self.validate_email(self.email_entry.get()) == False:
             messagebox.showerror("Error", "Please enter valid Email ID!", parent=self)
          elif billadd == "":
             messagebox.showerror("Error", "Billing Address must be required!", parent=self)
          elif shipadd == "":
              messagebox.showerror("Error", "Shipping Address must be required!", parent=self)
+         elif self.party_name_entry.get() != self.ckpname.get():
+             cur.execute("Select * from partydata where gstin=?", (self.gstn_entry.get(),))
+             row = cur.fetchone()
+             if row != None:
+               messagebox.showerror("Error", "This GSTIN no. already assigned, try different", parent=self)
+             else:
+                 self.updatedata()
+         elif self.party_noVar.get() != self.ckpnumber.get():
+             cur.execute("Select * from partydata where phonenumber=?", (self.number_entry.get(),))
+             rowf = cur.fetchone()
+             if rowf != None:
+                 messagebox.showerror("Error", "This Phone no. already assigned, try different", parent=self)
+             else:
+                 self.updatedata()
+
+         elif self.party_gstinVar.get() != self.ckpgstin.get():
+             cur.execute("Select * from partydata where partyname=?", (self.party_name_entry.get(),))
+             rowm = cur.fetchone()
+             if rowm != None:
+                 messagebox.showerror("Error", "This Party Name is already assigned, try different", parent=self)
+             else:
+                 self.updatedata()
+
          else:
-
-                # cur.execute("Select * from partydata where gstin=?", (self.gstn_entry.get(),))
+                self.updatedata()
+                # print(self.gstn_entry.get())
+                # cur.execute("Select * from partydata where phonenumber=?", (self.number_entry.get(),))
                 # row = cur.fetchone()
-                cur.execute(f"Update partydata set partyname=?,gstin=?,phonenumber=?,gsttype=?,state=?,emailid=?,billaddress=?,shipaddress=?,paybalence=?,recivebalence=?,date=?,creditlim=?,add1=?,add2=?,add3=? where gstin={self.gstn_entry.get()}",(
-
-                        self.party_name_entry.get(),
-                        self.gstn_entry.get(),
-                        self.number_entry.get(),
-                        self.gsttype_menu.get(),
-                        self.state_menu.get(),
-                        self.email_entry.get(),
-                        self.billingaddress_entry.get('1.0',END),
-                        self.shipingadd_entry.get('1.0',END),
-                        self.opingbalance_entry.get(),
-                        self.recivebalance_entry.get(),
-                        self.date_entry.get(),
-                        self.customlimit_entry.get(),
-                        self.add1_entry.get(),
-                        self.add2_entry.get(),
-                        self.add3_entry.get(),
-
-                ))
-                con.commit()
-                messagebox.showinfo("Success","Party Data Updated Successfully",parent=self)
         except Exception as ex:
              messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=self)
+
+    def updatedata(self):
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+            cur.execute(
+                f"Update partydata set partyname=?,gstin=?,phonenumber=?,gsttype=?,state=?,emailid=?,billaddress=?,shipaddress=?,paybalence=?,recivebalence=?,date=?,creditlim=?,add1=?,add2=?,add3=? where phonenumber={self.number_entry.get()}",
+                (
+
+                    self.party_name_entry.get(),
+                    self.gstn_entry.get(),
+                    self.number_entry.get(),
+                    self.gsttype_menu.get(),
+                    self.state_menu.get(),
+                    self.email_entry.get(),
+                    self.billingaddress_entry.get('1.0', END),
+                    self.shipingadd_entry.get('1.0', END),
+                    self.opingbalance_entry.get(),
+                    self.recivebalance_entry.get(),
+                    self.date_entry.get(),
+                    self.customlimit_entry.get(),
+                    self.add1_entry.get(),
+                    self.add2_entry.get(),
+                    self.add3_entry.get(),
+
+                ))
+            con.commit()
+            messagebox.showinfo("Success", "Party Data Updated Successfully", parent=self)
+        except Exception as e:
+            print(e)
+
 
     def validate_email(self,email):
         # Regular expression pattern for email validation

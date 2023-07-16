@@ -25,7 +25,7 @@ class saleClass(customtkinter.CTk):
         self.payamount = StringVar()
         self.reciveamount = StringVar()
         self.resultam = StringVar()
-        self.resultam = StringVar()
+        self.resultamm = StringVar()
         self.dtotalam = StringVar()
         self.dreciveamount = StringVar()
 
@@ -57,10 +57,10 @@ class saleClass(customtkinter.CTk):
         self.gstinleble = customtkinter.CTkLabel(self, text="GSTIN : ", font=customtkinter.CTkFont(size=15))
         self.gstinleble.place(x=650, y=125)
 
-        self.gstin_entry = customtkinter.CTkEntry(self, width=120, height=40, textvariable=self.gstin)
+        self.gstin_entry = customtkinter.CTkEntry(self, width=120, height=40, textvariable=self.gstin,state="readonly")
         self.gstin_entry.place(x=710, y=120)
 
-        self.phonenumber_entry = customtkinter.CTkEntry(self, width=200, height=40, textvariable=self.partynumber)
+        self.phonenumber_entry = customtkinter.CTkEntry(self, width=200, height=40, textvariable=self.partynumber,state="readonly")
         self.phonenumber_entry.place(x=280, y=120)
 
         self.cash_lable = customtkinter.CTkLabel(self, font=customtkinter.CTkFont(size=15), text="Cash")
@@ -746,7 +746,8 @@ class saleClass(customtkinter.CTk):
                     crstete = "Credit"
                 else:
                     crstete = "Cash"
-                cur.execute(f"Select * from sale where invoiceno={self.invoice_entry.get()}")
+                # cur.execute(f"Select * from sale where invoiceno={self.invoice_entry.get()}")
+                print(self.invoice_entry.get())
                 cur.execute(f"Update sale set partyname=?,phonenumber=?,gstin=?,cashorcr=?,invoiceno=?,invoicedate=?,steteofsuply=?,paymentype=?,refreceno=?,total=?,received=?,balance=?,item1name=?,qty1=?,unit1=?,unitprice1=?,dec1=?,desamount1=?,amount1=?,item2name=?,qty2=?,unit2=?,unitprice2=?,dec2=?,desamount2=?,amount2=?,item3name=?,qty3=?,unit3=?,unitprice3=?,dec3=?,desamount3=?,amount3=?,item4name=?,qty4=?,unit4=?,unitprice4=?,dec4=?,desamount4=?,amount4=?,item5name=?,qty5=?,unit5=?,unitprice5=?,dec5=?,desamount5=?,amount5=?,item6name=?,qty6=?,unit6=?,unitprice6=?,dec6=?,desamount6=?,amount6=?,item7name=?,qty7=?,unit7=?,unitprice7=?,dec7=?,desamount7=?,amount7=?,item8name=?,qty8=?,unit8=?,unitprice8=?,dec8=?,desamount8=?,amount8=?,item9name=?,qty9=?,unit9=?,unitprice9=?,dec9=?,desamount9=?,amount9=?,item10name=?,qty10=?,unit10=?,unitprice10=?,dec10=?,desamount10=?,amount10=? where invoiceno={self.invoice_entry.get()}",
                     (
 
@@ -854,8 +855,8 @@ class saleClass(customtkinter.CTk):
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
 
-        cur.execute(f"Select recivebalence from partydata where gstin={self.gstin_entry.get()}")
-        cur.execute(f"Update partydata set recivebalence=? where gstin={self.gstin_entry.get()}",(
+        cur.execute(f"Select recivebalence from partydata where phonenumber={self.phonenumber_entry.get()}")
+        cur.execute(f"Update partydata set recivebalence=? where phonenumber={self.phonenumber_entry.get()}",(
              self.resultam.get(),
             ))
         con.commit()
@@ -999,61 +1000,178 @@ class saleClass(customtkinter.CTk):
     def get_final_total (self, input, output):
       try:
         inqty = float(input.get())
-
+        print(inqty)
+        print("a")
+        print(output.get())
         fffam=0
         if float(output.get()) < float(inqty):
+            print("incresed")
             finalqty = float(inqty) - float(output.get())
             ffin = float(finalqty)
             fffam = ffin
 
         elif float(output.get()) > float(inqty):
+            print("decresed")
             finalqty = float(output.get()) - float(inqty)
             ffin =-float(finalqty)
             fffam = ffin
 
+        elif float(output.get()) == float(inqty):
+            print("eqal")
+            ffin =float(inqty)
+            fffam = ffin
+        print(fffam)
         return fffam
 
       except Exception as e:
+         print("total")
          print(e)
 
-    def get_final_amount (self, input, output,total):
+    def get_final_amount (self, recivedam, dbrecivedam, totala):
       try:
-        inqty = float(input.get())
+        ream = float(recivedam.get())
+        dbam = float(dbrecivedam.get())
+        total = float(totala)
+        dbtotal = float(self.dtotalam.get())
         fffam=0
-        if float(output.get()) < float(inqty):
-            finalqty = float(inqty) - float(output.get())
-            ffin =float(total) - float(finalqty)
-            fffam = ffin
+        print("input")
+        print(recivedam.get())
+        print("output")
+        print(dbrecivedam.get())
+        print("Total")
+        print(total)
+        tota = str(total)
+        totalam = tota.replace("-", "")
+        totalom = float(totalam)
+        if dbam < ream:
+            if totalom < dbtotal:
+              print("incresed")
+              finalqty = ream - dbam
+              self.subupdatefinalam(self.phonenumber_entry,totalam ,finalqty,1)
+            elif totalom > dbtotal:
+                print("incresed")
+                finalqty = ream - dbam
+                self.subupdatefinalam(self.phonenumber_entry,totalam, finalqty,2)
+            elif totalom == dbtotal:
+                finalqty = dbam
+                self.subupdatefinalam(self.phonenumber_entry, totalam, finalqty, 5)
+        elif dbam > ream:
+          if totalom < dbtotal:
+              print("incresed")
+              finalqty = dbam - ream
+              self.subupdatefinalam(self.phonenumber_entry,totalam,finalqty,3)
 
-        elif float(output.get()) > float(inqty):
-            finalqty = float(output.get()) - float(inqty)
-            ffin =float(total) + float(finalqty)
-            fffam = ffin
+          elif totalom > dbtotal:
+              print("decresed")
+              finalqty = dbam - ream
+              self.subupdatefinalam(self.phonenumber_entry, totalam, finalqty, 4)
+          elif totalom == dbtotal:
+              finalqty = dbam
+              self.subupdatefinalam(self.phonenumber_entry, totalam, finalqty, 6)
+        elif dbam == ream:
+            finalqty=0
+            if totalom < dbtotal:
+                self.subupdatefinalam(self.phonenumber_entry, totalam, finalqty, 7)
+            elif totalom > dbtotal:
+                self.subupdatefinalam(self.phonenumber_entry, totalam, finalqty, 8)
+            elif totalom == dbtotal:
+                self.subupdatefinalam(self.phonenumber_entry, totalam, finalqty, 9)
 
-        self.updatefinalam( self.gstin, fffam)
+        # self.updatefinalam( self.phonenumber_entry, fffam)
 
       except Exception as e:
          print(e)
-    def updatefinalam(self, name, amo):
-      if name.get() == "":
+    def updatefinalam(self, phone, amo):
+      if phone.get() == "":
             pass
       else:
        try:
 
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
-        item_name=name.get()
-        cur.execute("select recivebalence from partydata where gstin=?", (item_name,))
+        phone_no=phone.get()
+        cur.execute("select recivebalence from partydata where phonenumber=?", (phone_no,))
         rows = cur.fetchall()
         for row in rows:
             for i in row:
 
-                resualt = float(i) - float(amo)
+                resualt = float(i) + float(amo)
 
-                cur.execute(f"Update partydata set recivebalence=? where gstin={item_name}", (
+                cur.execute(f"Update partydata set recivebalence=? where phonenumber={phone_no}", (
                   resualt,
                 ))
                 con.commit()
+       except Exception as e:
+          print(e)
+
+    def subupdatefinalam(self, phone, subamo, recived,type):
+      if phone.get() == "":
+            pass
+      else:
+       try:
+        iam=0
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        phone_no=phone.get()
+        cur.execute("select recivebalence from partydata where phonenumber=?", (phone_no,))
+        rows = cur.fetchall()
+        for row in rows:
+            for i in row:
+                iam=float(i)
+        print(iam)
+        if type == 1:
+                decresdamo = iam - float(subamo)
+                reciveamodec = float(decresdamo) - float(recived)
+                print("sub enterd")
+                print(decresdamo)
+                print(reciveamodec)
+                print("emd")
+        elif type == 2:
+                decresdamo = iam + float(subamo)
+                reciveamodec = float(decresdamo) - float(recived)
+                print("sub enterd")
+                print(decresdamo)
+                print(reciveamodec)
+                print("emd")
+        elif type == 3:
+                    decresdamo = iam - float(subamo)
+                    reciveamodec = float(decresdamo) + float(recived)
+                    print("sub enterd")
+                    print(decresdamo)
+                    print(reciveamodec)
+                    print("emd")
+        elif type == 4:
+                    reciveamodec = (iam + float(subamo)) + float(recived)
+                    # reciveamodec = float(decresdamo) + float(recived)
+                    print("sub enterd")
+                    print(reciveamodec)
+                    print("emd")
+        elif type == 5:
+                    reciveamodec = iam - float(recived)
+                    print("sub enterd")
+                    print(reciveamodec)
+                    print("emd")
+
+        elif type == 6:
+                    reciveamodec = iam + float(recived)
+                    print("sub enterd")
+                    print(reciveamodec)
+                    print("emd")
+        elif type == 7:
+                    reciveamodec = iam - float(subamo)
+                    print("sub enterd")
+        elif type == 8:
+                    reciveamodec = iam + float(subamo)
+                    print("sub enterd")
+        elif type == 9:
+                    reciveamodec = iam
+                    print("sub enterd")
+
+
+        cur.execute(f"Update partydata set recivebalence=? where phonenumber={phone_no}", (
+          reciveamodec,
+        ))
+        con.commit()
        except Exception as e:
           print(e)
     def getdataamount(self):
@@ -2110,8 +2228,14 @@ class saleClass(customtkinter.CTk):
             self.cashlist.insert(0, items_datalist[7])
             self.Payment_type_entry.set(items_datalist[7])
             self.Payment_type_entry.configure(values=self.cashlist)
+            self.dtotalam.set(items_datalist[9])
             self.recvam.set(items_datalist[10])
             self.Received_entry.configure(textvariable=self.recvam)
+            self.dreciveamount.set(items_datalist[10])
+
+            self.resultamm.set(items_datalist[11])
+
+
 
 
             if items_datalist[4] == "Credit":

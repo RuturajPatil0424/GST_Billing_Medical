@@ -39,26 +39,45 @@ class itemClass(customtkinter.CTk):
         self.itemminstockVar = StringVar()
         self.itemlocationVar = StringVar()
         self.itemunitVar = StringVar()
+        self.ik1 = [""]
 
+        self.iuno1var = StringVar()
+        self.iuno1var.set("Unit")
 
+        self.itemname_labl = customtkinter.CTkLabel(self, width=70, height=40, text="Item Name  : ")
+        self.itemname_labl.place(x=70, y=100)
 
         self.itemname_entry = customtkinter.CTkEntry(self, width=200, height=40,textvariable=self.itemnameVar)
-        self.itemname_entry.place(x=50,y=100)
+        self.itemname_entry.place(x=170, y=100)
+
+        self.hsn_labl = customtkinter.CTkLabel(self, width=70, height=40, text="Item HSN  : ")
+        self.hsn_labl.place(x=390, y=100)
 
         self.hsn_entry = customtkinter.CTkEntry(self, width=200, height=40, textvariable=self.itemhsnVar)
-        self.hsn_entry.place(x=280,y=100)
+        self.hsn_entry.place(x=470, y=100)
 
         # self.unit_entry = customtkinter.CTkButton(self, width=200, height=40, text="Select Unit")
         # self.unit_entry.place(x=510,y=100)
 
+        self.itemcategoryr_labl = customtkinter.CTkLabel(self, width=70, height=40, text="Item Category  : ")
+        self.itemcategoryr_labl.place(x=70, y=150)
+
         self.categoryr_entry = customtkinter.CTkEntry(self, width=200, height=40, textvariable=self.itemcatVar)
-        self.categoryr_entry.place(x=50,y=150)
+        self.categoryr_entry.place(x=170, y=150)
+
+        self.itemcode_labl = customtkinter.CTkLabel(self, width=70, height=40, text="Item Code  : ")
+        self.itemcode_labl.place(x=390, y=150)
 
         self.code_entry = customtkinter.CTkEntry(self, width=200, height=40, textvariable=self.itemcodeVar)
-        self.code_entry.place(x=280,y=150)
+        self.code_entry.place(x=470, y=150)
+
 
         self.savebtn = customtkinter.CTkButton(self, command=self.update, width=80, text="Update", font=customtkinter.CTkFont(size=16))
         self.savebtn.place(x=680,y=560)
+
+        self.cancelbtn = customtkinter.CTkButton(self, command=self.distoryedityitem, width=80, text="Cancel",
+                                               font=customtkinter.CTkFont(size=16))
+        self.cancelbtn.place(x=590, y=560)
 
 
         #todo: create tabview
@@ -133,28 +152,58 @@ class itemClass(customtkinter.CTk):
         self.item_tax_entry.place(x=400,y=30)
 
         #todo: Stock
+        self.opingqt_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), width=70, height=40,
+                                                   text="Opening Quantity  : ")
+        self.opingqt_labl.place(x=30, y=30)
 
         self.opingqty_entry = customtkinter.CTkEntry(self.tabview.tab("Stock"), width=200, height=40, textvariable=self.itemopenqtyVar)
-        self.opingqty_entry.place(x=30,y=30)
+        self.opingqty_entry.place(x=150,y=30)
+
+        self.atprice_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), width=70, height=40,
+                                                   text="At Price  : ")
+        self.atprice_labl.place(x=360, y=30)
 
         self.atprice_entry = customtkinter.CTkEntry(self.tabview.tab("Stock"), width=200, height=40, textvariable=self.itematpriceVar)
-        self.atprice_entry.place(x=260,y=30)
+        self.atprice_entry.place(x=440,y=30)
+
+        self.date_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), width=70, height=40,
+                                                text="As of Date  : ")
+        self.date_labl.place(x=30, y=80)
 
         self.date_entry = DateEntry(self.tabview.tab("Stock"), width=10, height=40, textvariable=self.itemdateVar)
-        self.date_entry.place(x=490,y=30)
+        self.date_entry.place(x=150,y=90)
+
+        self.minstock_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), width=70, height=40,
+                                                    text="Min Stock  : ")
+        self.minstock_labl.place(x=365, y=80)
 
         self.minstock_entry = customtkinter.CTkEntry(self.tabview.tab("Stock"), width=200, height=40, textvariable=self.itemminstockVar)
-        self.minstock_entry.place(x=30,y=80)
+        self.minstock_entry.place(x=440,y=80)
+
+        self.location__labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), width=70, height=40,
+                                                     text="Location  : ")
+        self.location__labl.place(x=30, y=130)
 
         self.location_entry = customtkinter.CTkEntry(self.tabview.tab("Stock"), width=200, height=40, textvariable=self.itemlocationVar)
-        self.location_entry.place(x=260,y=80)
+        self.location_entry.place(x=150,y=130)
 
-        self.unit_entry = customtkinter.CTkEntry(self.tabview.tab("Stock"), width=200, height=40, textvariable=self.itemunitVar)
-        self.unit_entry.place(x=490,y=80)
+        self.unit__labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), width=70, height=40,
+                                                 text="Unit  : ")
+        self.unit__labl.place(x=350, y=130)
+
+        self.unit_entry = customtkinter.CTkComboBox(self.tabview.tab("Stock"), width=200, height=40,
+                                                    variable=self.iuno1var,
+                                                    values=self.ik1)
+        self.unit_entry.place(x=440, y=130)
+        self.iuno1var.trace('w', self.itemunit_update1)
+
+        # self.unit_entry = customtkinter.CTkEntry(self.tabview.tab("Stock"), width=200, height=40, placeholder_text="Unit")
+        # self.unit_entry.place(x=440,y=130)
 
         # self.switch = customtkinter.CTkSwitch(self.tabview.tab("Stock"), text=f"Custom Limit")
         # self.switch.place(x=10,y=90)
         self.add_item_event()
+        self.get_Unit_combobox()
 
 
         #todo: Manufacturing
@@ -199,7 +248,8 @@ class itemClass(customtkinter.CTk):
                 self.itemdateVar.set(itemdatalist[16])
                 self.itemminstockVar.set(itemdatalist[17])
                 self.itemlocationVar.set(itemdatalist[18])
-                self.itemunitVar.set(itemdatalist[19])
+                self.iuno1var.set(itemdatalist[19])
+                self.ik1.insert(0,itemdatalist[19])
 
                 self.item_tax_entry.configure(values=self.GSTList)
 
@@ -275,6 +325,46 @@ class itemClass(customtkinter.CTk):
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
 
+    def distoryedityitem(self):
+        app.destroy()
+
+    def update_Unit_combobox(self,entery,list):
+        type=entery.get()
+        list.clear()
+        list.append("")
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+            cur.execute("select unit from itemdata")
+            rows = cur.fetchall()
+            for items in rows:
+              for i in items:
+                m=str(i)
+                if type.lower() in m.lower():
+                  list.append(i)
+            mlis=[*set(list)]
+            entery.configure(values=mlis)
+            # self.itemshowunit()
+        except Exception as ex:
+              print("Error", f"Error due to : {str(ex)}")
+    def itemunit_update1(self,event,*args):
+        self.update_Unit_combobox(self.unit_entry,self.ik1)
+
+    def get_Unit_combobox(self):
+        self.ik1.append("")
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+            cur.execute("select unit from itemdata")
+            rows = cur.fetchall()
+            for items in rows:
+              for i in items:
+                m=str(i)
+                self.ik1.append(m)
+            mlis=[*set(self.ik1)]
+            self.unit_entry.configure(values=mlis)
+        except Exception as ex:
+              print("Error", f"Error due to : {str(ex)}")
 
 
 

@@ -933,7 +933,7 @@ class saleClass(customtkinter.CTk):
      try:
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
-        # cur.execute(f"Select recivebalence from partydata where gstin={self.gstin_entry.get()}")
+        # cur.execute(f"Select recivebalence from partydata where phonenumber={self.phonenumber_entry.get()}")
         # rows = cur.fetchall()
         # for row in rows:
         #     for i in row:
@@ -949,7 +949,7 @@ class saleClass(customtkinter.CTk):
             self.resultam.get(),
         ))
         con.commit()
-        cur.execute(f"Update partydata set recivebalence=? where gstin={self.gstin_entry.get()}",(
+        cur.execute(f"Update partydata set recivebalence=? where phonenumber={self.phonenumber_entry.get()}",(
              self.resultam.get(),
             ))
         con.commit()
@@ -1351,6 +1351,7 @@ class saleClass(customtkinter.CTk):
         esult = recivee + (total - payed)
         result =str(esult)
         self.resultam.set(result)
+
 
 
 

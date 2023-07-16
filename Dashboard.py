@@ -10,6 +10,8 @@ from datetime import date as Dates
 import pandas as pd
 from tkinter.filedialog import askopenfilename
 from openpyxl import load_workbook
+import time
+import multiprocessing as mlp
 
 class App(customtkinter.CTk):
     def __init__(self):
@@ -3315,19 +3317,26 @@ class App(customtkinter.CTk):
 
     # home
     def home_button_event(self):
+        start = time.time()
         self.select_frame_by_name("home")
+        self.calstockvalue()
         self.totalrecive()
         self.totalpay()
         self.getdate()
-        self.calstockvalue()
+        self.caluclattotalsale(self.recivetotalamlist, self.totalreciveam, self.reciveam_lable2)
+        self.getdate()
         self.getlowitem()
+        end = time.time()
+        print(start-end)
     # Party
     def parties_button_event(self):
         self.select_frame_by_name("parties")
+        self.show()
 
     # item
     def Items_button_event(self):
         self.select_frame_by_name("items")
+        self.itemshow()
 
     # GST Sale
     def gst_sale_button_event(self):
@@ -3340,6 +3349,7 @@ class App(customtkinter.CTk):
 
     def gstsale_payment_event(self):
         self.select_frame_by_name("gstpayment")
+        self.gstsalepaymentintrans()
 
     def gstsale_order_event(self):
         self.select_frame_by_name("gstorder")
@@ -3361,6 +3371,7 @@ class App(customtkinter.CTk):
         self.select_frame_by_name("return")
     def sale_payment_event(self):
         self.select_frame_by_name("payment")
+        self.salepaymentintrans()
     def sale_order_event(self):
         self.select_frame_by_name("order")
     def sale_delivery_event(self):
@@ -3373,6 +3384,7 @@ class App(customtkinter.CTk):
     # Purchase
     def Purches_button_event(self):
         self.select_frame_by_name("purches")
+        self.purshow()
 
     # Expenses
     def Expenses_button_event(self):
@@ -3436,8 +3448,10 @@ class App(customtkinter.CTk):
     # Party
     def addparty_event(self):
         call(["python", "Add_Party.py"])
+        self.show()
     def editparty_event(self):
         call(["python", "Edit_Party.py"])
+        self.show()
 
     # item
     def edititem_event(self):
@@ -3533,6 +3547,7 @@ class App(customtkinter.CTk):
     def totalrecive(self):
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
+        self.recivetotalamlist.clear()
         try:
             cur.execute("select recivebalence from partydata ",)
             rows = cur.fetchall()
@@ -3545,6 +3560,7 @@ class App(customtkinter.CTk):
     def totalpay(self):
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
+        self.paytotalamlist.clear()
         try:
             cur.execute("select paybalence from partydata ",)
             rows = cur.fetchall()
@@ -3554,6 +3570,7 @@ class App(customtkinter.CTk):
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
     def caluclattotalsale(self,list1,list2,variable):
+        list2.clear()
         for r in list1:
           if r == "":
              pass
@@ -4323,6 +4340,7 @@ class App(customtkinter.CTk):
 
                 cur.execute("Select recivebalence from partydata where gstin=?", (gstno,))
                 rowm = cur.fetchone()
+
                 for rm in rowm:
                     recivedDBam = float(rm)
                     finall = int(totalam) - int(recived)
@@ -5021,6 +5039,7 @@ class App(customtkinter.CTk):
                 messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
     def saledataget(self,event):
+      try:
         f = self.saletransictionTable.focus()
         content = (self.saletransictionTable.item(f))
         mow = content['values']
@@ -5036,14 +5055,13 @@ class App(customtkinter.CTk):
         involista2.clear()
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
-        try:
-          cur.execute("select partyname,phonenumber,gstin,invoiceno,cashorcr,invoicedate,steteofsuply,paymentype,refreceno,total,received,balance,item1name,qty1,unit1,unitprice1,dec1,desamount1,amount1,item2name,qty2,unit2,unitprice2,dec2,desamount2,amount2,item3name,qty3,unit3,unitprice3,dec3,desamount3,amount3,item4name,qty4,unit4,unitprice4,dec4,desamount4,amount4,item5name,qty5,unit5,unitprice5,dec5,desamount5,amount5,item6name,qty6,unit6,unitprice6,dec6,desamount6,amount6,item7name,qty7,unit7,unitprice7,dec7,desamount7,amount7,item8name,qty8,unit8,unitprice8,dec8,desamount8,amount8,item9name,qty9,unit9,unitprice9,dec9,desamount9,amount9,item10name,qty10,unit10,unitprice10,dec10,desamount10,amount10 from sale where invoiceno=?",
+        cur.execute("select partyname,phonenumber,gstin,invoiceno,cashorcr,invoicedate,steteofsuply,paymentype,refreceno,total,received,balance,item1name,qty1,unit1,unitprice1,dec1,desamount1,amount1,item2name,qty2,unit2,unitprice2,dec2,desamount2,amount2,item3name,qty3,unit3,unitprice3,dec3,desamount3,amount3,item4name,qty4,unit4,unitprice4,dec4,desamount4,amount4,item5name,qty5,unit5,unitprice5,dec5,desamount5,amount5,item6name,qty6,unit6,unitprice6,dec6,desamount6,amount6,item7name,qty7,unit7,unitprice7,dec7,desamount7,amount7,item8name,qty8,unit8,unitprice8,dec8,desamount8,amount8,item9name,qty9,unit9,unitprice9,dec9,desamount9,amount9,item10name,qty10,unit10,unitprice10,dec10,desamount10,amount10 from sale where invoiceno=?",
             (strfinal,))
-          rows = cur.fetchall()
-          for row in rows:
+        rows = cur.fetchall()
+        for row in rows:
             for r in row:
                 involista2.append(r)
-          cur.execute("Update editsale set partyname=?,phonenumber=?,gstin=?,invoiceno=?,cashorcr=?,invoicedate=?,steteofsuply=?,paymentype=?,refreceno=?,total=?,received=?,balance=?,item1name=?,qty1=?,unit1=?,unitprice1=?,dec1=?,desamount1=?,amount1=?,item2name=?,qty2=?,unit2=?,unitprice2=?,dec2=?,desamount2=?,amount2=?,item3name=?,qty3=?,unit3=?,unitprice3=?,dec3=?,desamount3=?,amount3=?,item4name=?,qty4=?,unit4=?,unitprice4=?,dec4=?,desamount4=?,amount4=?,item5name=?,qty5=?,unit5=?,unitprice5=?,dec5=?,desamount5=?,amount5=?,item6name=?,qty6=?,unit6=?,unitprice6=?,dec6=?,desamount6=?,amount6=?,item7name=?,qty7=?,unit7=?,unitprice7=?,dec7=?,desamount7=?,amount7=?,item8name=?,qty8=?,unit8=?,unitprice8=?,dec8=?,desamount8=?,amount8=?,item9name=?,qty9=?,unit9=?,unitprice9=?,dec9=?,desamount9=?,amount9=?,item10name=?,qty10=?,unit10=?,unitprice10=?,dec10=?,desamount10=?,amount10=? where sid=1",
+        cur.execute("Update editsale set partyname=?,phonenumber=?,gstin=?,invoiceno=?,cashorcr=?,invoicedate=?,steteofsuply=?,paymentype=?,refreceno=?,total=?,received=?,balance=?,item1name=?,qty1=?,unit1=?,unitprice1=?,dec1=?,desamount1=?,amount1=?,item2name=?,qty2=?,unit2=?,unitprice2=?,dec2=?,desamount2=?,amount2=?,item3name=?,qty3=?,unit3=?,unitprice3=?,dec3=?,desamount3=?,amount3=?,item4name=?,qty4=?,unit4=?,unitprice4=?,dec4=?,desamount4=?,amount4=?,item5name=?,qty5=?,unit5=?,unitprice5=?,dec5=?,desamount5=?,amount5=?,item6name=?,qty6=?,unit6=?,unitprice6=?,dec6=?,desamount6=?,amount6=?,item7name=?,qty7=?,unit7=?,unitprice7=?,dec7=?,desamount7=?,amount7=?,item8name=?,qty8=?,unit8=?,unitprice8=?,dec8=?,desamount8=?,amount8=?,item9name=?,qty9=?,unit9=?,unitprice9=?,dec9=?,desamount9=?,amount9=?,item10name=?,qty10=?,unit10=?,unitprice10=?,dec10=?,desamount10=?,amount10=? where sid=1",
                 (
                     involista2[0],
                     involista2[1],
@@ -5128,8 +5146,8 @@ class App(customtkinter.CTk):
                     involista2[80],
                     involista2[81],
                 ))
-          con.commit()
-        except Exception as ex:
+        con.commit()
+      except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
     def salestranssearch(self):
         select = self.sale_pur_search.get()
@@ -5165,6 +5183,7 @@ class App(customtkinter.CTk):
 
     # sale estimate
     def calgetsaleestimatetotalamount(self):
+      try:
         self.estimate_sale_paidamount_mlist = []
         self.estimate_sale_unpaidamount_mlist = []
         self.estimate_sale_totalamount_mlist = []
@@ -5179,6 +5198,8 @@ class App(customtkinter.CTk):
         sumtotal = sum(self.sale_totalamount_mlist)
         self.estimatee_sale_totalamount=f"₹{sumtotal}"
         self.estimatee_sale_detail_total_amount_lable.configure(text=self.estimatee_sale_totalamount)
+      except Exception as e:
+          print(e)
     def saleestimatetrans(self):
             con = sqlite3.connect(database=r'DataBase/ims.db')
             cur = con.cursor()

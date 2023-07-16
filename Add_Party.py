@@ -167,12 +167,13 @@ class supplierClass(customtkinter.CTk):
                 messagebox.showerror("Error" , "GSTIN must be required!" , parent=self)
             elif len(gstinnoo) != 15:
                 messagebox.showerror("Error" , "Please enter valid GSTIN!" , parent=self)
+            elif self.validate_gstin(gstinnoo) == False:
+                messagebox.showerror("Error", "Please enter valid GSTIN!", parent=self)
             elif self.number_entry.get() == "":
                 messagebox.showerror("Error" , "Phone No. must be required!" , parent=self)
             elif len(self.number_entry.get()) != 10:
                 messagebox.showerror("Error" , "Please enter valid Phone No.!" , parent=self)
-            elif self.validate_gstin(gstinnoo) == False:
-                messagebox.showerror("Error", "Please enter valid GSTIN!", parent=self)
+
             elif self.state_menu.get() == "None":
                 messagebox.showerror("Error" , "Please select State!" , parent=self)
             elif self.email_entry.get() == "":
@@ -196,11 +197,21 @@ class supplierClass(customtkinter.CTk):
                     self.customlimit = 0
                 else:
                     self.customlimit = self.customlimit_entry.get()
-                cur.execute("Select * from partydata where pid=?",(gstinnoo,))
+                cur.execute("Select * from partydata where gstin=?",(self.gstn_entry.get(),))
                 row = cur.fetchone()
                 if row != None:
                     messagebox.showerror("Error","This GSTIN no. already assigned, try different",parent=self)
+
+                cur.execute("Select * from partydata where phonenumber=?", (self.number_entry.get(),))
+                rowf = cur.fetchone()
+                if rowf != None:
+                    messagebox.showerror("Error","This Phone no. already assigned, try different",parent=self)
+                cur.execute("Select * from partydata where partyname=?", (self.partyname_entry.get(),))
+                rowm = cur.fetchone()
+                if rowm != None:
+                    messagebox.showerror("Error", "This Party Name is already assigned, try different", parent=self)
                 else:
+
                     cur.execute("Insert into partydata (pid,partyname,gstin,phonenumber,gsttype,state,emailid,billaddress,shipaddress,paybalence,recivebalence,date,creditlim,add1,add2,add3,add4) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(
                         self.number_entry.get(),
                         self.partyname_entry.get(),
