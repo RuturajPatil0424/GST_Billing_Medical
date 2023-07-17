@@ -170,7 +170,7 @@ class itemClass(customtkinter.CTk):
                                                 text="As of Date  : ")
         self.date_labl.place(x=30, y=80)
 
-        self.date_entry = DateEntry(self.tabview.tab("Stock"), width=10, height=40, textvariable=self.itemdateVar)
+        self.date_entry = DateEntry(self.tabview.tab("Stock"), width=10, height=40, textvariable=self.itemdateVar,date_pattern="dd/mm/y")
         self.date_entry.place(x=150,y=90)
 
         self.minstock_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), width=70, height=40,

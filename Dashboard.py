@@ -6,7 +6,7 @@ from subprocess import call
 import sqlite3
 from tkinter import messagebox, END, ttk
 from AppOpener import open as op, close
-from datetime import date as Dates
+from datetime import date as Dates, datetime
 import pandas as pd
 from tkinter.filedialog import askopenfilename
 from openpyxl import load_workbook
@@ -576,33 +576,76 @@ class App(customtkinter.CTk):
 
 
         # todo: home low Stock frame
-        self.itemlowlist=[]
         self.lowStock_lable = customtkinter.CTkLabel(self.in_home_lowitem_top_frame, text=" Low Stock",text_color="#FF8C00",
                                                       font=customtkinter.CTkFont(size=25), image=self.stock_image,
                                                       compound="left", anchor="w")
         self.lowStock_lable.place(x=10, y=10)
 
-        self.lowStock_lable2 = customtkinter.CTkTextbox(self.in_home_lowitem_top_frame,width=350,
-                                                       font=customtkinter.CTkFont(size=15))
-        self.lowStock_lable2.place(x=25, y=50)
+        lowStock_Frame = ttk.Frame(self.in_home_lowitem_top_frame, relief=RIDGE)
+        lowStock_Frame.place(x=25, y=50, height=215, width=350)
+
+        scrolly = ttk.Scrollbar(lowStock_Frame, orient=VERTICAL)
+        scrollx = ttk.Scrollbar(lowStock_Frame, orient=HORIZONTAL)
+
+        self.lowitemTable = ttk.Treeview(lowStock_Frame, columns=("itemname", "openqty"),
+                                        yscrollcommand=scrolly.set, xscrollcommand=scrollx.set)
+        scrollx.pack(side=BOTTOM, fill=X)
+        scrolly.pack(side=RIGHT, fill=Y)
+        scrollx.config(command=self.lowitemTable.xview)
+        scrolly.config(command=self.lowitemTable.yview)
+        self.lowitemTable.heading("itemname", text="Name")
+        self.lowitemTable.heading("openqty", text="Stock")
+
+        self.lowitemTable["show"] = "headings"
+
+        self.lowitemTable.column("itemname", width=130)
+        self.lowitemTable.column("openqty", width=100)
+
+        self.lowitemTable.pack(fill=BOTH, expand=1)
+        self.lowitemTable.bind("<ButtonRelease-1>")
+
+        # self.lowStock_lable2 = customtkinter.CTkTextbox(self.in_home_lowitem_top_frame,width=350,
+        #                                                font=customtkinter.CTkFont(size=15))
+        # self.lowStock_lable2.place(x=25, y=50)
 
 
         # todo: home Outof Stock frame
-        self.itemoutoflist = []
         self.outofStock_lable = customtkinter.CTkLabel(self.in_home_outofitem_top_frame, text=" Out Of Stock",
                                                      text_color="red",
                                                      font=customtkinter.CTkFont(size=25), image=self.stock_image,
                                                      compound="left", anchor="w")
         self.outofStock_lable.place(x=10, y=10)
 
-        self.outofStock_lable2 = customtkinter.CTkTextbox(self.in_home_outofitem_top_frame, width=350,
-                                                        font=customtkinter.CTkFont(size=15))
-        self.outofStock_lable2.place(x=25, y=50)
+        outofStock_Frame = ttk.Frame(self.in_home_outofitem_top_frame, relief=RIDGE)
+        outofStock_Frame.place(x=25, y=50, height=215, width=350)
+
+        scrolly = ttk.Scrollbar(outofStock_Frame, orient=VERTICAL)
+        scrollx = ttk.Scrollbar(outofStock_Frame, orient=HORIZONTAL)
+
+        self.otitemTable = ttk.Treeview(outofStock_Frame, columns=("itemname", "openqty"),
+                                        yscrollcommand=scrolly.set, xscrollcommand=scrollx.set)
+        scrollx.pack(side=BOTTOM, fill=X)
+        scrolly.pack(side=RIGHT, fill=Y)
+        scrollx.config(command=self.otitemTable.xview)
+        scrolly.config(command=self.otitemTable.yview)
+        self.otitemTable.heading("itemname", text="Name")
+        self.otitemTable.heading("openqty", text="Stock")
+
+        self.otitemTable["show"] = "headings"
+
+        self.otitemTable.column("itemname", width=130)
+        self.otitemTable.column("openqty", width=100)
+
+        self.otitemTable.pack(fill=BOTH, expand=1)
+        self.otitemTable.bind("<ButtonRelease-1>")
+
+        # self.outofStock_lable2 = customtkinter.CTkTextbox(self.in_home_outofitem_top_frame, width=350,
+        #                                                 font=customtkinter.CTkFont(size=15))
+        # self.outofStock_lable2.place(x=25, y=50)
         # self.getdate()
         # self.getlowitem()
 
         # todo: home Expired Stock frame
-        self.itemexpiredlist = []
         self.expiredStock_lable = customtkinter.CTkLabel(self.in_home_expired_item_top_frame, text=" Expired Items",
                                                        text_color="red",
                                                        font=customtkinter.CTkFont(size=25), image=self.stock_image,
@@ -640,7 +683,7 @@ class App(customtkinter.CTk):
 
         self.getdate()
         self.expireditemshow()
-        self.getlowitem()
+        self.outofitemshow()
 
 
         # todo: parties frame
@@ -3393,6 +3436,7 @@ class App(customtkinter.CTk):
         self.caluclattotalsale(self.recivetotalamlist, self.totalreciveam, self.reciveam_lable2)
         self.getlowitem()
         self.expireditemshow()
+        self.outofitemshow()
     # Party
     def parties_button_event(self):
         self.select_frame_by_name("parties")
@@ -3883,6 +3927,24 @@ class App(customtkinter.CTk):
             self.sale_amount_date.configure(text=datess)
             self.totalsael(d,m,y,ld,lm,ly)
             self.totalpurc(d, m, y, ld, lm, ly)
+    def outofitemshow(self):
+      con = sqlite3.connect(database=r'DataBase/ims.db')
+      cur = con.cursor()
+      try:
+        cur.execute(f"select itemname,openqty,minstockmanten from itemdata")
+        rows = cur.fetchall()
+        self.otitemTable.delete(*self.otitemTable.get_children())
+        self.lowitemTable.delete(*self.lowitemTable.get_children())
+        for row in rows:
+            if int(row[1]) <= 0:
+              self.otitemTable.insert('', END, values=row)
+            elif int(row[1]) <= int(row[2]):
+              self.lowitemTable.insert('', END, values=row)
+            else:
+                pass
+
+      except Exception as ex:
+        messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
     def expireditemshow(self):
       con = sqlite3.connect(database=r'DataBase/ims.db')
       cur = con.cursor()
@@ -3890,115 +3952,26 @@ class App(customtkinter.CTk):
       currentdate = TodayDate.strftime("%d")
       currentmonth = TodayDate.strftime("%m")
       currentYear = TodayDate.strftime("%Y")
-      dates = f"{currentdate}/{currentmonth}/{currentYear}"
-      print(dates)
+      datess = f"{currentdate}/{currentmonth}/{currentYear}"
       try:
-        print("enterd")
         cur.execute(f"select itemname,date,openqty from itemdata")
         rows = cur.fetchall()
+        date_format = "%d/%m/%Y"
         self.exitemTable.delete(*self.exitemTable.get_children())
-        # if rows = None:
-        #    listfd = [("No Item","None","None"),]
-        #    for k in listfd:
-        #        print(k)
-        #        self.exitemTable.insert('', END, values=k)
-        # else:
+
+        cureentdate = datetime.strptime(datess, date_format)
         for row in rows:
-            print(row)
-            if str(row[1]) == str(dates):
-              print("row")
-              print(row)
+            exdate = datetime.strptime(row[1], date_format)
+
+            if exdate < cureentdate and row[1] != "None" or exdate == cureentdate and row[1] != "None":
               self.exitemTable.insert('', END, values=row)
-            # for r in row:
-            #     print("r")
-            #     print(r)
-            #     self.exitemTable.insert('', END, values=r)
+            else:
+               pass
+
+
 
       except Exception as ex:
         messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-    def getlowitem(self):
-        con = sqlite3.connect(database=r'DataBase/ims.db')
-        cur = con.cursor()
-        self.itemtotalamlist.clear()
-        self.itemoutlist.clear()
-        self.itemexpiredlist.clear()
-        try:
-            cur.execute(f"select itemname,openqty,minstockmanten,date from itemdata ",)
-            rows = cur.fetchall()
-
-            for row in rows:
-              rowlis = list(row)
-              if  rowlis[2] == "" or rowlis[2] == " ":
-                a=0
-              else:
-                a=int(rowlis[2])
-
-              print(rowlis[3])
-              if int(rowlis[1]) <= 5 and int(rowlis[1]) != 0 or  int(rowlis[1]) <= int(a) and int(rowlis[1]) != 0:
-                 ab=rowlis[0]
-                 bb =int(rowlis[1])
-                 c=f"Item Name :    {ab}       qty  :  {bb}"
-                 self.itemlowlist.append(c)
-
-              elif int(rowlis[1]) == 0:
-                 ab=rowlis[0]
-                 bb =int(rowlis[1])
-                 c=f"Item Name :    {ab}       qty  :  {bb}"
-                 self.itemoutlist.append(c)
-
-              # elif str(rowlis[3]) == str(dates):
-              #    ab=rowlis[0]
-              #    bb =int(rowlis[1])
-              #    c=f"Item Name :    {ab}       qty  :  {bb}"
-              #    print(c)
-              #    self.itemexpiredlist.append(c)
-              else:
-                 pass
-
-            if len(self.itemlowlist) < 1 :
-             self.lowStock_lable2.insert(0.0,"No Item")
-             self.lowStock_lable2.configure(state='disabled')
-            else:
-              for i in self.itemlowlist :
-                result=f"\n {i}"
-                self.lowStock_lable2.insert(0.0,result)
-              self.lowStock_lable2.configure(state='disabled')
-
-            if len(self.itemoutlist) < 1 :
-             self.outofStock_lable2.insert(0.0,"No Item")
-             self.outofStock_lable2.configure(state='disabled')
-            else:
-              for m in self.itemoutlist :
-                result=f"\n {m}"
-                self.outofStock_lable2.insert(0.0,result)
-              self.outofStock_lable2.configure(state='disabled')
-
-            # if len(self.itemexpiredlist) < 1 :
-            #     self.exitemTable.delete(*self.itemTable.get_children())
-            #     self.listds=["No Item","None","None"]
-            #     for k in self.listds:
-            #         print(k)
-            #         for h in k:
-            #             print(h)
-            #         # self.itemTable.insert('', END, values=h)
-            #
-            #     # self.expiredStock_lable2.insert(0.0,"No Item")
-            #     # self.expiredStock_lable2.configure(state='disabled')
-            # else:
-            #     self.exitemTable.delete(*self.itemTable.get_children())
-            #     for k in self.itemexpiredlist:
-            #         print(k)
-            #         self.exitemTable.insert('', END, values=k)
-            #         for h in k:
-            #             print(h)
-            #             self.itemTable.insert('', END, values=h)
-
-                  # result=f"\n {k}"
-                # self.expiredStock_lable2.insert(0.0,result)
-              # self.expiredStock_lable2.configure(state='disabled')
-        except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-
 
     # Party Frame Methods
     def deleteparty(self):
@@ -4012,7 +3985,7 @@ class App(customtkinter.CTk):
           con.commit()
           messagebox.showinfo("Delete", f"{pname} Party Data Deleted Successfully", parent=self)
           self.show()
-        except Exception as e :
+        except Exception as e:
             messagebox.showerror("Error", f"Error due to : {str(e)}", parent=self)
 
     def show(self):

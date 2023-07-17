@@ -152,10 +152,10 @@ class itemClass(customtkinter.CTk):
         self.atprice_entry.place(x=440,y=30)
 
         self.date_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), width=70, height=40,
-                                                   text="As of Date  : ")
+                                                   text="Expiry Date  : ")
         self.date_labl.place(x=30, y=80)
 
-        self.date_entry = DateEntry(self.tabview.tab("Stock"), width=10, height=40, placeholder_text="As of Date")
+        self.date_entry = DateEntry(self.tabview.tab("Stock"), width=10, height=40, placeholder_text="As of Date",date_pattern="dd/mm/y")
         self.date_entry.place(x=150,y=90)
 
         self.minstock_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), width=70, height=40,
@@ -333,10 +333,11 @@ class itemClass(customtkinter.CTk):
             rows = cur.fetchall()
             for items in rows:
               for i in items:
-                m=str(i)
+                m = str(i)
                 if type.lower() in m.lower():
                   list.append(i)
-            mlis=[*set(list)]
+
+            mlis = [*set(list)]
             entery.configure(values=mlis)
             # self.itemshowunit()
         except Exception as ex:
@@ -352,9 +353,9 @@ class itemClass(customtkinter.CTk):
             rows = cur.fetchall()
             for items in rows:
               for i in items:
-                m=str(i)
+                m = str(i)
                 self.ik1.append(m)
-            mlis=[*set(self.ik1)]
+            mlis = [*set(self.ik1)]
             self.unit_entry.configure(values=mlis)
         except Exception as ex:
               print("Error", f"Error due to : {str(ex)}")

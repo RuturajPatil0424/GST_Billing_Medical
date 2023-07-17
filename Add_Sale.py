@@ -1852,7 +1852,7 @@ class saleClass(customtkinter.CTk):
             rows = cur.fetchall()
             for items in rows:
               for i in items:
-                m=str(i)
+                m = str(i)
                 if type.lower() in m.lower():
                   list.append(i)
 
