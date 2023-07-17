@@ -112,4 +112,10 @@ def create_db():
     cur.execute("CREATE TABLE IF NOT EXISTS estimatetoinvo(no INTEGER PRIMARY KEY AUTOINCREMENT,invoice text)")
     con.commit()
 
+    cur.execute("CREATE TABLE IF NOT EXISTS invsetting(no INTEGER PRIMARY KEY AUTOINCREMENT,gstivo text,saleinvo text)")
+    con.commit()
+
+    cur.execute("CREATE TABLE IF NOT EXISTS qtysetting(no INTEGER PRIMARY KEY AUTOINCREMENT,gstqty text,saleqty text)")
+    con.commit()
+
 create_db()

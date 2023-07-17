@@ -7,11 +7,11 @@ from num2words import num2words
 import datetime
 import os
 from docx2pdf import convert
-doc = DocxTemplate("taxinvo1.docx")
+doc = DocxTemplate("DataBase/Invoice/taxinvo1.docx")
 
 item_list = []
 party_list = []
-partydata_list=[]
+partydata_list = []
 item_list1 = []
 item_list2 = []
 item_list3 = []
@@ -23,10 +23,10 @@ item_list8 = []
 item_list9 = []
 item_list10 = []
 itmlist = []
-hsn_no_list=[]
-allitem_list=[]
+hsn_no_list = []
+allitem_list = []
 
-cgsttotal=[]
+cgsttotal = []
 
 
 
@@ -330,7 +330,6 @@ def get_hsn():
         print(ex)
 
 def wotgst(price,qty,tax,disc,total,list):
-    print(tax)
 
     if "0" in tax or "0.25" in tax or "3" in tax or "5" in tax or "12" in tax or "18" in tax or "28" in tax or "None" in tax:
 
@@ -390,6 +389,7 @@ def cgst():
     cgsttotal.insert(0,cgst)
 
 def addlist():
+  try:
     if item_list1[0] == "":
         item_list.append("")
     elif item_list2[0] == "":
@@ -634,6 +634,8 @@ def addlist():
         item_list10.insert(2,hsn_no_list[9])
         wotgst(item_list10[5],item_list10[3],item_list10[8],item_list10[7],item_list10[9],item_list10)
         cgst()
+  except Exception as e:
+       print(e)
 
 get_partybi_data()
 get_item1_data()
@@ -655,9 +657,9 @@ tta=capwords(totalinword)
 
 get_item_data()
 doc.render({"company":"Cyber Tech","phone": "8830136942","nam":partydata_list[0],"partynumber":partydata_list[1],"gstin":partydata_list[2],"invoice":partydata_list[4],"date":partydata_list[5],"state":partydata_list[6],"tota":partydata_list[9],"recam":partydata_list[10],"balen":partydata_list[11],"totalqty":partydata_list[14],"totaldic":partydata_list[13],"totalgst":partydata_list[12],"cgst":cgsttotal[0],"item_list":item_list,"amtinword":tta})
-doc.save("new_sampleinvoice.docx")
-filename=f"PurInvoice/{partydata_list[0]}_{partydata_list[2]}.pdf"
-path=f"PurInvoice/{partydata_list[0]}_{partydata_list[2]}.pdf"
-convert("new_sampleinvoice.docx", filename)
+doc.save("DataBase/Invoice/new_sampleinvoice1.docx")
+filename=f"PurInvoice/{partydata_list[0]}_{partydata_list[2]}_{partydata_list[4]}.pdf"
+path=f"PurInvoice/{partydata_list[0]}_{partydata_list[2]}_{partydata_list[4]}.pdf"
+convert("DataBase/Invoice/new_sampleinvoice1.docx", filename)
 subprocess.Popen([path], shell=True)
 

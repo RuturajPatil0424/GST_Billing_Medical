@@ -1160,6 +1160,7 @@ class saleClass(customtkinter.CTk):
 
     def get_amount(self):
         # pay = int(self.payamount.get())
+        print(self.reciveamount.get())
         recivee = float(self.reciveamount.get())
         payed = int(self.Received_entry.get())
         total = float(self.totalam.get())
@@ -1177,7 +1178,7 @@ class saleClass(customtkinter.CTk):
         cur = con.cursor()
         try:
 
-            cur.execute("select location from itemdata")
+            cur.execute("select unit from itemdata")
             rows = cur.fetchall()
             # self.productTable.delete(*self.productTable.get_children())
 
@@ -1504,6 +1505,7 @@ class saleClass(customtkinter.CTk):
             self.Balance_entry.configure(text=self.balence)
 
     def totalqty(self):
+      try:
 
         sitam1=self.no1_qty_entry.get()
         sitam2=self.no2_qty_entry.get()
@@ -1550,7 +1552,8 @@ class saleClass(customtkinter.CTk):
         else:
             self.allqty=finalamount
             self.total_qty_lable.configure(text=self.allqty)
-
+      except Exception as e:
+          print(e)
 
     def totaldesam(self):
 
@@ -2011,7 +2014,7 @@ class saleClass(customtkinter.CTk):
 
                               cur.execute("Select pid from itemdata where pid=?", (p,))
                               row = cur.fetchone()
-                              cur.execute("Update itemdata set openqty=?,purchesprice=?,date=?,location=?,gsttax=? where pid=?", (
+                              cur.execute("Update itemdata set openqty=?,purchesprice=?,date=?,unit=?,gsttax=? where pid=?", (
                                resualt,
                                price,
                                date,

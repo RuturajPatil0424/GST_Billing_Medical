@@ -336,6 +336,9 @@ class App(customtkinter.CTk):
         self.in_home_outofitem_top_frame = customtkinter.CTkFrame(self.home_frame, width=400, height=270)
         self.in_home_outofitem_top_frame.place(x=420, y=720)
 
+        self.in_home_expired_item_top_frame = customtkinter.CTkFrame(self.home_frame, width=400, height=270)
+        self.in_home_expired_item_top_frame.place(x=830, y=720)
+
         self.in_home_cheques_frame = customtkinter.CTkFrame(self.home_frame, width=460, height=120)
         self.in_home_cheques_frame.place(x=1255, y=540)
 
@@ -542,7 +545,7 @@ class App(customtkinter.CTk):
         self.reciveam_lable2.place(x=10, y=60)
 
         self.totalrecive()
-        self.caluclattotalsale(self.recivetotalamlist, self.totalreciveam, self.reciveam_lable2)
+
 
         # todo: home pay frame
         self.payam = StringVar()
@@ -559,7 +562,7 @@ class App(customtkinter.CTk):
         self.payam_lable2.place(x=10, y=60)
 
         self.totalpay()
-        self.caluclattotalsale(self.paytotalamlist, self.totalpayam, self.payam_lable2)
+
 
         # todo: home purches frame
         self.purchesam_lable = customtkinter.CTkLabel(self.in_home_purchase_top_frame, text=" Purchase",
@@ -595,7 +598,48 @@ class App(customtkinter.CTk):
         self.outofStock_lable2 = customtkinter.CTkTextbox(self.in_home_outofitem_top_frame, width=350,
                                                         font=customtkinter.CTkFont(size=15))
         self.outofStock_lable2.place(x=25, y=50)
+        # self.getdate()
+        # self.getlowitem()
+
+        # todo: home Expired Stock frame
+        self.itemexpiredlist = []
+        self.expiredStock_lable = customtkinter.CTkLabel(self.in_home_expired_item_top_frame, text=" Expired Items",
+                                                       text_color="red",
+                                                       font=customtkinter.CTkFont(size=25), image=self.stock_image,
+                                                       compound="left", anchor="w")
+        self.expiredStock_lable.place(x=10, y=10)
+
+        # self.expiredStock_lable2 = customtkinter.CTkTextbox(self.in_home_expired_item_top_frame, width=350,
+        #                                                   font=customtkinter.CTkFont(size=15))
+        # self.expiredStock_lable2.place(x=25, y=50)
+
+        expiredStock_Frame = ttk.Frame(self.in_home_expired_item_top_frame, relief=RIDGE)
+        expiredStock_Frame.place(x=25, y=50 , height=215, width=350)
+
+        scrolly = ttk.Scrollbar(expiredStock_Frame, orient=VERTICAL)
+        scrollx = ttk.Scrollbar(expiredStock_Frame, orient=HORIZONTAL)
+
+        self.exitemTable = ttk.Treeview(expiredStock_Frame, columns=("itemname", "exdate", "openqty"),
+                                      yscrollcommand=scrolly.set, xscrollcommand=scrollx.set)
+        scrollx.pack(side=BOTTOM, fill=X)
+        scrolly.pack(side=RIGHT, fill=Y)
+        scrollx.config(command=self.exitemTable.xview)
+        scrolly.config(command=self.exitemTable.yview)
+        self.exitemTable.heading("itemname", text="Name")
+        self.exitemTable.heading("exdate", text="Expired Date")
+        self.exitemTable.heading("openqty", text="Stock")
+
+        self.exitemTable["show"] = "headings"
+
+        self.exitemTable.column("itemname", width=130)
+        self.exitemTable.column("exdate", width=100)
+        self.exitemTable.column("openqty", width=100)
+
+        self.exitemTable.pack(fill=BOTH, expand=1)
+        self.exitemTable.bind("<ButtonRelease-1>")
+
         self.getdate()
+        self.expireditemshow()
         self.getlowitem()
 
 
@@ -2581,7 +2625,7 @@ class App(customtkinter.CTk):
         self.sale_paymenttransictionTable.pack(fill=BOTH, expand=1)
         self.sale_paymenttransictionTable.bind("<ButtonRelease-1>", self.salepaymentintrans)
 
-        self.salepaymentintrans()
+        # self.salepaymentintrans()
 
         self.Var_sale_payment_searchtxt = StringVar()
 
@@ -3012,6 +3056,13 @@ class App(customtkinter.CTk):
                                                           hover_color=("gray70", "gray30"))
         self.exp_purches_button.place(x=20, y=80)
 
+        self.delete_purches_button = customtkinter.CTkButton(self.purches_name_frame,
+                                                          font=customtkinter.CTkFont(size=15), text="Delete Purches",
+                                                          width=70,
+                                                          height=40, image=self.close_image, fg_color="transparent",
+                                                          hover_color=("gray70", "gray30"))
+        self.delete_purches_button.place(x=340, y=80)
+
         self.purches_add_sale_button = customtkinter.CTkButton(self.in_purches_top_frame,
                                                             font=customtkinter.CTkFont(size=18),command=self.addsale_event,
                                                             text="Add Sale", width=70, height=30,
@@ -3065,7 +3116,7 @@ class App(customtkinter.CTk):
         self.purchesTable["show"] = "headings"
 
         self.purchesTable.column("party", width=130, )
-        self.purchesTable.column("gstin", width=100)
+        self.purchesTable.column("gstin", width=120)
         self.purchesTable.column("pay", width=100)
         self.purchesTable.column("receive", width=100)
 
@@ -3080,6 +3131,7 @@ class App(customtkinter.CTk):
         self.purchescrlimit = StringVar()
         self.purchesaddress = StringVar()
         self.purchesgstin = StringVar()
+        self.purchescrpay = StringVar()
 
         self.purches_name_lable = customtkinter.CTkLabel(self.purches_detail_frame, textvariable=self.purchesname,
                                           font=customtkinter.CTkFont(size=18))
@@ -3105,9 +3157,25 @@ class App(customtkinter.CTk):
                                                         font=customtkinter.CTkFont(size=12))
         self.purches_gstin_lable.place(x=1000, y=85)
 
-        self.purches_gstin_lable = customtkinter.CTkLabel(self.purches_transiction_frame, text="TRANSACTION",
+        self.purches_pay_lable = customtkinter.CTkLabel(self.purches_detail_frame, textvariable=self.purchescrpay,
+                                                          font=customtkinter.CTkFont(size=12))
+        self.purches_pay_lable.place(x=1000, y=110)
+
+        self.purches_gstin_lable2 = customtkinter.CTkLabel(self.purches_transiction_frame, text="TRANSACTION",
                                                         font=customtkinter.CTkFont(size=14, ))
-        self.purches_gstin_lable.place(x=10, y=10)
+        self.purches_gstin_lable2.place(x=10, y=10)
+        self.purches_add_purches_button = customtkinter.CTkButton(self.purches_transiction_frame, width=70, height=30,
+                                                                  text="Add Purches", command=self.addgstsale_event)
+        self.purches_add_purches_button.place(x=20, y=60)
+        self.purches_gstin_edit_button = customtkinter.CTkButton(self.purches_transiction_frame, width=70, height=30,
+                                                               text="Edit", command=self.editgstsale_event)
+        self.purches_gstin_edit_button.place(x=120, y=60)
+        self.purches_gstin_delet_button = customtkinter.CTkButton(self.purches_transiction_frame,
+                                                                width=70,
+                                                                height=30,
+                                                                text="Delete",
+                                                                command=self.purchase_trans_delete)
+        self.purches_gstin_delet_button.place(x=200, y=60)
 
         transiction_Frame = ttk.Frame(self.purches_transiction_frame, relief=RIDGE)
         transiction_Frame.place(x=20, y=100, width=1170, height=580)
@@ -3123,7 +3191,7 @@ class App(customtkinter.CTk):
         scrollx.config(command=self.purchestransictionTable.xview)
         scrolly.config(command=self.purchestransictionTable.yview)
 
-        self.purchestransictionTable.heading("number", text="Invoice Number")
+        self.purchestransictionTable.heading("number", text="Invoice  Number")
         self.purchestransictionTable.heading("date", text="Date")
         self.purchestransictionTable.heading("type", text="Payment Type")
         self.purchestransictionTable.heading("total", text="Total Amount")
@@ -3317,17 +3385,14 @@ class App(customtkinter.CTk):
 
     # home
     def home_button_event(self):
-        start = time.time()
         self.select_frame_by_name("home")
         self.calstockvalue()
         self.totalrecive()
         self.totalpay()
         self.getdate()
         self.caluclattotalsale(self.recivetotalamlist, self.totalreciveam, self.reciveam_lable2)
-        self.getdate()
         self.getlowitem()
-        end = time.time()
-        print(start-end)
+        self.expireditemshow()
     # Party
     def parties_button_event(self):
         self.select_frame_by_name("parties")
@@ -3462,8 +3527,8 @@ class App(customtkinter.CTk):
     # Purchase
     def addpurchase_event(self):
         call(["python", "Purchase.py"])
-    def editparty_event(self):
-        call(["python", "Edit_Party.py"])
+    # def editparty_event(self):
+    #     call(["python", "Edit_Party.py"])
 
 
 
@@ -3554,6 +3619,7 @@ class App(customtkinter.CTk):
             for row in rows:
                 for r in row:
                     self.recivetotalamlist.append(r)
+            self.caluclattotalsale(self.recivetotalamlist, self.totalreciveam, self.reciveam_lable2)
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
@@ -3567,6 +3633,7 @@ class App(customtkinter.CTk):
             for row in rows:
                 for r in row:
                     self.paytotalamlist.append(r)
+            self.caluclattotalsale(self.paytotalamlist, self.totalpayam, self.payam_lable2)
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
     def caluclattotalsale(self,list1,list2,variable):
@@ -3668,7 +3735,7 @@ class App(customtkinter.CTk):
         currentmonth=TodayDate.strftime("%m")
         currentYear = TodayDate.strftime("%Y")
         lastdate=self.sale_optionemenu.get()
-        if lastdate == "This Month" :
+        if lastdate == "This Month":
             d=1
             m=int(currentmonth)
             y=int(currentYear)
@@ -3816,14 +3883,47 @@ class App(customtkinter.CTk):
             self.sale_amount_date.configure(text=datess)
             self.totalsael(d,m,y,ld,lm,ly)
             self.totalpurc(d, m, y, ld, lm, ly)
+    def expireditemshow(self):
+      con = sqlite3.connect(database=r'DataBase/ims.db')
+      cur = con.cursor()
+      TodayDate = Dates.today()
+      currentdate = TodayDate.strftime("%d")
+      currentmonth = TodayDate.strftime("%m")
+      currentYear = TodayDate.strftime("%Y")
+      dates = f"{currentdate}/{currentmonth}/{currentYear}"
+      print(dates)
+      try:
+        print("enterd")
+        cur.execute(f"select itemname,date,openqty from itemdata")
+        rows = cur.fetchall()
+        self.exitemTable.delete(*self.exitemTable.get_children())
+        # if rows = None:
+        #    listfd = [("No Item","None","None"),]
+        #    for k in listfd:
+        #        print(k)
+        #        self.exitemTable.insert('', END, values=k)
+        # else:
+        for row in rows:
+            print(row)
+            if str(row[1]) == str(dates):
+              print("row")
+              print(row)
+              self.exitemTable.insert('', END, values=row)
+            # for r in row:
+            #     print("r")
+            #     print(r)
+            #     self.exitemTable.insert('', END, values=r)
 
+      except Exception as ex:
+        messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
     def getlowitem(self):
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
         self.itemtotalamlist.clear()
         self.itemoutlist.clear()
+        self.itemexpiredlist.clear()
         try:
-            cur.execute(f"select itemname,openqty,minstockmanten from itemdata ",)
+            cur.execute(f"select itemname,openqty,minstockmanten,date from itemdata ",)
             rows = cur.fetchall()
 
             for row in rows:
@@ -3833,6 +3933,7 @@ class App(customtkinter.CTk):
               else:
                 a=int(rowlis[2])
 
+              print(rowlis[3])
               if int(rowlis[1]) <= 5 and int(rowlis[1]) != 0 or  int(rowlis[1]) <= int(a) and int(rowlis[1]) != 0:
                  ab=rowlis[0]
                  bb =int(rowlis[1])
@@ -3844,6 +3945,13 @@ class App(customtkinter.CTk):
                  bb =int(rowlis[1])
                  c=f"Item Name :    {ab}       qty  :  {bb}"
                  self.itemoutlist.append(c)
+
+              # elif str(rowlis[3]) == str(dates):
+              #    ab=rowlis[0]
+              #    bb =int(rowlis[1])
+              #    c=f"Item Name :    {ab}       qty  :  {bb}"
+              #    print(c)
+              #    self.itemexpiredlist.append(c)
               else:
                  pass
 
@@ -3864,6 +3972,30 @@ class App(customtkinter.CTk):
                 result=f"\n {m}"
                 self.outofStock_lable2.insert(0.0,result)
               self.outofStock_lable2.configure(state='disabled')
+
+            # if len(self.itemexpiredlist) < 1 :
+            #     self.exitemTable.delete(*self.itemTable.get_children())
+            #     self.listds=["No Item","None","None"]
+            #     for k in self.listds:
+            #         print(k)
+            #         for h in k:
+            #             print(h)
+            #         # self.itemTable.insert('', END, values=h)
+            #
+            #     # self.expiredStock_lable2.insert(0.0,"No Item")
+            #     # self.expiredStock_lable2.configure(state='disabled')
+            # else:
+            #     self.exitemTable.delete(*self.itemTable.get_children())
+            #     for k in self.itemexpiredlist:
+            #         print(k)
+            #         self.exitemTable.insert('', END, values=k)
+            #         for h in k:
+            #             print(h)
+            #             self.itemTable.insert('', END, values=h)
+
+                  # result=f"\n {k}"
+                # self.expiredStock_lable2.insert(0.0,result)
+              # self.expiredStock_lable2.configure(state='disabled')
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
@@ -5360,27 +5492,28 @@ class App(customtkinter.CTk):
         cur = con.cursor()
         try:
             cur.execute(
-                "select partyname,phonenumber,emailid,recivebalence,billaddress,gstin from partydata where pid=?",
-                (row[1],))
+                "select partyname,phonenumber,emailid,recivebalence,billaddress,gstin,paybalence from partydata where partyname=?",
+                (row[0],))
             rows = cur.fetchall()
             self.purchesTable.delete(*self.purchesTable.get_children())
             for row in rows:
                 self.purchesname.set(row[0])
                 self.purchesnumber.set(f"Phone No. : {row[1]}")
                 self.purchesemail.set(f"Email : {row[2]}")
-                self.purchescrlimit.set(f"Receiving Amount : ₹{row[3]}")
+                self.purchescrlimit.set(f"Receiving Amount : ₹ {row[3]}")
                 self.purchesaddress.set(f"Address : {row[4]}")
                 self.purchesgstin.set(f"GSTIN : {row[5]}")
-                self.purshow()
-                self.get_purchese_data()
-                self.purclear()
+                self.purchescrpay.set(f"Paying Amount : ₹ {row[6]}")
+            self.purclear()
+            self.get_purchese_data()
+
         except Exception as ex:
-            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+            print("Error", f"Error due to : {str(ex)}")
     def purchasedataget(self,event):
         f = self.purchestransictionTable.focus()
         content = (self.purchestransictionTable.item(f))
         mow = content['values']
-        invoice_zero=6-len(str(mow[0]))
+        invoice_zero = 6 - len(str(mow[0]))
         a = 1
         mm = "0"
         while a < invoice_zero:
@@ -5507,6 +5640,62 @@ class App(customtkinter.CTk):
           con.commit()
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+    def purchase_trans_delete(self):
+      try:
+        f = self.purchestransictionTable.focus()
+        content = (self.purchestransictionTable.item(f))
+        mow = content['values']
+        tt=str(mow[3])
+        totalam=int(tt.replace(".0",""))
+        recived = 0
+        if mow[4] == "" or mow[4] == " ":
+            recived = 0
+        else:
+            recived=int(mow[4])
+        invoice_zero = 6 - len(str(mow[0]))
+        a = 1
+        mm = "0"
+        while a < invoice_zero:
+            mm = mm + "0"
+            a += 1
+        final = f"{mm}{mow[0]}"
+        strfinal = str(final)
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+
+        cur.execute("Select * from gstpurchase where invoiceno=?",(strfinal,))
+        row = cur.fetchone()
+        if row == None:
+            messagebox.showerror("Error","Invalid Invoice No",parent=self)
+        else :
+            op=messagebox.askyesno("Confirm","Do you really want to delete?",parent=self)
+            if op==True:
+                cur.execute("Select phonenumber from gstpurchase where invoiceno=?", (strfinal,))
+                rowk = cur.fetchone()
+                for rk in rowk:
+                    gstno = rk
+
+                cur.execute("Select paybalence from partydata where phonenumber=?", (gstno,))
+                rowm = cur.fetchone()
+                updateamo=0
+                for rm in rowm:
+                    recivedDBam = int(rm)
+                    finall = int(totalam) - int(recived)
+                    updateamo = int(recivedDBam) - finall
+
+                cur.execute("Update partydata set paybalence=? where phonenumber=?", (
+                    updateamo,
+                    gstno,
+                ))
+                con.commit()
+                cur.execute("delete from gstpurchase where invoiceno=?",(strfinal,))
+                con.commit()
+                messagebox.showinfo("Delete",f"Invoice No {strfinal} Deleted Successfully",parent=self)
+                self.purshow()
+                self.purclear()
+                self.get_purchese_data()
+      except Exception as ex:
+             print("Error",f"Error due to : {str(ex)}")
     def purchestranssearch(self):
         select = self.purches_pur_search.get()
         ssk = select.replace("Invoice", "invoiceno")
@@ -5522,7 +5711,7 @@ class App(customtkinter.CTk):
                 messagebox.showerror("Error", "Search input should be required", parent=self)
             else:
                 cur.execute(
-                    "select invoiceno,invoicedate,paymentype,total,received,refreceno from gstsale where " + sss + " LIKE '%" + self.Var_pur_searchtxt.get() + "%'")
+                    "select invoiceno,invoicedate,paymentype,total,received,refreceno from gstpurchase where " + sss + " LIKE '%" + self.purches_pur_serch_entery.get() + "%'")
                 rows = cur.fetchall()
                 if len(rows) != 0:
                     self.purchestransictionTable.delete(*self.purchestransictionTable.get_children())
@@ -5533,6 +5722,8 @@ class App(customtkinter.CTk):
 
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
+
+
     def purtransclear(self):
         self.purches_pur_search.set("Select"),
         self.Var_pur_searchtxt.set(""),

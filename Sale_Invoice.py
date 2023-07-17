@@ -7,7 +7,7 @@ from num2words import num2words
 import datetime
 import os
 from docx2pdf import convert
-doc = DocxTemplate("saleinvo1.docx")
+doc = DocxTemplate("DataBase/Invoice/saleinvo1.docx")
 
 item_list = []
 party_list = []
@@ -666,10 +666,11 @@ totalinword=num2words(partydata_list[9])
 tta=capwords(totalinword)
 
 get_item_data()
+print(partyam)
 doc.render({"company":"Cyber Tech","phone": "8830136942","nam":partydata_list[0],"partynumber":partydata_list[1],"gstin":partydata_list[2],"invoice":partydata_list[4],"date":partydata_list[5],"state":partydata_list[6],"tota":partydata_list[9],"total":partyam[0],"recam":partydata_list[10],"balen":partyam[1],"totalqty":partydata_list[14],"totaldic":partydata_list[13],"item_list":item_list,"amtinword":tta})
-doc.save("new_sale_sampleinvoice.docx")
-filename=f"SaleInvoice/{partydata_list[0]}_{partydata_list[2]}_{partydata_list[4]}.pdf"
-path=f"SaleInvoice/{partydata_list[0]}_{partydata_list[2]}_{partydata_list[4]}.pdf"
-convert("new_sale_sampleinvoice.docx", filename)
+doc.save("DataBase/Invoice/new_sale_sampleinvoice.docx")
+filename=f"SaleInvoice/{partydata_list[0]}_{partydata_list[4]}.pdf"
+path=f"SaleInvoice/{partydata_list[0]}_{partydata_list[4]}.pdf"
+convert("DataBase/Invoice/new_sale_sampleinvoice.docx", filename)
 subprocess.Popen([path], shell=True)
 

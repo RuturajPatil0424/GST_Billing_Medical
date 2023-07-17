@@ -890,29 +890,43 @@ class saleClass(customtkinter.CTk):
                 self.add_amount()
                 self.invoice_updator()
                 self.invoice_genrator()
+                self.update_iqt()
                 self.invoice_event()
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
     def add_amount(self):
      try:
+        rr=0
+        recived = int(self.reciveamount.get())
+        tota = str(self.resultam.get())
+        totak = tota.replace(".0","")
+        total = int(totak)
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
 
-        cur.execute(f"Update saleinvopartyam  set partyam=?,partyamtotal=? where no=1", (
-            self.reciveamount.get(),
-            self.resultam.get(),
-        ))
+        patytoat = total - recived
+
+
+
+        cur.execute("select recivebalence from partydata where phonenumber=?", (self.phonenumber_entry.get(),))
+        rows = cur.fetchall()
+        for row in rows:
+            for r in row:
+                rr=int(r)
+        result = int(rr+(total-recived))
+        cur.execute(f"Update partydata set recivebalence=? where phonenumber={self.phonenumber_entry.get()}",(
+             result,
+            ))
         con.commit()
 
-        cur.execute(f"Select recivebalence from partydata where gstin={self.gstin_entry.get()}")
-        cur.execute(f"Update partydata set recivebalence=? where gstin={self.gstin_entry.get()}",(
-             self.resultam.get(),
-            ))
+        cur.execute(f"Update saleinvopartyam  set partyam=?,partyamtotal=? where no=1", (
+            patytoat,
+            result,
+        ))
         con.commit()
 
      except Exception as ex:
       print(ex)
-
 
     def add_invoice_event(self):
         self.get_party_gstin()
@@ -1203,9 +1217,6 @@ class saleClass(customtkinter.CTk):
         esult = recivee + (total - payed)
         result =str(esult)
         self.resultam.set(result)
-
-
-
 
 
     def get_item_qty(self, iname, iseto):
@@ -2111,7 +2122,7 @@ class saleClass(customtkinter.CTk):
         # self.get_item_tax(self.no3_item_entry, self.itax3)
         self.get_item_dec(self.no3_item_entry.get(), self.id3)
         self.itemgstbill(self.no3_qty_entry.get(), self.no3_unitprice_entry.get(), self.no3_dec_percentagee_entry.get(),
-                         self.ida3, self.ita3, self.iam3)
+                         self.ida3, self.iam3)
         self.finalamount()
         self.totalqty()
         self.totaldesam()
@@ -2215,12 +2226,6 @@ class saleClass(customtkinter.CTk):
         self.totaldesam()
         #self.totaltaxam()
 
-    # def tax(self,event):
-    #     self.itemtable()
-    #     self.finalamount()
-    #     self.totalqty()
-    #     self.totaldesam()
-    #     self.totaltaxam()
 
     def invoice_genrator(self):
 
@@ -2299,17 +2304,31 @@ class saleClass(customtkinter.CTk):
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
     def update_iqt(self):
-        self.update_item_qty(self.no1_item_entry.get(), self.iq1)
-        self.update_item_qty(self.no2_item_entry.get(), self.iq2)
-        self.update_item_qty(self.no3_item_entry.get(), self.iq3)
-        self.update_item_qty(self.no4_item_entry.get(), self.iq4)
-        self.update_item_qty(self.no5_item_entry.get(), self.iq5)
-        self.update_item_qty(self.no6_item_entry.get(), self.iq6)
-        self.update_item_qty(self.no7_item_entry.get(), self.iq7)
-        self.update_item_qty(self.no8_item_entry.get(), self.iq8)
-        self.update_item_qty(self.no9_item_entry.get(), self.iq9)
-        self.update_item_qty(self.no10_item_entry.get(), self.iq10)
+        try:
+           setting=0
+           con = sqlite3.connect(database=r'DataBase/ims.db')
+           cur = con.cursor()
+           cur.execute("select saleqty from qtysetting where no=1")
+           rows = cur.fetchall()
+           for row in rows:
+               for r in row:
+                   setting = int(r)
+           if setting == 1:
+               self.update_item_qty(self.no1_item_entry.get(), self.iq1)
+               self.update_item_qty(self.no2_item_entry.get(), self.iq2)
+               self.update_item_qty(self.no3_item_entry.get(), self.iq3)
+               self.update_item_qty(self.no4_item_entry.get(), self.iq4)
+               self.update_item_qty(self.no5_item_entry.get(), self.iq5)
+               self.update_item_qty(self.no6_item_entry.get(), self.iq6)
+               self.update_item_qty(self.no7_item_entry.get(), self.iq7)
+               self.update_item_qty(self.no8_item_entry.get(), self.iq8)
+               self.update_item_qty(self.no9_item_entry.get(), self.iq9)
+               self.update_item_qty(self.no10_item_entry.get(), self.iq10)
+           elif setting == 0:
+               pass
 
+        except Exception as e:
+            print(e)
     def amountupdate(self,*args):
         self.finalamount()
 

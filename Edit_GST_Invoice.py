@@ -7,7 +7,7 @@ from num2words import num2words
 import datetime
 import os
 from docx2pdf import convert
-doc = DocxTemplate("taxinvo1.docx")
+doc = DocxTemplate("DataBase/Invoice/taxinvo1.docx")
 
 item_list = []
 party_list = []
@@ -672,6 +672,6 @@ doc.render({"company":"Cyber Tech","phone": "8830136942","nam":partydata_list[0]
 doc.save("new_sampleinvoice.docx")
 filename=f"invoices/{partydata_list[0]}_{partydata_list[2]}_{partydata_list[4]}.pdf"
 path=f"invoices/{partydata_list[0]}_{partydata_list[2]}_{partydata_list[4]}.pdf"
-convert("new_sampleinvoice.docx", filename)
+convert("DataBase/Invoice/new_sampleinvoice.docx", filename)
 subprocess.Popen([path], shell=True)
 

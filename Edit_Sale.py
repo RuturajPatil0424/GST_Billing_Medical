@@ -847,7 +847,6 @@ class saleClass(customtkinter.CTk):
                     ))
                 con.commit()
                 messagebox.showinfo("Success", "Sale Updated Successfully", parent=self)
-                # self.add_amount()
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
     def add_amount(self):
@@ -987,8 +986,9 @@ class saleClass(customtkinter.CTk):
                     ))
                 con.commit()
                 # self.update_iqt()
-                self.getqqty()
+                self.qqty()
                 self.getdataamount()
+                self.add_party_event()
                 #self.invoice_genrator()
 
 
@@ -1000,27 +1000,17 @@ class saleClass(customtkinter.CTk):
     def get_final_total (self, input, output):
       try:
         inqty = float(input.get())
-        print(inqty)
-        print("a")
-        print(output.get())
         fffam=0
         if float(output.get()) < float(inqty):
-            print("incresed")
             finalqty = float(inqty) - float(output.get())
-            ffin = float(finalqty)
-            fffam = ffin
+            fffam = float(finalqty)
 
         elif float(output.get()) > float(inqty):
-            print("decresed")
             finalqty = float(output.get()) - float(inqty)
-            ffin =-float(finalqty)
-            fffam = ffin
+            fffam = float(finalqty)
 
         elif float(output.get()) == float(inqty):
-            print("eqal")
-            ffin =float(inqty)
-            fffam = ffin
-        print(fffam)
+            fffam = float(inqty)
         return fffam
 
       except Exception as e:
@@ -1035,24 +1025,14 @@ class saleClass(customtkinter.CTk):
         dbtotal = float(self.dtotalam.get())
         cktptalam = float(self.Total_entry.get())
         fffam=0
-        print("input")
-        print(recivedam.get())
-        print("output")
-        print(dbrecivedam.get())
-        print("Total")
-        print(total)
-        print("Ck Total")
-        print(cktptalam)
         tota = str(total)
         totalam = tota.replace("-", "")
         totalom = float(totalam)
         if dbam < ream:
             if cktptalam < dbtotal:
-              print("incresed")
               finalqty = ream - dbam
               self.subupdatefinalam(self.phonenumber_entry,totalom ,finalqty,1)
             elif cktptalam > dbtotal:
-                print("incresed")
                 finalqty = ream - dbam
                 self.subupdatefinalam(self.phonenumber_entry,totalom, finalqty,2)
             elif cktptalam == dbtotal:
@@ -1060,13 +1040,10 @@ class saleClass(customtkinter.CTk):
                 self.subupdatefinalam(self.phonenumber_entry, totalom, finalqty, 5)
         elif dbam > ream:
           if cktptalam < dbtotal:
-              print("incresed")
               finalqty = dbam - ream
-              print(finalqty)
               self.subupdatefinalam(self.phonenumber_entry,totalom,finalqty,3)
 
           elif cktptalam > dbtotal:
-              print("decresed")
               finalqty = dbam - ream
               self.subupdatefinalam(self.phonenumber_entry, totalom, finalqty, 4)
           elif cktptalam == dbtotal:
@@ -1085,28 +1062,28 @@ class saleClass(customtkinter.CTk):
 
       except Exception as e:
          print(e)
-    def updatefinalam(self, phone, amo):
-      if phone.get() == "":
-            pass
-      else:
-       try:
-
-        con = sqlite3.connect(database=r'DataBase/ims.db')
-        cur = con.cursor()
-        phone_no=phone.get()
-        cur.execute("select recivebalence from partydata where phonenumber=?", (phone_no,))
-        rows = cur.fetchall()
-        for row in rows:
-            for i in row:
-
-                resualt = float(i) + float(amo)
-
-                cur.execute(f"Update partydata set recivebalence=? where phonenumber={phone_no}", (
-                  resualt,
-                ))
-                con.commit()
-       except Exception as e:
-          print(e)
+    # def updatefinalam(self, phone, amo):
+    #   if phone.get() == "":
+    #         pass
+    #   else:
+    #    try:
+    #
+    #     con = sqlite3.connect(database=r'DataBase/ims.db')
+    #     cur = con.cursor()
+    #     phone_no=phone.get()
+    #     cur.execute("select recivebalence from partydata where phonenumber=?", (phone_no,))
+    #     rows = cur.fetchall()
+    #     for row in rows:
+    #         for i in row:
+    #
+    #             resualt = float(i) + float(amo)
+    #
+    #             cur.execute(f"Update partydata set recivebalence=? where phonenumber={phone_no}", (
+    #               resualt,
+    #             ))
+    #             con.commit()
+    #    except Exception as e:
+    #       print(e)
 
     def subupdatefinalam(self, phone, subamo, recived,type):
       if phone.get() == "":
@@ -1122,65 +1099,24 @@ class saleClass(customtkinter.CTk):
         for row in rows:
             for i in row:
                 iam=float(i)
-        print(iam)
-        print(subamo)
-        print(recived)
         if type == 1:
-                print(1)
-                decresdamo = iam - float(subamo)
-                reciveamodec =int( float(decresdamo) - float(recived))
-                print("sub enterd")
-                print(decresdamo)
-                print(reciveamodec)
-                print("emd")
+                reciveamodec =int((iam - float(subamo)) - float(recived))
         elif type == 2:
-                print(2)
-                decresdamo = iam + float(subamo)
-                reciveamodec =int( float(decresdamo) - float(recived))
-                print("sub enterd")
-                print(decresdamo)
-                print(reciveamodec)
-                print("emd")
+                reciveamodec =int((iam + float(subamo)) - float(recived))
         elif type == 3:
-                    print(3)
-                    decresdamo = iam - float(subamo)
-                    reciveamodec =int( float(decresdamo) + float(recived))
-                    print("sub enterd")
-                    print(decresdamo)
-                    print(reciveamodec)
-                    print("emd")
+                    reciveamodec =int((iam - float(subamo)) + float(recived))
         elif type == 4:
-                    print(4)
-                    reciveamodec =int( (iam + float(subamo)) + float(recived))
-                    # reciveamodec = float(decresdamo) + float(recived)
-                    print("sub enterd")
-                    print(reciveamodec)
-                    print("emd")
+                    reciveamodec =int((iam + float(subamo)) + float(recived))
         elif type == 5:
-                    print(5)
-                    reciveamodec =int( iam - float(recived))
-                    print("sub enterd")
-                    print(reciveamodec)
-                    print("emd")
-
+                    reciveamodec =int(iam - float(recived))
         elif type == 6:
-                    print(6)
-                    reciveamodec =int( iam + float(recived))
-                    print("sub enterd")
-                    print(reciveamodec)
-                    print("emd")
+                    reciveamodec =int(iam + float(recived))
         elif type == 7:
-                    print(7)
-                    reciveamodec =int( iam - float(subamo))
-                    print("sub enterd")
+                    reciveamodec =int(iam - float(subamo))
         elif type == 8:
-                    print(8)
-                    reciveamodec =int( iam + float(subamo))
-                    print("sub enterd")
+                    reciveamodec =int(iam + float(subamo))
         elif type == 9:
-                    print(9)
                     reciveamodec = int(iam)
-                    print("sub enterd")
 
         cur.execute(f"Update partydata set recivebalence=? where phonenumber={phone_no}", (
           reciveamodec,
@@ -1192,81 +1128,95 @@ class saleClass(customtkinter.CTk):
         totalammm=self.get_final_total(self.Total_entry, self.dtotalam)
         self.get_final_amount(self.Received_entry,self.dreciveamount,totalammm)
 
-
-
-    def get_final_qty(self, entery, input, output):
+    def get_final_qty(self, entery, input, output,iname):
       try:
-        if entery.get() == "":
+        if entery.get() == "" or entery.get() == " " :
             output.set("")
-        inqty = int(entery.get())
-        if int(input.get()) < int(inqty):
-            finalqty = int(inqty) - int(input.get())
-            output.set(finalqty)
-        elif int(input.get()) > int(inqty):
-            finalqty = int(input.get()) - int(inqty)
-            ffin=-int(finalqty)
+        else:
+          name=(iname.get())
+          inqty = int(str(entery.get()))
+          dbqty = int(str(input.get()))
+          if dbqty < inqty:
+            ffin =int(inqty - dbqty)
             output.set(ffin)
+            self.updateqty(name,ffin,1)
+          elif dbqty > inqty:
+            ffin =int(dbqty - inqty)
+            output.set(ffin)
+            self.updateqty(name, ffin, 2)
+          elif dbqty == inqty:
+            output.set(dbqty)
+            self.updateqty(name, dbqty, 3)
       except Exception as e:
          print(e)
-    def updateqty(self,name,qtyy):
-      if name.get() == "":
+    def updateqty(self,name,qtyy,no):
+      item_name = name
+      if item_name == "" or item_name == " ":
             pass
       else:
+
        try:
+        iqty = 0
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
-        item_name=name.get()
         cur.execute("select openqty from itemdata where itemname=?", (item_name,))
         rows = cur.fetchall()
         for row in rows:
             for i in row:
+                iqty=int(i)
+        if no == 1 :
+            resualt = int(iqty) - int(qtyy)
+        elif no == 2 :
+            resualt = int(iqty) + int(qtyy)
+        elif no == 3 :
+            resualt = int(iqty)
 
-                resualt = int(i) - int(qtyy.get())
-
-        # cur.execute("select pid from itemdata where itemname=?", (item_name,))
-        # pidds = cur.fetchall()
-        # for pqid in pidds:
-        #     for p in pqid:
-        #       pidd=p
+        cur.execute("select pid from itemdata where itemname=?", (item_name,))
+        pidds = cur.fetchall()
+        for pqid in pidds:
+            for p in pqid:
+              pidd=p
 
         # cur.execute("Select pid from itemdata where itemname=?", (pidd,))
         # row = cur.fetchone()
-        cur.execute(f"Update itemdata set openqty=? where itemname={item_name}", (
+        cur.execute(f"Update itemdata set openqty=? where pid={pidd}", (
           resualt,
         ))
         con.commit()
        except Exception as e:
           print(e)
     def qqty(self):
-        self.get_final_qty(self.no1_qty_entry, self.pastqty1, self.fpastqty1)
-        self.get_final_qty(self.no2_qty_entry, self.pastqty2, self.fpastqty2)
-        self.get_final_qty(self.no3_qty_entry, self.pastqty3, self.fpastqty3)
-        self.get_final_qty(self.no4_qty_entry, self.pastqty4, self.fpastqty4)
-        self.get_final_qty(self.no5_qty_entry, self.pastqty5, self.fpastqty5)
-        self.get_final_qty(self.no6_qty_entry, self.pastqty6, self.fpastqty6)
-        self.get_final_qty(self.no7_qty_entry, self.pastqty7, self.fpastqty7)
-        self.get_final_qty(self.no8_qty_entry, self.pastqty8, self.fpastqty8)
-        self.get_final_qty(self.no9_qty_entry, self.pastqty9, self.fpastqty9)
-        self.get_final_qty(self.no10_qty_entry, self.pastqty10, self.fpastqty10)
-    def getqqty(self):
-        self.qqty()
+      try:
+        self.get_final_qty(self.no1_qty_entry, self.pastqty1, self.fpastqty1,self.no1_item_entry)
+        self.get_final_qty(self.no2_qty_entry, self.pastqty2, self.fpastqty2,self.no2_item_entry)
+        self.get_final_qty(self.no3_qty_entry, self.pastqty3, self.fpastqty3,self.no3_item_entry)
+        self.get_final_qty(self.no4_qty_entry, self.pastqty4, self.fpastqty4,self.no4_item_entry)
+        self.get_final_qty(self.no5_qty_entry, self.pastqty5, self.fpastqty5,self.no5_item_entry)
+        self.get_final_qty(self.no6_qty_entry, self.pastqty6, self.fpastqty6,self.no6_item_entry)
+        self.get_final_qty(self.no7_qty_entry, self.pastqty7, self.fpastqty7,self.no7_item_entry)
+        self.get_final_qty(self.no8_qty_entry, self.pastqty8, self.fpastqty8,self.no8_item_entry)
+        self.get_final_qty(self.no9_qty_entry, self.pastqty9, self.fpastqty9,self.no9_item_entry)
+        self.get_final_qty(self.no10_qty_entry, self.pastqty10, self.fpastqty10,self.no10_item_entry)
+      except Exception as e:
+         print(e)
+    # def getqqty(self):
+    #     self.qqty()
 
-        self.updateqty(self.no1_item_entry, self.fpastqty1)
-        self.updateqty(self.no2_item_entry, self.fpastqty2)
-        self.updateqty(self.no3_item_entry, self.fpastqty3)
-        self.updateqty(self.no4_item_entry, self.fpastqty4)
-        self.updateqty(self.no5_item_entry, self.fpastqty5)
-        self.updateqty(self.no6_item_entry, self.fpastqty6)
-        self.updateqty(self.no7_item_entry, self.fpastqty7)
-        self.updateqty(self.no8_item_entry, self.fpastqty8)
-        self.updateqty(self.no9_item_entry, self.fpastqty9)
-        self.updateqty(self.no10_item_entry, self.fpastqty10)
+        # self.updateqty(self.no1_item_entry, self.fpastqty1)
+        # self.updateqty(self.no2_item_entry, self.fpastqty2)
+        # self.updateqty(self.no3_item_entry, self.fpastqty3)
+        # self.updateqty(self.no4_item_entry, self.fpastqty4)
+        # self.updateqty(self.no5_item_entry, self.fpastqty5)
+        # self.updateqty(self.no6_item_entry, self.fpastqty6)
+        # self.updateqty(self.no7_item_entry, self.fpastqty7)
+        # self.updateqty(self.no8_item_entry, self.fpastqty8)
+        # self.updateqty(self.no9_item_entry, self.fpastqty9)
+        # self.updateqty(self.no10_item_entry, self.fpastqty10)
     def invoice_event(self):
         call(["python", "Sale_Invoice.py"])
     def savedata(self):
         self.add_invoice_event()
         # self.invoice_updator()
-        self.add_party_event()
         self.invoice_event()
 
 
@@ -1291,9 +1241,10 @@ class saleClass(customtkinter.CTk):
         except Exception as ex:
             print("Error", f"Error due to : {str(ex)}")
 
+
     def get_party_gstin(self):
 
-        if self.partyname_entry.get() == "":
+        if self.partyname_entry.get() == "" or self.partyname_entry.get() == " ":
             self.gstin.set("")
         else:
          con = sqlite3.connect(database=r'DataBase/ims.db')
@@ -1316,7 +1267,7 @@ class saleClass(customtkinter.CTk):
 
     def get_party_state(self):
 
-        if self.partyname_entry.get() == "":
+        if self.partyname_entry.get() == "" or self.partyname_entry.get() == " " :
             self.state_menu.set("None")
         else:
          con = sqlite3.connect(database=r'DataBase/ims.db')
@@ -1338,14 +1289,14 @@ class saleClass(customtkinter.CTk):
 
     def get_party_payamount(self):
 
-        if self.partyname_entry.get() == "":
+        if self.partyname_entry.get() == "" or self.partyname_entry.get() == " ":
             self.gstin.set("")
         else:
          con = sqlite3.connect(database=r'DataBase/ims.db')
          cur = con.cursor()
          try:
 
-            cur.execute("select recivebalence from partydata where partyname=?", (self.partyname_entry.get(),))
+            cur.execute("select recivebalence from partydata where phonenumber=?", (self.phonenumber_entry.get(),))
             rows = cur.fetchall()
             
 
@@ -1359,7 +1310,7 @@ class saleClass(customtkinter.CTk):
 
     def get_party_reciveamount(self):
 
-        if self.partyname_entry.get() == "":
+        if self.partyname_entry.get() == "" or self.partyname_entry.get() == " ":
             self.gstin.set("")
         else:
          con = sqlite3.connect(database=r'DataBase/ims.db')
@@ -1379,7 +1330,7 @@ class saleClass(customtkinter.CTk):
 
     def get_party_number(self):
 
-        if self.partyname_entry.get() == "":
+        if self.partyname_entry.get() == "" or self.partyname_entry.get() == " ":
             self.partynumber.set("")
         else:
           con = sqlite3.connect(database=r'DataBase/ims.db')
@@ -1399,7 +1350,7 @@ class saleClass(customtkinter.CTk):
             print("Error", f"Error due to : {str(ex)}")
 
     def get_item_price(self, name, seto):
-        if name == "":
+        if name == "" or name == " ":
             seto.set("")
         else:
 
@@ -1421,7 +1372,7 @@ class saleClass(customtkinter.CTk):
     def get_amount(self):
         # pay = int(self.payamount.get())
         tax=self.reciveamount.get()
-        if tax == "":
+        if tax == "" or tax == " ":
             re=tax.replace("","0")
         else:
             re=tax
@@ -1454,7 +1405,7 @@ class saleClass(customtkinter.CTk):
 
     def get_item_qty(self, iname, iseto):
         try:
-            if iname == "":
+            if iname == "" or iname == " ":
                 iseto.set(" ")
 
             else:
@@ -1513,7 +1464,7 @@ class saleClass(customtkinter.CTk):
 
     def get_item_qtyentery(self, iname, qaunty):
         try:
-            if iname == "":
+            if iname == "" or iname == " ":
                 qaunty.set(" ")
 
             else:
@@ -1594,7 +1545,7 @@ class saleClass(customtkinter.CTk):
 
 
     def get_item_dec(self, iname, iseto):
-      if iname == "":
+      if iname == "" or iname == " ":
             iseto.set(" ")
       else:
         con = sqlite3.connect(database=r'DataBase/ims.db')
@@ -1622,7 +1573,7 @@ class saleClass(customtkinter.CTk):
             print("Error", f"Error due to : {str(ex)}")
 
     def get_item_unit(self, iname, iseto):
-      if iname == "":
+      if iname == "" or iname == " ":
           iseto.insert(0, "")
       else:
         con = sqlite3.connect(database=r'DataBase/ims.db')
@@ -1956,12 +1907,16 @@ class saleClass(customtkinter.CTk):
         self.update_combobox(self.no10_item_entry,self.itm10)
 
     def update_combobox(self, entery, method):
-        type = entery.get()
-        self.ItemList.clear()
-        self.ItemList.append("")
-        con = sqlite3.connect(database=r'DataBase/ims.db')
-        cur = con.cursor()
-        try:
+       itemname = entery.get()
+       if itemname == "" or itemname == " ":
+           pass
+       else:
+         type = entery.get()
+         self.ItemList.clear()
+         self.ItemList.append("")
+         con = sqlite3.connect(database=r'DataBase/ims.db')
+         cur = con.cursor()
+         try:
             cur.execute("select itemname from itemdata")
             rows = cur.fetchall()
             for items in rows:
@@ -1972,8 +1927,10 @@ class saleClass(customtkinter.CTk):
 
             entery.configure(values=self.ItemList)
             self.get_item_name()
-        except Exception as ex:
+         except Exception as ex:
             print("Error", f"Error due to : {str(ex)}")
+
+
 
     def updateparty(self,*args):
         self.Partynames.clear()
@@ -2036,7 +1993,7 @@ class saleClass(customtkinter.CTk):
         # self.get_item_tax(self.no3_item_entry, self.itax3)
         self.get_item_dec(self.no3_item_entry.get(), self.id3)
         self.itemgstbill(self.no3_qty_entry.get(), self.no3_unitprice_entry.get(), self.no3_dec_percentagee_entry.get(),
-                         self.ida3, self.ita3, self.iam3)
+                         self.ida3, self.iam3)
         self.finalamount()
         self.totalqty()
         self.totaldesam()
@@ -2143,7 +2100,7 @@ class saleClass(customtkinter.CTk):
 
 
     def update_item_qty(self, name, seto):
-        if name == "":
+        if name == "" or name == " ":
             seto.set("")
         else:
 
@@ -2257,6 +2214,7 @@ class saleClass(customtkinter.CTk):
 
             self.no1var.set(items_datalist[12])
             self.iq1.set(items_datalist[13])
+            self.pastqty1.set(items_datalist[13])
             self.Item_unit_List.insert(0,items_datalist[14])
             self.no1_unit_entry.set(items_datalist[14])
             self.no1_unit_entry.configure(values=self.Item_unit_List)
@@ -2265,6 +2223,7 @@ class saleClass(customtkinter.CTk):
 
             self.no2var.set(items_datalist[19])
             self.iq2.set(items_datalist[20])
+            self.pastqty2.set(items_datalist[20])
             self.Item_unit_List.insert(0, items_datalist[21])
             self.no2_unit_entry.set(items_datalist[21])
             self.no2_unit_entry.configure(values=self.Item_unit_List)
@@ -2273,6 +2232,7 @@ class saleClass(customtkinter.CTk):
 
             self.no3var.set(items_datalist[26])
             self.iq3.set(items_datalist[27])
+            self.pastqty3.set(items_datalist[27])
             self.Item_unit_List.insert(0, items_datalist[28])
             self.no3_unit_entry.set(items_datalist[28])
             self.no3_unit_entry.configure(values=self.Item_unit_List)
@@ -2281,6 +2241,7 @@ class saleClass(customtkinter.CTk):
 
             self.no4var.set(items_datalist[33])
             self.iq4.set(items_datalist[34])
+            self.pastqty4.set(items_datalist[34])
             self.Item_unit_List.insert(0, items_datalist[35])
             self.no4_unit_entry.set(items_datalist[35])
             self.no4_unit_entry.configure(values=self.Item_unit_List)
@@ -2289,6 +2250,7 @@ class saleClass(customtkinter.CTk):
 
             self.no5var.set(items_datalist[40])
             self.iq5.set(items_datalist[41])
+            self.pastqty5.set(items_datalist[41])
             self.Item_unit_List.insert(0, items_datalist[42])
             self.no5_unit_entry.set(items_datalist[42])
             self.no5_unit_entry.configure(values=self.Item_unit_List)
@@ -2297,6 +2259,7 @@ class saleClass(customtkinter.CTk):
 
             self.no6var.set(items_datalist[47])
             self.iq6.set(items_datalist[48])
+            self.pastqty6.set(items_datalist[48])
             self.Item_unit_List.insert(0, items_datalist[49])
             self.no6_unit_entry.set(items_datalist[49])
             self.no6_unit_entry.configure(values=self.Item_unit_List)
@@ -2305,6 +2268,7 @@ class saleClass(customtkinter.CTk):
 
             self.no7var.set(items_datalist[54])
             self.iq7.set(items_datalist[55])
+            self.pastqty7.set(items_datalist[55])
             self.Item_unit_List.insert(0, items_datalist[56])
             self.no7_unit_entry.set(items_datalist[56])
             self.no7_unit_entry.configure(values=self.Item_unit_List)
@@ -2313,6 +2277,7 @@ class saleClass(customtkinter.CTk):
 
             self.no8var.set(items_datalist[61])
             self.iq8.set(items_datalist[62])
+            self.pastqty8.set(items_datalist[62])
             self.Item_unit_List.insert(0, items_datalist[63])
             self.no8_unit_entry.set(items_datalist[63])
             self.no8_unit_entry.configure(values=self.Item_unit_List)
@@ -2321,6 +2286,7 @@ class saleClass(customtkinter.CTk):
 
             self.no9var.set(items_datalist[68])
             self.iq9.set(items_datalist[69])
+            self.pastqty9.set(items_datalist[69])
             self.Item_unit_List.insert(0, items_datalist[70])
             self.no9_unit_entry.set(items_datalist[70])
             self.no9_unit_entry.configure(values=self.Item_unit_List)
@@ -2329,6 +2295,7 @@ class saleClass(customtkinter.CTk):
 
             self.no10var.set(items_datalist[75])
             self.iq10.set(items_datalist[76])
+            self.pastqty10.set(items_datalist[76])
             self.Item_unit_List.insert(0, items_datalist[77])
             self.no10_unit_entry.set(items_datalist[77])
             self.no10_unit_entry.configure(values=self.Item_unit_List)
@@ -2488,7 +2455,7 @@ class saleClass(customtkinter.CTk):
         self.totaldesam()
         #self.totaltaxam()
     def get_P_item_price(self, name, seto):
-        if name == "":
+        if name == "" or name == " ":
             seto.set(" ")
         else:
 
@@ -2509,7 +2476,7 @@ class saleClass(customtkinter.CTk):
 
     def get_item_unitdata_name(self, name, seto,box):
         seto.clear()
-        if name.get() == "":
+        if name.get() == "" or name.get() == " ":
             seto.insert(0,"")
             box.set(" ")
             box.configure(values=seto)
@@ -2550,6 +2517,9 @@ class saleClass(customtkinter.CTk):
         self.totaldesam()
 
     def update_Unit_combobox(self,entery,list):
+      if entery.get() == "" or entery.get() == " ":
+          pass
+      else:
         type=entery.get()
         list.clear()
         list.append("")
