@@ -49,6 +49,8 @@ class supplierClass(customtkinter.CTk):
         self.customlimit = 0
 
 
+
+
         #todo: create tabview
         self.tabview = customtkinter.CTkTabview(self, width=740,height=350)
         self.tabview.grid(row=0, column=2, padx=(20, 0), pady=(200, 0), sticky="nsew")
@@ -162,28 +164,24 @@ class supplierClass(customtkinter.CTk):
 
         try:
             if self.partyname_entry.get() == "":
-                messagebox.showerror("Error" , "Party Name must be required!" , parent=self)
-            elif gstinnoo == "":
-                messagebox.showerror("Error" , "GSTIN must be required!" , parent=self)
-            elif len(gstinnoo) != 15:
-                messagebox.showerror("Error" , "Please enter valid GSTIN!" , parent=self)
-            elif self.validate_gstin(gstinnoo) == False:
-                messagebox.showerror("Error", "Please enter valid GSTIN!", parent=self)
-            elif self.number_entry.get() == "":
-                messagebox.showerror("Error" , "Phone No. must be required!" , parent=self)
+                messagebox.showerror("Error", "Party Name must be required!" , parent=self)
+            elif self.gsttype_menu.get() == "Registered Business - Regular" or self.gsttype_menu.get() == "Registered Business - Composition" :
+                if gstinnoo == "":
+                   messagebox.showerror("Error", "GSTIN must be required!" , parent=self)
+                elif len(gstinnoo) != 15:
+                   messagebox.showerror("Error", "Please enter valid GSTIN!" , parent=self)
+                elif self.validate_gstin(gstinnoo) == False:
+                   messagebox.showerror("Error", "Please enter valid GSTIN!", parent=self)
+                elif self.number_entry.get() == "":
+                   messagebox.showerror("Error", "Phone No. must be required!" , parent=self)
             elif len(self.number_entry.get()) != 10:
-                messagebox.showerror("Error" , "Please enter valid Phone No.!" , parent=self)
-
+                messagebox.showerror("Error", "Please enter valid Phone No.!" , parent=self)
             elif self.state_menu.get() == "None":
-                messagebox.showerror("Error" , "Please select State!" , parent=self)
-            elif self.email_entry.get() == "":
-                messagebox.showerror("Error", "Email ID must be required!", parent=self)
-            elif self.validate_email(self.email_entry.get()) == False:
-                messagebox.showerror("Error", "Please enter valid Email ID!", parent=self)
-            elif billadd == "":
-                messagebox.showerror("Error", "Billing Address must be required!", parent=self)
-            elif shipadd == "":
-                messagebox.showerror("Error", "Shipping Address must be required!", parent=self)
+                messagebox.showerror("Error", "Please select State!" , parent=self)
+            elif self.email_entry.get() != "":
+                if self.validate_email(self.email_entry.get()) == False:
+                    messagebox.showerror("Error", "Please enter valid Email ID!", parent=self)
+
             else:
                 if self.opingbalance_entry.get() == "":
                     self.paybalence = 0
@@ -197,6 +195,10 @@ class supplierClass(customtkinter.CTk):
                     self.customlimit = 0
                 else:
                     self.customlimit = self.customlimit_entry.get()
+                if self.gstn_entry.get() == "":
+                    self.gstinn = "None"
+                else:
+                    self.gstinn = self.gstn_entry.get()
                 cur.execute("Select * from partydata where gstin=?",(self.gstn_entry.get(),))
                 row = cur.fetchone()
                 if row != None:
@@ -215,7 +217,7 @@ class supplierClass(customtkinter.CTk):
                     cur.execute("Insert into partydata (pid,partyname,gstin,phonenumber,gsttype,state,emailid,billaddress,shipaddress,paybalence,recivebalence,date,creditlim,add1,add2,add3,add4) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(
                         self.number_entry.get(),
                         self.partyname_entry.get(),
-                        self.gstn_entry.get(),
+                        self.gstinn,
                         self.number_entry.get(),
                         self.gsttype_menu.get(),
                         self.state_menu.get(),

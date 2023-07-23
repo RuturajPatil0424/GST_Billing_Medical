@@ -140,7 +140,7 @@ class App(customtkinter.CTk):
         self.navigation_frame.grid(row=0, column=0, sticky="nsew")
         self.navigation_frame.grid_rowconfigure(23, weight=1)
 
-        self.navigation_frame_label = customtkinter.CTkLabel(self.navigation_frame, text="  Cyber tech",
+        self.navigation_frame_label = customtkinter.CTkLabel(self.navigation_frame, text="  Narayani Sales",
                                                              image=self.logo_image,
                                                              compound="left",
                                                              font=customtkinter.CTkFont(size=15, weight="bold"))
@@ -3434,9 +3434,9 @@ class App(customtkinter.CTk):
         self.totalpay()
         self.getdate()
         self.caluclattotalsale(self.recivetotalamlist, self.totalreciveam, self.reciveam_lable2)
-        self.getlowitem()
         self.expireditemshow()
         self.outofitemshow()
+
     # Party
     def parties_button_event(self):
         self.select_frame_by_name("parties")
@@ -3631,9 +3631,7 @@ class App(customtkinter.CTk):
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
-    # def change_scaling_event(self, new_scaling: str):
-    #     new_scaling_float = int(new_scaling.replace("%", "")) / 100
-    #     customtkinter.set_widget_scaling(new_scaling_float)
+
 
     # home frame methods
     def calstockvalue(self):
@@ -3644,13 +3642,13 @@ class App(customtkinter.CTk):
             cur.execute(f"select saleprice,openqty from itemdata ",)
             rows = cur.fetchall()
             for row in rows:
-                a=int(row[0])
-                b =int(row[1])
-                c=a*b
-                self.itemtotalamlist.append(c)
+                a = float(row[0])
+                b = int(row[1])
+                c = a*b
+                self.itemtotalamlist.append(round(c, 2))
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-        result="₹ "+str(sum(self.itemtotalamlist))
+        result = "₹ "+str(sum(self.itemtotalamlist))
         self.stock_amount_lable.configure(text=result,text_color="green")
 
     def totalrecive(self):
@@ -3930,7 +3928,14 @@ class App(customtkinter.CTk):
     def outofitemshow(self):
       con = sqlite3.connect(database=r'DataBase/ims.db')
       cur = con.cursor()
+      lowqty=5
       try:
+        cur.execute(f"select lowstock from stocksetting where no=1")
+        rowk = cur.fetchall()
+        for k in rowk:
+            for m in k:
+               lowqty = int(m)
+
         cur.execute(f"select itemname,openqty,minstockmanten from itemdata")
         rows = cur.fetchall()
         self.otitemTable.delete(*self.otitemTable.get_children())
@@ -3938,11 +3943,10 @@ class App(customtkinter.CTk):
         for row in rows:
             if int(row[1]) <= 0:
               self.otitemTable.insert('', END, values=row)
-            elif int(row[1]) <= int(row[2]):
+            elif int(row[1]) <= lowqty:
               self.lowitemTable.insert('', END, values=row)
             else:
                 pass
-
       except Exception as ex:
         messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
     def expireditemshow(self):
@@ -3954,19 +3958,23 @@ class App(customtkinter.CTk):
       currentYear = TodayDate.strftime("%Y")
       datess = f"{currentdate}/{currentmonth}/{currentYear}"
       try:
-        cur.execute(f"select itemname,date,openqty from itemdata")
+        cur.execute(f"select itemname,exdate,openqty from itemdata")
         rows = cur.fetchall()
         date_format = "%d/%m/%Y"
         self.exitemTable.delete(*self.exitemTable.get_children())
 
         cureentdate = datetime.strptime(datess, date_format)
         for row in rows:
-            exdate = datetime.strptime(row[1], date_format)
-
-            if exdate < cureentdate and row[1] != "None" or exdate == cureentdate and row[1] != "None":
-              self.exitemTable.insert('', END, values=row)
+            if row[1] == "None" or row[1] == "" or row[1] == " " or row[1] == "dd/mm/yyyy" or row[1] == None:
+                pass
             else:
-               pass
+                exdate = datetime.strptime(row[1], date_format)
+
+                if exdate < cureentdate or exdate == cureentdate:
+                    self.exitemTable.insert('', END, values=row)
+                else:
+                    pass
+
 
 
 
@@ -4040,14 +4048,14 @@ class App(customtkinter.CTk):
                 self.show()
                 self.get_transiction_data()
                 self.patyclear()
-            cur.execute("select pid,partyname,gstin,phonenumber,gsttype,state,emailid,billaddress,shipaddress,paybalence,recivebalence,date,creditlim,add1,add2,add3,add4 from partydata where partyname=?",
+            cur.execute("select pid,partyname,gstin,phonenumber,gsttype,state,emailid,billaddress,shipaddress,paybalence,recivebalence,exdate,creditlim,add1,add2,add3,add4 from partydata where partyname=?",
                 (row[0],))
             rows = cur.fetchall()
             for row in rows:
                 for r in row:
                     partydatalist.append(r)
             cur.execute(
-                "Update editpartydata set partyname=?,gstin=?,phonenumber=?,gsttype=?,state=?,emailid=?,billaddress=?,shipaddress=?,paybalence=?,recivebalence=?,date=?,creditlim=?,add1=?,add2=?,add3=?,add4=? where pid=1",
+                "Update editpartydata set partyname=?,gstin=?,phonenumber=?,gsttype=?,state=?,emailid=?,billaddress=?,shipaddress=?,paybalence=?,recivebalence=?,exdate=?,creditlim=?,add1=?,add2=?,add3=?,add4=? where pid=1",
                 (
                     partydatalist[1],
                     partydatalist[2],
@@ -4162,7 +4170,7 @@ class App(customtkinter.CTk):
             if row != None:
                messagebox.showerror("Error", f"This GSTIN no. already assigned for {datarowlist[0]}, try different", parent=self)
             else:
-               cur.execute( "Insert into partydata (pid,partyname,gstin,phonenumber,gsttype,state,emailid,billaddress,shipaddress,paybalence,recivebalence,date) values(?,?,?,?,?,?,?,?,?,?,?,?)",
+               cur.execute( "Insert into partydata (pid,partyname,gstin,phonenumber,gsttype,state,emailid,billaddress,shipaddress,paybalence,recivebalence,exdate) values(?,?,?,?,?,?,?,?,?,?,?,?)",
                (
                    datarowlist[1],
                    datarowlist[0],
@@ -4190,10 +4198,12 @@ class App(customtkinter.CTk):
         Hsn=gst.replace("HSN No. : ","")
         iname=self.itemname.get()
         try:
-          cur.execute("delete from itemdata where hsn=?", (Hsn,))
-          con.commit()
-          messagebox.showinfo("Delete", f"{iname} Item Data Deleted Successfully", parent=self)
-          self.itemshow()
+          op = messagebox.askyesno("Warning", f"Do you really want to delete {iname} Item Data?", parent=self)
+          if op == True:
+              cur.execute("delete from itemdata where hsn=?", (Hsn,))
+              con.commit()
+              messagebox.showinfo("Delete", f"{iname} Item Data Deleted Successfully", parent=self)
+              self.itemshow()
         except Exception as e :
             messagebox.showerror("Error", f"Error due to : {str(e)}", parent=self)
     def itemshow(self):
@@ -4239,13 +4249,13 @@ class App(customtkinter.CTk):
                 self.itemshow()
                 self.get_item_data()
                 self.itemclear()
-            cur.execute("select pid,itemname,hsn,category,itemcode,saleprice,tax1,discount,dicst,wholesaleprice,tax2,minqty,purchesprice,gsttax,openqty,atprice,date,minstockmanten,location,unit from itemdata where hsn=?",
+            cur.execute("select pid,itemname,hsn,category,itemcode,saleprice,tax1,discount,dicst,wholesaleprice,tax2,minqty,purchesprice,gsttax,openqty,atprice,exdate,minstockmanten,location,unit,batch from itemdata where hsn=?",
                 (row[1],))
             rows = cur.fetchall()
             for row in rows:
                 for r in row:
                   itemdatalist.append(r)
-            cur.execute("Update edititemdata set itemname=?,hsn=?,category=?,itemcode=?,saleprice=?,tax1=?,discount=?,dicst=?,wholesaleprice=?,tax2=?,minqty=?,purchesprice=?,gsttax=?,openqty=?,atprice=?,date=?,minstockmanten=?,location=?,unit=? where pid=1",(
+            cur.execute("Update edititemdata set itemname=?,hsn=?,category=?,itemcode=?,saleprice=?,tax1=?,discount=?,dicst=?,wholesaleprice=?,tax2=?,minqty=?,purchesprice=?,gsttax=?,openqty=?,atprice=?,exdate=?,minstockmanten=?,location=?,unit=?,batch=? where pid=1",(
                     itemdatalist[1],
                     itemdatalist[2],
                     itemdatalist[3],
@@ -4265,6 +4275,7 @@ class App(customtkinter.CTk):
                     itemdatalist[17],
                     itemdatalist[18],
                     itemdatalist[19],
+                    itemdatalist[20],
                 ))
             con.commit()
             self.edit_item_button.place(x=1150, y=5)
@@ -4388,7 +4399,7 @@ class App(customtkinter.CTk):
             if row != None:
                messagebox.showerror("Error", f"This HSN No. already assigned for {itemdatarowlist[0]}, try different", parent=self)
             else:
-               cur.execute("Insert into itemdata (pid,itemname,hsn,category,itemcode,saleprice,discount,wholesaleprice,minqty,purchesprice,gsttax,openqty,minstockmanten,location,unit,date) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+               cur.execute("Insert into itemdata (pid,itemname,hsn,category,itemcode,saleprice,discount,wholesaleprice,minqty,purchesprice,gsttax,openqty,minstockmanten,location,unit,exdate) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                (
                    itemdatarowlist[1],
                    itemdatarowlist[0],

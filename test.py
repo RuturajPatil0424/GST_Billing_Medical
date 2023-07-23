@@ -159,21 +159,41 @@
 #         rpwr = round(pwr, 2)
 # wotgst(1000,2,"IGST@18","10%",2124)
 
-import re
+# import re
+#
+# def validate_gstin(gstin):
+#     # Regular expression pattern for GSTIN validation
+#     pattern = r'^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Za-z]{1}[Z]{1}[0-9A-Z]{1}$'
+#
+#     # Check if the GSTIN matches the pattern
+#     if re.match(pattern, gstin):
+#         return True
+#     else:
+#         return False
+#
+# # Test the function
+# gstin = input("Enter a GSTIN number: ")
+# if validate_gstin(gstin):
+#     print("Valid GSTIN number")
+# else:
+#     print("Invalid GSTIN number")
 
-def validate_gstin(gstin):
-    # Regular expression pattern for GSTIN validation
-    pattern = r'^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Za-z]{1}[Z]{1}[0-9A-Z]{1}$'
+def gsttaxx(entery, taxentery):
+    iprice = float(entery)
+    tax = taxentery
+    rtax = tax.replace("IGST@", "")
+    rtax = rtax.replace("GST@", "")
+    rtax = rtax.replace("GST@", "")
+    ktax = rtax.replace("%", "")
+    mtax = ktax.replace("None", "0")
+    gsttax = float(mtax)
 
-    # Check if the GSTIN matches the pattern
-    if re.match(pattern, gstin):
-        return True
-    else:
-        return False
-
-# Test the function
-gstin = input("Enter a GSTIN number: ")
-if validate_gstin(gstin):
-    print("Valid GSTIN number")
-else:
-    print("Invalid GSTIN number")
+    withbase = iprice + ((iprice * gsttax) / 100)
+    rwithbase = round(withbase, 2)
+    print(rwithbase)
+    print(withbase)
+itemp = "50.32"
+taxx="GST@18"
+pr="hi"
+gsttaxx(itemp,taxx)
+print(pr)

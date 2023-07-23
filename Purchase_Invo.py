@@ -7,7 +7,7 @@ from num2words import num2words
 import datetime
 import os
 from docx2pdf import convert
-doc = DocxTemplate("DataBase/Invoice/taxinvo1.docx")
+doc = DocxTemplate("DataBase/Invoice/purchaseinvo1.docx")
 
 item_list = []
 party_list = []
@@ -28,22 +28,24 @@ allitem_list = []
 
 cgsttotal = []
 
+payam = []
 
-
-def get_party_data():
-        con=sqlite3.connect(database=r'DataBase/ims.db')
-        cur=con.cursor()
-        try:
-
-            cur.execute("select pid,name,price,qty,status from invopurchasesale ")
-            rows=cur.fetchall()
-            for row in rows:
-                item_list.insert(row)
-
-
-        except Exception as ex:
-            print(ex)
-            # messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=s)
+# def get_party_data():
+#         con=sqlite3.connect(database=r'DataBase/ims.db')
+#         cur=con.cursor()
+#         try:
+#
+#             cur.execute("select pid,name,price,qty,status,phonenumber from invopurchasesale ")
+#             rows=cur.fetchall()
+#             for row in rows:
+#                 item_list.insert(row)
+#             print(item_list[5])
+#
+#
+#
+#         except Exception as ex:
+#             print(ex)
+#             # messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=s)
 
 def get_item_data():
     con=sqlite3.connect(database=r'DataBase/ims.db')
@@ -75,8 +77,17 @@ def get_partybi_data():
                 partydata_list.append(r)
 
 
+        cur.execute(f"select paybalence from partydata where phonenumber={partydata_list[1]}")
+        rowks = cur.fetchall()
+        for rowk in rowks:
+            for r in rowk:
+              payam.insert(0,r)
+
+
     except Exception as ex:
+        print("df")
         print(ex)
+        print("sda")
 
 
 def get_item1_data():
@@ -652,14 +663,14 @@ get_item10_data()
 get_hsn()
 addlist()
 
-totalinword=num2words(partydata_list[9])
-tta=capwords(totalinword)
+totalinword = num2words(partydata_list[9])
+tta = capwords(totalinword)
 
 get_item_data()
-doc.render({"company":"Cyber Tech","phone": "8830136942","nam":partydata_list[0],"partynumber":partydata_list[1],"gstin":partydata_list[2],"invoice":partydata_list[4],"date":partydata_list[5],"state":partydata_list[6],"tota":partydata_list[9],"recam":partydata_list[10],"balen":partydata_list[11],"totalqty":partydata_list[14],"totaldic":partydata_list[13],"totalgst":partydata_list[12],"cgst":cgsttotal[0],"item_list":item_list,"amtinword":tta})
+doc.render({"company":"Narayani Sales","phone": "9975284037","nam":partydata_list[0],"partynumber":partydata_list[1],"gstin":partydata_list[2],"invoice":partydata_list[4],"date":partydata_list[5],"state":partydata_list[6],"tota":partydata_list[9],"total":allitem_list[11],"recam":partydata_list[10],"balen":payam[0],"totalqty":partydata_list[14],"totaldic":partydata_list[13],"totalgst":partydata_list[12],"cgst":cgsttotal[0],"item_list":item_list,"amtinword":tta})
 doc.save("DataBase/Invoice/new_sampleinvoice1.docx")
-filename=f"PurInvoice/{partydata_list[0]}_{partydata_list[2]}_{partydata_list[4]}.pdf"
-path=f"PurInvoice/{partydata_list[0]}_{partydata_list[2]}_{partydata_list[4]}.pdf"
+filename = f"PurInvoice/{partydata_list[0]}_{partydata_list[2]}_{partydata_list[4]}.pdf"
+path = f"PurInvoice/{partydata_list[0]}_{partydata_list[2]}_{partydata_list[4]}.pdf"
 convert("DataBase/Invoice/new_sampleinvoice1.docx", filename)
 subprocess.Popen([path], shell=True)
 

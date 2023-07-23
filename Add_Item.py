@@ -138,48 +138,59 @@ class itemClass(customtkinter.CTk):
 
         #todo: Stock
 
-        self.opingqt_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), width=70, height=40, text="Opening Quantity  : ")
+        self.opingqt_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), height=40, text="Opening Quantity  : ")
         self.opingqt_labl.place(x=30, y=30)
 
         self.opingqty_entry = customtkinter.CTkEntry(self.tabview.tab("Stock"), width=200, height=40, placeholder_text="Opening Quantity")
         self.opingqty_entry.place(x=150,y=30)
 
-        self.atprice_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), width=70, height=40,
+        self.atprice_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), height=40,
                                                    text="At Price  : ")
-        self.atprice_labl.place(x=360, y=30)
+        self.atprice_labl.place(x=370, y=30)
 
         self.atprice_entry = customtkinter.CTkEntry(self.tabview.tab("Stock"), width=200, height=40, placeholder_text="At Price")
-        self.atprice_entry.place(x=440,y=30)
+        self.atprice_entry.place(x=450,y=30)
 
-        self.date_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), width=70, height=40,
+        self.date_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), height=40,
                                                    text="Expiry Date  : ")
         self.date_labl.place(x=30, y=80)
 
-        self.date_entry = DateEntry(self.tabview.tab("Stock"), width=10, height=40, placeholder_text="As of Date",date_pattern="dd/mm/y")
-        self.date_entry.place(x=150,y=90)
+        self.Item_batch_List = ["None","",  "dd/mm/yyyy"]
 
-        self.minstock_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), width=70, height=40,
+        self.date_entry = customtkinter.CTkComboBox(self.tabview.tab("Stock"), width=200, height=40, values=self.Item_batch_List)
+        self.date_entry.place(x=150,y=80)
+
+
+        self.minstock_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), height=40,
                                                 text="Min Stock  : ")
-        self.minstock_labl.place(x=360, y=80)
+        self.minstock_labl.place(x=370, y=80)
 
         self.minstock_entry = customtkinter.CTkEntry(self.tabview.tab("Stock"), width=200, height=40, placeholder_text="Min Stock To Maintain")
-        self.minstock_entry.place(x=440,y=80)
+        self.minstock_entry.place(x=450,y=80)
 
-        self.location__labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), width=70, height=40,
+        self.location__labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), height=40,
                                                 text="Location  : ")
         self.location__labl.place(x=30, y=130)
 
         self.location_entry = customtkinter.CTkEntry(self.tabview.tab("Stock"), width=200, height=40, placeholder_text="Location")
         self.location_entry.place(x=150,y=130)
 
-        self.unit__labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), width=70, height=40,
+        self.unit__labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), height=40,
                                                      text="Unit  : ")
-        self.unit__labl.place(x=360, y=130)
+        self.unit__labl.place(x=370, y=130)
 
         self.unit_entry = customtkinter.CTkComboBox(self.tabview.tab("Stock"), width=200, height=40, variable=self.iuno1var,
                                                         values=self.ik1)
-        self.unit_entry.place(x=440,y=130)
+        self.unit_entry.place(x=450,y=130)
         self.iuno1var.trace('w', self.itemunit_update1)
+
+        self.batch_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), height=40,
+                                                     text="Batch  : ")
+        self.batch_labl.place(x=30, y=180)
+
+        self.batch_entry = customtkinter.CTkEntry(self.tabview.tab("Stock"), width=200, height=40,
+                                                     placeholder_text="Batch")
+        self.batch_entry.place(x=150, y=180)
 
         # self.unit_entry = customtkinter.CTkEntry(self.tabview.tab("Stock"), width=200, height=40, placeholder_text="Unit")
         # self.unit_entry.place(x=440,y=130)
@@ -220,7 +231,7 @@ class itemClass(customtkinter.CTk):
                 if row!=None:
                     messagebox.showerror("Error","This GSTIN no. already assigned, try different",parent=self)
                 else :
-                    cur.execute("Insert into itemdata (pid,itemname,hsn,category,itemcode,saleprice,tax1,discount,dicst,wholesaleprice,tax2,minqty,purchesprice,gsttax,openqty,atprice,date,minstockmanten,location,unit) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(
+                    cur.execute("Insert into itemdata (pid,itemname,hsn,category,itemcode,saleprice,tax1,discount,dicst,wholesaleprice,tax2,minqty,purchesprice,gsttax,openqty,atprice,exdate,minstockmanten,location,unit,batch) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(
                         self.hsn_entry.get(),
                         self.itemname_entry.get(),
                         self.hsn_entry.get(),
@@ -241,6 +252,7 @@ class itemClass(customtkinter.CTk):
                         self.minstock_entry.get(),
                         self.location_entry.get(),
                         self.unit_entry.get(),
+                        self.batch_entry.get(),
 
                     ))
                     con.commit()
@@ -248,54 +260,54 @@ class itemClass(customtkinter.CTk):
         except Exception as ex:
             messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=self)
 
-    def update(self):
-        con=sqlite3.connect(database=r'DataBase/ims.db')
-        cur=con.cursor()
-        try:
-            if self.itemname_entry.get() == "":
-                messagebox.showerror("Error", "Item name must be required!", parent=self)
-            elif self.hsn_entry.get() == "":
-                messagebox.showerror("Error", "HSN must be required!", parent=self)
-            elif self.saleprice_entry.get() == "":
-                messagebox.showerror("Error", "Sale price must be required!", parent=self)
-            elif self.purchesprice_entry.get() == "":
-                messagebox.showerror("Error", "Purches price must be required!", parent=self)
-            elif self.opingqty_entry.get() == "":
-                messagebox.showerror("Error", "Oping Qty must be required!", parent=self)
-            else:
-                cur.execute("Select * from itemdata where pid=?",(self.hsn_entry.get(),))
-                row=cur.fetchone()
-                if row==None:
-                    messagebox.showerror("Error","Invalid Product HSN",parent=self)
-                else :
-                    cur.execute("Update itemdata set itemname=?,hsn=?,category=?,itemcode=?,saleprice=?,tax1=?,discount=?,dicst=?,wholesaleprice=?,tax2=?,minqty=?,purchesprice=?,gsttax=?,openqty=?,atprice=?,date=?,minstockmanten=?,location=?,unit=? where pid=?",(
-
-                        self.itemname_entry.get(),
-                        self.hsn_entry.get(),
-                        self.categoryr_entry.get(),
-                        self.code_entry.get(),
-                        self.saleprice_entry.get(),
-                        self.tax_menu.get(),
-                        self.discsaleprice_entry.get(),
-                        self.disc_menu.get(),
-                        self.wholesaleprice_entry.get(),
-                        self.tax_menu1.get(),
-                        self.minwholqty_entry.get(),
-                        self.purchesprice_entry.get(),
-                        self.tax_menu3.get(),
-                        self.opingqty_entry.get(),
-                        self.atprice_entry.get(),
-                        self.date_entry.get(),
-                        self.minstock_entry.get(),
-                        self.location_entry.get(),
-                        self.unit_entry.get(),
-                        self.hsn_entry.get(),
-                    ))
-                    con.commit()
-                    messagebox.showinfo("Success","Item Updated Successfully",parent=self)
-
-        except Exception as ex:
-            messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=self)
+    # def update(self):
+    #     con=sqlite3.connect(database=r'DataBase/ims.db')
+    #     cur=con.cursor()
+    #     try:
+    #         if self.itemname_entry.get() == "":
+    #             messagebox.showerror("Error", "Item name must be required!", parent=self)
+    #         elif self.hsn_entry.get() == "":
+    #             messagebox.showerror("Error", "HSN must be required!", parent=self)
+    #         elif self.saleprice_entry.get() == "":
+    #             messagebox.showerror("Error", "Sale price must be required!", parent=self)
+    #         elif self.purchesprice_entry.get() == "":
+    #             messagebox.showerror("Error", "Purches price must be required!", parent=self)
+    #         elif self.opingqty_entry.get() == "":
+    #             messagebox.showerror("Error", "Oping Qty must be required!", parent=self)
+    #         else:
+    #             cur.execute("Select * from itemdata where pid=?",(self.hsn_entry.get(),))
+    #             row=cur.fetchone()
+    #             if row==None:
+    #                 messagebox.showerror("Error","Invalid Product HSN",parent=self)
+    #             else :
+    #                 cur.execute("Update itemdata set itemname=?,hsn=?,category=?,itemcode=?,saleprice=?,tax1=?,discount=?,dicst=?,wholesaleprice=?,tax2=?,minqty=?,purchesprice=?,gsttax=?,openqty=?,atprice=?,exdate=?,minstockmanten=?,location=?,unit=? where pid=?",(
+    #
+    #                     self.itemname_entry.get(),
+    #                     self.hsn_entry.get(),
+    #                     self.categoryr_entry.get(),
+    #                     self.code_entry.get(),
+    #                     self.saleprice_entry.get(),
+    #                     self.tax_menu.get(),
+    #                     self.discsaleprice_entry.get(),
+    #                     self.disc_menu.get(),
+    #                     self.wholesaleprice_entry.get(),
+    #                     self.tax_menu1.get(),
+    #                     self.minwholqty_entry.get(),
+    #                     self.purchesprice_entry.get(),
+    #                     self.tax_menu3.get(),
+    #                     self.opingqty_entry.get(),
+    #                     self.atprice_entry.get(),
+    #                     self.date_entry.get(),
+    #                     self.minstock_entry.get(),
+    #                     self.location_entry.get(),
+    #                     self.unit_entry.get(),
+    #                     self.hsn_entry.get(),
+    #                 ))
+    #                 con.commit()
+    #                 messagebox.showinfo("Success","Item Updated Successfully",parent=self)
+    #
+    #     except Exception as ex:
+    #         messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=self)
 
     def get_appearance_mode_event(self):
         con = sqlite3.connect(database=r'DataBase/ims.db')

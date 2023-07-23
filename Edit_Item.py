@@ -40,6 +40,7 @@ class itemClass(customtkinter.CTk):
         self.itemlocationVar = StringVar()
         self.itemunitVar = StringVar()
         self.ik1 = [""]
+        self.batchvar = StringVar()
 
         self.iuno1var = StringVar()
         self.iuno1var.set("Unit")
@@ -152,50 +153,61 @@ class itemClass(customtkinter.CTk):
         self.item_tax_entry.place(x=400,y=30)
 
         #todo: Stock
-        self.opingqt_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), width=70, height=40,
-                                                   text="Opening Quantity  : ")
+        self.opingqt_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), height=40, text="Opening Quantity  : ")
         self.opingqt_labl.place(x=30, y=30)
 
         self.opingqty_entry = customtkinter.CTkEntry(self.tabview.tab("Stock"), width=200, height=40, textvariable=self.itemopenqtyVar)
         self.opingqty_entry.place(x=150,y=30)
 
-        self.atprice_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), width=70, height=40,
+        self.atprice_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), height=40,
                                                    text="At Price  : ")
-        self.atprice_labl.place(x=360, y=30)
+        self.atprice_labl.place(x=370, y=30)
 
-        self.atprice_entry = customtkinter.CTkEntry(self.tabview.tab("Stock"), width=200, height=40, textvariable=self.itematpriceVar)
-        self.atprice_entry.place(x=440,y=30)
+        self.atprice_entry = customtkinter.CTkEntry(self.tabview.tab("Stock"), width=200, height=40,
+                                                    placeholder_text="At Price")
+        self.atprice_entry.place(x=450, y=30)
 
-        self.date_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), width=70, height=40,
-                                                text="As of Date  : ")
+        self.date_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), height=40,
+                                                text="Expiry Date  : ")
         self.date_labl.place(x=30, y=80)
 
-        self.date_entry = DateEntry(self.tabview.tab("Stock"), width=10, height=40, textvariable=self.itemdateVar,date_pattern="dd/mm/y")
-        self.date_entry.place(x=150,y=90)
+        self.Item_batch_List = ["None", "", "dd/mm/yyyy"]
 
-        self.minstock_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), width=70, height=40,
+        self.date_entry = customtkinter.CTkComboBox(self.tabview.tab("Stock"), width=200, height=40,
+                                                    values=self.Item_batch_List)
+        self.date_entry.place(x=150, y=80)
+
+        self.minstock_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), height=40,
                                                     text="Min Stock  : ")
-        self.minstock_labl.place(x=365, y=80)
+        self.minstock_labl.place(x=370, y=80)
 
         self.minstock_entry = customtkinter.CTkEntry(self.tabview.tab("Stock"), width=200, height=40, textvariable=self.itemminstockVar)
-        self.minstock_entry.place(x=440,y=80)
+        self.minstock_entry.place(x=450,y=80)
 
-        self.location__labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), width=70, height=40,
+        self.location__labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), height=40,
                                                      text="Location  : ")
         self.location__labl.place(x=30, y=130)
 
         self.location_entry = customtkinter.CTkEntry(self.tabview.tab("Stock"), width=200, height=40, textvariable=self.itemlocationVar)
         self.location_entry.place(x=150,y=130)
 
-        self.unit__labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), width=70, height=40,
+        self.unit__labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), height=40,
                                                  text="Unit  : ")
-        self.unit__labl.place(x=350, y=130)
+        self.unit__labl.place(x=370, y=130)
 
         self.unit_entry = customtkinter.CTkComboBox(self.tabview.tab("Stock"), width=200, height=40,
                                                     variable=self.iuno1var,
                                                     values=self.ik1)
-        self.unit_entry.place(x=440, y=130)
+        self.unit_entry.place(x=450, y=130)
         self.iuno1var.trace('w', self.itemunit_update1)
+
+        self.batch_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), height=40,
+                                                 text="Batch  : ")
+        self.batch_labl.place(x=30, y=180)
+
+        self.batch_entry = customtkinter.CTkEntry(self.tabview.tab("Stock"), width=200, height=40,textvariable=self.batchvar,
+                                                  placeholder_text="Batch")
+        self.batch_entry.place(x=150, y=180)
 
         # self.unit_entry = customtkinter.CTkEntry(self.tabview.tab("Stock"), width=200, height=40, placeholder_text="Unit")
         # self.unit_entry.place(x=440,y=130)
@@ -224,7 +236,7 @@ class itemClass(customtkinter.CTk):
         cur = con.cursor()
         try:
 
-                cur.execute("select pid,itemname,hsn,category,itemcode,saleprice,tax1,discount,dicst,wholesaleprice,tax2,minqty,purchesprice,gsttax,openqty,atprice,date,minstockmanten,location,unit from edititemdata where pid=?",(1,))
+                cur.execute("select pid,itemname,hsn,category,itemcode,saleprice,tax1,discount,dicst,wholesaleprice,tax2,minqty,purchesprice,gsttax,openqty,atprice,exdate,minstockmanten,location,unit,batch from edititemdata where pid=?",(1,))
                 rows = cur.fetchall()
                 for row in rows:
                     for r in row:
@@ -250,6 +262,8 @@ class itemClass(customtkinter.CTk):
                 self.itemlocationVar.set(itemdatalist[18])
                 self.iuno1var.set(itemdatalist[19])
                 self.ik1.insert(0,itemdatalist[19])
+                self.batchvar.set(itemdatalist[20])
+                self.batch_entry.configure(textvariable=self.batchvar)
 
                 self.item_tax_entry.configure(values=self.GSTList)
 
@@ -276,7 +290,7 @@ class itemClass(customtkinter.CTk):
                 if row==None:
                     messagebox.showerror("Error","Invalid Product HSN",parent=self)
                 else :
-                    cur.execute("Update itemdata set itemname=?,hsn=?,category=?,itemcode=?,saleprice=?,tax1=?,discount=?,dicst=?,wholesaleprice=?,tax2=?,minqty=?,purchesprice=?,gsttax=?,openqty=?,atprice=?,date=?,minstockmanten=?,location=?,unit=? where pid=?",(
+                    cur.execute("Update itemdata set itemname=?,hsn=?,category=?,itemcode=?,saleprice=?,tax1=?,discount=?,dicst=?,wholesaleprice=?,tax2=?,minqty=?,purchesprice=?,gsttax=?,openqty=?,atprice=?,exdate=?,minstockmanten=?,location=?,unit=?,batch=? where pid=?",(
 
                         self.itemname_entry.get(),
                         self.hsn_entry.get(),
@@ -298,6 +312,8 @@ class itemClass(customtkinter.CTk):
                         self.location_entry.get(),
                         self.unit_entry.get(),
                         self.hsn_entry.get(),
+                        self.batch_entry.get(),
+
                     ))
                     con.commit()
                     messagebox.showinfo("Success","Item Updated Successfully",parent=self)
