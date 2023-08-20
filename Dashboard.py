@@ -3965,10 +3965,12 @@ class App(customtkinter.CTk):
 
         cureentdate = datetime.strptime(datess, date_format)
         for row in rows:
+            print(row[1])
             if row[1] == "None" or row[1] == "" or row[1] == " " or row[1] == "dd/mm/yyyy" or row[1] == None:
                 pass
             else:
                 exdate = datetime.strptime(row[1], date_format)
+                print(exdate)
 
                 if exdate < cureentdate or exdate == cureentdate:
                     self.exitemTable.insert('', END, values=row)

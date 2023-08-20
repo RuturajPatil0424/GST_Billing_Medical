@@ -342,308 +342,242 @@ def get_hsn():
       except Exception as ex:
         print(ex)
 
-# def wotgst(price,qty,tax,disc,total,list):
-#     print(tax)
-# 
-#     if "0" in tax or "0.25" in tax or "3" in tax or "5" in tax or "12" in tax or "18" in tax or "28" in tax or "None" in tax:
-# 
-#         rtax=tax.replace("IGST@","")
-#         rtax=rtax.replace("GST@","")
-#         rtax=rtax.replace("GST@","")
-#         ktax=rtax.replace("%","")
-#         mtax=ktax.replace("None","0")
-#         itemprice=float(price)
-#         totalpr=float(total)
-#         qtyy=int(qty)
-#         gsttax=float(mtax)
-#         disca = float(disc)
-# 
-#         wodec = totalpr - (totalpr*(100/(100+gsttax)))
-#         it=totalpr-wodec
-#         rit=it/qtyy
-#         rrit=round(rit,2)
-#         list.insert(10,rrit)
-# 
-#         rwodec= round(wodec,2)
-#         list.insert(13,rwodec)
-# 
-#         pwr = wodec/2
-#         rpwr=round(pwr,2)
-#         list.insert(11,rpwr)
-# 
-# 
-#         if mtax == "0":
-#             list.insert(12,"0%")
-# 
-#         elif mtax == "0.25":
-#             list.insert(12,"0.125%")
-# 
-#         elif mtax == "3":
-#             list.insert(12,"1.5%")
-# 
-#         elif mtax == "5":
-#             list.insert(12,"2.5%")
-# 
-#         elif mtax == "12":
-#             list.insert(12,"6%")
-# 
-#         elif mtax == "18":
-#             list.insert(12,"9%")
-# 
-#         elif mtax == "28":
-#             list.insert(12,"14%")
-# 
-#         elif mtax == "None":
-#             list.insert(12,"None")
-
-# def cgst():
-#     gst=partydata_list[12]
-#     sgt=float(gst)
-#     cgst=sgt/2
-#     cgsttotal.insert(0,cgst)
 
 def addlist():
     if item_list1[0] == "":
         item_list.append("")
     elif item_list2[0] == "":
-        item_list1.insert(0,1)
+        item_list1.insert(0, 1)
         item_list.append(item_list1)
-        item_list1.insert(2,hsn_no_list[0])
-        #cgst()
-    elif item_list3[0] == "":
-        item_list1.insert(0,1)
-        item_list.append(item_list1)
-        item_list1.insert(2,hsn_no_list[0])
-        item_list2.insert(0,2)
-        item_list.append(item_list2)
-        item_list2.insert(2,hsn_no_list[1])
-        #cgst()
-    elif item_list4[0] == "":
-        item_list1.insert(0,1)
-        item_list.append(item_list1)
-        item_list1.insert(2,hsn_no_list[0])
+        item_list1.insert(2, hsn_no_list[0])
 
-        item_list2.insert(0,2)
+    elif item_list3[0] == "":
+        item_list1.insert(0, 1)
+        item_list.append(item_list1)
+        item_list1.insert(2, hsn_no_list[0])
+        item_list2.insert(0, 2)
         item_list.append(item_list2)
-        item_list2.insert(2,hsn_no_list[1])
+        item_list2.insert(2, hsn_no_list[1])
+
+    elif item_list4[0] == "":
+        item_list1.insert(0, 1)
+        item_list.append(item_list1)
+        item_list1.insert(2, hsn_no_list[0])
+
+        item_list2.insert(0, 2)
+        item_list.append(item_list2)
+        item_list2.insert(2, hsn_no_list[1])
        
-        item_list3.insert(0,3)
+        item_list3.insert(0, 3)
         item_list.append(item_list3)
-        item_list3.insert(2,hsn_no_list[2])
-        
-        #cgst()
+        item_list3.insert(2, hsn_no_list[2])
+
 
     elif item_list5[0] == "":
-        item_list1.insert(0,1)
+        item_list1.insert(0, 1)
         item_list.append(item_list1)
-        item_list1.insert(2,hsn_no_list[0])
+        item_list1.insert(2, hsn_no_list[0])
         
-        item_list2.insert(0,2)
+        item_list2.insert(0, 2)
         item_list.append(item_list2)
-        item_list2.insert(2,hsn_no_list[1])
+        item_list2.insert(2, hsn_no_list[1])
        
-        item_list3.insert(0,3)
+        item_list3.insert(0, 3)
         item_list.append(item_list3)
-        item_list3.insert(2,hsn_no_list[2])
+        item_list3.insert(2, hsn_no_list[2])
        
-        item_list4.insert(0,4)
+        item_list4.insert(0, 4)
         item_list.append(item_list4)
-        item_list4.insert(2,hsn_no_list[3])
-      
-        #cgst()
+        item_list4.insert(2, hsn_no_list[3])
+
     elif item_list6[0] == "":
-        item_list1.insert(0,1)
+        item_list1.insert(0, 1)
         item_list.append(item_list1)
-        item_list1.insert(2,hsn_no_list[0])
+        item_list1.insert(2, hsn_no_list[0])
        
-        item_list2.insert(0,2)
+        item_list2.insert(0, 2)
         item_list.append(item_list2)
-        item_list2.insert(2,hsn_no_list[1])
+        item_list2.insert(2, hsn_no_list[1])
      
-        item_list3.insert(0,3)
+        item_list3.insert(0, 3)
         item_list.append(item_list3)
-        item_list3.insert(2,hsn_no_list[2])
+        item_list3.insert(2, hsn_no_list[2])
        
-        item_list4.insert(0,4)
+        item_list4.insert(0, 4)
         item_list.append(item_list4)
-        item_list4.insert(2,hsn_no_list[3])
+        item_list4.insert(2, hsn_no_list[3])
       
-        item_list5.insert(0,5)
+        item_list5.insert(0, 5)
         item_list.append(item_list5)
-        item_list5.insert(2,hsn_no_list[4])
-       
-        #cgst()
+        item_list5.insert(2, hsn_no_list[4])
+
     elif item_list7[0] == "":
-        item_list1.insert(0,1)
+        item_list1.insert(0, 1)
         item_list.append(item_list1)
-        item_list1.insert(2,hsn_no_list[0])
+        item_list1.insert(2, hsn_no_list[0])
        
-        item_list2.insert(0,2)
+        item_list2.insert(0, 2)
         item_list.append(item_list2)
-        item_list2.insert(2,hsn_no_list[1])
+        item_list2.insert(2, hsn_no_list[1])
    
-        item_list3.insert(0,3)
+        item_list3.insert(0, 3)
         item_list.append(item_list3)
-        item_list3.insert(2,hsn_no_list[2])
+        item_list3.insert(2, hsn_no_list[2])
     
-        item_list4.insert(0,4)
+        item_list4.insert(0, 4)
         item_list.append(item_list4)
-        item_list4.insert(2,hsn_no_list[3])
+        item_list4.insert(2, hsn_no_list[3])
       
-        item_list5.insert(0,5)
+        item_list5.insert(0, 5)
         item_list.append(item_list5)
-        item_list5.insert(2,hsn_no_list[4])
+        item_list5.insert(2, hsn_no_list[4])
     
-        item_list6.insert(0,6)
+        item_list6.insert(0, 6)
         item_list.append(item_list6)
-        item_list6.insert(2,hsn_no_list[5])
-     
-        #cgst()
+        item_list6.insert(2, hsn_no_list[5])
+
     elif item_list8[0] == "":
-        item_list1.insert(0,1)
+        item_list1.insert(0, 1)
         item_list.append(item_list1)
-        item_list1.insert(2,hsn_no_list[0])
+        item_list1.insert(2, hsn_no_list[0])
      
-        item_list2.insert(0,2)
+        item_list2.insert(0, 2)
         item_list.append(item_list2)
-        item_list2.insert(2,hsn_no_list[1])
+        item_list2.insert(2, hsn_no_list[1])
       
-        item_list3.insert(0,3)
+        item_list3.insert(0, 3)
         item_list.append(item_list3)
-        item_list3.insert(2,hsn_no_list[2])
+        item_list3.insert(2, hsn_no_list[2])
       
-        item_list4.insert(0,4)
+        item_list4.insert(0, 4)
         item_list.append(item_list4)
-        item_list4.insert(2,hsn_no_list[3])
+        item_list4.insert(2, hsn_no_list[3])
        
-        item_list5.insert(0,5)
+        item_list5.insert(0, 5)
         item_list.append(item_list5)
-        item_list5.insert(2,hsn_no_list[4])
+        item_list5.insert(2, hsn_no_list[4])
       
-        item_list6.insert(0,6)
+        item_list6.insert(0, 6)
         item_list.append(item_list6)
-        item_list6.insert(2,hsn_no_list[5])
+        item_list6.insert(2, hsn_no_list[5])
       
-        item_list7.insert(0,7)
+        item_list7.insert(0, 7)
         item_list.append(item_list7)
-        item_list7.insert(2,hsn_no_list[6])
-       
-        #cgst()
+        item_list7.insert(2, hsn_no_list[6])
+
     elif item_list9[0] == "":
-        item_list1.insert(0,1)
+        item_list1.insert(0, 1)
         item_list.append(item_list1)
-        item_list1.insert(2,hsn_no_list[0])
+        item_list1.insert(2, hsn_no_list[0])
       
-        item_list2.insert(0,2)
+        item_list2.insert(0, 2)
         item_list.append(item_list2)
-        item_list2.insert(2,hsn_no_list[1])
+        item_list2.insert(2, hsn_no_list[1])
      
-        item_list3.insert(0,3)
+        item_list3.insert(0, 3)
         item_list.append(item_list3)
-        item_list3.insert(2,hsn_no_list[2])
+        item_list3.insert(2, hsn_no_list[2])
       
-        item_list4.insert(0,4)
+        item_list4.insert(0, 4)
         item_list.append(item_list4)
-        item_list4.insert(2,hsn_no_list[3])
+        item_list4.insert(2, hsn_no_list[3])
     
-        item_list5.insert(0,5)
+        item_list5.insert(0, 5)
         item_list.append(item_list5)
-        item_list5.insert(2,hsn_no_list[4])
+        item_list5.insert(2, hsn_no_list[4])
      
-        item_list6.insert(0,6)
+        item_list6.insert(0, 6)
         item_list.append(item_list6)
-        item_list6.insert(2,hsn_no_list[5])
+        item_list6.insert(2, hsn_no_list[5])
      
-        item_list7.insert(0,7)
+        item_list7.insert(0, 7)
         item_list.append(item_list7)
-        item_list7.insert(2,hsn_no_list[6])
+        item_list7.insert(2, hsn_no_list[6])
      
-        item_list8.insert(0,8)
+        item_list8.insert(0, 8)
         item_list.append(item_list8)
-        item_list8.insert(2,hsn_no_list[7])
-      
-        #cgst()
+        item_list8.insert(2, hsn_no_list[7])
+
 
     elif item_list10[0] == "":
-        item_list1.insert(0,1)
+        item_list1.insert(0, 1)
         item_list.append(item_list1)
-        item_list1.insert(2,hsn_no_list[0])
+        item_list1.insert(2, hsn_no_list[0])
       
-        item_list2.insert(0,2)
+        item_list2.insert(0, 2)
         item_list.append(item_list2)
-        item_list2.insert(2,hsn_no_list[1])
+        item_list2.insert(2, hsn_no_list[1])
       
-        item_list3.insert(0,3)
+        item_list3.insert(0, 3)
         item_list.append(item_list3)
-        item_list3.insert(2,hsn_no_list[2])
+        item_list3.insert(2, hsn_no_list[2])
      
-        item_list4.insert(0,4)
+        item_list4.insert(0, 4)
         item_list.append(item_list4)
-        item_list4.insert(2,hsn_no_list[3])
+        item_list4.insert(2, hsn_no_list[3])
       
-        item_list5.insert(0,5)
+        item_list5.insert(0, 5)
         item_list.append(item_list5)
-        item_list5.insert(2,hsn_no_list[4])
+        item_list5.insert(2, hsn_no_list[4])
     
-        item_list6.insert(0,6)
+        item_list6.insert(0, 6)
         item_list.append(item_list6)
-        item_list6.insert(2,hsn_no_list[5])
+        item_list6.insert(2, hsn_no_list[5])
       
-        item_list7.insert(0,7)
+        item_list7.insert(0, 7)
         item_list.append(item_list7)
-        item_list7.insert(2,hsn_no_list[6])
+        item_list7.insert(2, hsn_no_list[6])
       
-        item_list8.insert(0,8)
+        item_list8.insert(0, 8)
         item_list.append(item_list8)
-        item_list8.insert(2,hsn_no_list[7])
+        item_list8.insert(2, hsn_no_list[7])
       
-        item_list9.insert(0,9)
+        item_list9.insert(0, 9)
         item_list.append(item_list9)
-        item_list9.insert(2,hsn_no_list[8])
-     
-        #cgst()
+        item_list9.insert(2, hsn_no_list[8])
+
     elif item_list10[0] != "":
-        item_list1.insert(0,1)
+        item_list1.insert(0, 1)
         item_list.append(item_list1)
-        item_list1.insert(2,hsn_no_list[0])
+        item_list1.insert(2, hsn_no_list[0])
       
-        item_list2.insert(0,2)
+        item_list2.insert(0, 2)
         item_list.append(item_list2)
-        item_list2.insert(2,hsn_no_list[1])
+        item_list2.insert(2, hsn_no_list[1])
      
-        item_list3.insert(0,3)
+        item_list3.insert(0, 3)
         item_list.append(item_list3)
-        item_list3.insert(2,hsn_no_list[2])
+        item_list3.insert(2, hsn_no_list[2])
      
-        item_list4.insert(0,4)
+        item_list4.insert(0, 4)
         item_list.append(item_list4)
-        item_list4.insert(2,hsn_no_list[3])
+        item_list4.insert(2, hsn_no_list[3])
       
-        item_list5.insert(0,5)
+        item_list5.insert(0, 5)
         item_list.append(item_list5)
-        item_list5.insert(2,hsn_no_list[4])
+        item_list5.insert(2, hsn_no_list[4])
       
-        item_list6.insert(0,6)
+        item_list6.insert(0, 6)
         item_list.append(item_list6)
-        item_list6.insert(2,hsn_no_list[5])
+        item_list6.insert(2, hsn_no_list[5])
      
-        item_list7.insert(0,7)
+        item_list7.insert(0, 7)
         item_list.append(item_list7)
-        item_list7.insert(2,hsn_no_list[6])
+        item_list7.insert(2, hsn_no_list[6])
       
-        item_list8.insert(0,8)
+        item_list8.insert(0, 8)
         item_list.append(item_list8)
-        item_list8.insert(2,hsn_no_list[7])
+        item_list8.insert(2, hsn_no_list[7])
       
-        item_list9.insert(0,9)
+        item_list9.insert(0, 9)
         item_list.append(item_list9)
-        item_list9.insert(2,hsn_no_list[8])
+        item_list9.insert(2, hsn_no_list[8])
       
-        item_list10.insert(0,10)
+        item_list10.insert(0, 10)
         item_list.append(item_list10)
-        item_list10.insert(2,hsn_no_list[9])
+        item_list10.insert(2, hsn_no_list[9])
      
-        #cgst()
+
 
 get_partybi_data()
 get_item1_data()
@@ -662,15 +596,15 @@ gatpartyam()
 get_hsn()
 addlist()
 
-totalinword=num2words(partydata_list[9])
-tta=capwords(totalinword)
+totalinword = num2words(partydata_list[9])
+tta = capwords(totalinword)
 
 get_item_data()
 print(partyam)
-doc.render({"company":"Narayani Sales","phone": "9975284037","nam":partydata_list[0],"partynumber":partydata_list[1],"gstin":partydata_list[2],"invoice":partydata_list[4],"date":partydata_list[5],"state":partydata_list[6],"tota":partydata_list[9],"total":partyam[0],"recam":partydata_list[10],"balen":partyam[1],"totalqty":partydata_list[14],"totaldic":partydata_list[13],"item_list":item_list,"amtinword":tta})
-doc.save("DataBase/Invoice/new_sale_sampleinvoice.docx")
-filename=f"SaleInvoice/{partydata_list[0]}_{partydata_list[4]}.pdf"
-path=f"SaleInvoice/{partydata_list[0]}_{partydata_list[4]}.pdf"
-convert("DataBase/Invoice/new_sale_sampleinvoice.docx", filename)
-subprocess.Popen([path], shell=True)
-
+# doc.render({"company" : "VEDIKA MEDICAL", "phone" : "9049054282", "nam" : partydata_list[0],"partynumber" : partydata_list[1],"invoice":partydata_list[4],"date":partydata_list[5],"tota":partydata_list[9],"total":partyam[0],"disc":partydata_list[10],"final":partyam[1],"totalqty":partydata_list[14],"item_list":item_list,"amtinword":tta})
+# doc.save("DataBase/Invoice/new_sale_sampleinvoice.docx")
+# filename = f"SaleInvoice/{partydata_list[0]}_{partydata_list[4]}.pdf"
+# path = f"SaleInvoice/{partydata_list[0]}_{partydata_list[4]}.pdf"
+# convert("DataBase/Invoice/new_sale_sampleinvoice.docx", filename)
+# subprocess.Popen([path], shell=True)
+#

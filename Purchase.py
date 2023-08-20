@@ -46,7 +46,7 @@ class saleClass(customtkinter.CTk):
         self.gstin_entry = customtkinter.CTkEntry(self, width=150, height=40, textvariable=self.gstin)
         self.gstin_entry.place(x=710, y=120)
 
-        self.phonenumber_entry = customtkinter.CTkEntry(self, width=200, height=40, textvariable=self.partynumber)
+        self.phonenumber_entry = customtkinter.CTkEntry(self, width=200, height=40, textvariable=self.partynumber, state="disabled")
         self.phonenumber_entry.place(x=280, y=120)
 
         self.cash_lable = customtkinter.CTkLabel(self, font=customtkinter.CTkFont(size=15), text="Cash")

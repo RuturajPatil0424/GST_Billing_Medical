@@ -173,9 +173,7 @@ class itemClass(customtkinter.CTk):
 
         self.Item_batch_List = ["None", "", "dd/mm/yyyy"]
 
-        self.date_entry = customtkinter.CTkComboBox(self.tabview.tab("Stock"), width=200, height=40,
-                                                    values=self.Item_batch_List)
-        self.date_entry.place(x=150, y=80)
+
 
         self.minstock_labl = customtkinter.CTkLabel(self.tabview.tab("Stock"), height=40,
                                                     text="Min Stock  : ")
@@ -264,7 +262,10 @@ class itemClass(customtkinter.CTk):
                 self.ik1.insert(0,itemdatalist[19])
                 self.batchvar.set(itemdatalist[20])
                 self.batch_entry.configure(textvariable=self.batchvar)
+                self.Item_batch_List.insert(0,itemdatalist[16])
 
+                self.date_entry = customtkinter.CTkComboBox(self.tabview.tab("Stock"), width=200, height=40,values=self.Item_batch_List)
+                self.date_entry.place(x=150, y=80)
                 self.item_tax_entry.configure(values=self.GSTList)
 
         except Exception as ex:
@@ -311,8 +312,8 @@ class itemClass(customtkinter.CTk):
                         self.minstock_entry.get(),
                         self.location_entry.get(),
                         self.unit_entry.get(),
-                        self.hsn_entry.get(),
                         self.batch_entry.get(),
+                        self.hsn_entry.get(),
 
                     ))
                     con.commit()
