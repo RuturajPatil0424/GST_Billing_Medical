@@ -20,6 +20,7 @@ class saleClass(customtkinter.CTk):
         self.get_appearance_mode_event()
 
         self.Partynames = [""]
+        self.Drnameslist = [""]
         self.gstin = StringVar()
         self.partynumber=StringVar()
         self.payamount = StringVar()
@@ -99,6 +100,12 @@ class saleClass(customtkinter.CTk):
         self.roundoff_check = customtkinter.CTkCheckBox(self, text="Round off", onvalue=1, offvalue=0,
                                                         command=self.finalamount)
         self.roundoff_check.place(x=1100, y=680)
+
+        self.Invoice_check = customtkinter.CTkCheckBox(self, text="Invoice", onvalue=1, offvalue=0)
+        self.Invoice_check.place(x=500, y=700)
+
+        self.whatsapp_check = customtkinter.CTkCheckBox(self, text="Whatsapp", onvalue=1, offvalue=0)
+        self.whatsapp_check.place(x=600, y=700)
 
         self.roundoff = StringVar()
         self.totalam = StringVar()
@@ -744,6 +751,7 @@ class saleClass(customtkinter.CTk):
         self.Total_amount_lable.grid(row=12, column=9, padx=5, pady=5)
 
         self.get_party_data()
+        self.get_Dr_data()
 
         self.Party_var=StringVar()
         self.partyname_entry = customtkinter.CTkComboBox(self, width=200, height=40, variable=self.Party_var,
@@ -751,8 +759,29 @@ class saleClass(customtkinter.CTk):
         self.partyname_entry.place(x=50, y=100)
         self.Party_var.trace('w',self.updateparty)
 
+        self.Dr_Name_lable = customtkinter.CTkLabel(self, font=customtkinter.CTkFont(size=15), text=" Dr. Name")
+        self.Dr_Name_lable.place(x=250, y=680)
+
+        self.drname_var = StringVar()
+        self.drname_entry = customtkinter.CTkComboBox(self, width=200, height=40, variable=self.drname_var,
+                                                         values=self.Drnameslist)
+        self.drname_entry.place(x=250, y=710)
+        self.drname_var.trace('w', self.updateDr)
+
         self.get_party_gstin()
         self.get_party_number()
+
+
+    def Invoice_send(self):
+        if self.Invoice_check.get() == 1:
+             call(["python", "Sale_Invoice.py"])
+             if self.whatsapp_check.get() == 1:
+                 print("whats app")
+             else:
+                pass
+        else:
+           pass
+
 
 
     def add_party_event(self):
@@ -779,12 +808,13 @@ class saleClass(customtkinter.CTk):
                     crstete = "Credit"
                 else:
                     crstete = "Cash"
-                cur.execute("Insert into sale (partyname,phonenumber,gstin,cashorcr,invoiceno,invoicedate,steteofsuply,paymentype,refreceno,total,totaldic,netam,received,balance,item1name,qty1,unit1,unitprice1,dec1,desamount1,amount1,item2name,qty2,unit2,unitprice2,dec2,desamount2,amount2,item3name,qty3,unit3,unitprice3,dec3,desamount3,amount3,item4name,qty4,unit4,unitprice4,dec4,desamount4,amount4,item5name,qty5,unit5,unitprice5,dec5,desamount5,amount5,item6name,qty6,unit6,unitprice6,dec6,desamount6,amount6,item7name,qty7,unit7,unitprice7,dec7,desamount7,amount7,item8name,qty8,unit8,unitprice8,dec8,desamount8,amount8,item9name,qty9,unit9,unitprice9,dec9,desamount9,amount9,item10name,qty10,unit10,unitprice10,dec10,desamount10,amount10) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                cur.execute("Insert into sale (partyname,phonenumber,gstin,drname,cashorcr,invoiceno,invoicedate,steteofsuply,paymentype,refreceno,total,totaldic,netam,received,balance,item1name,qty1,unit1,unitprice1,dec1,desamount1,amount1,item2name,qty2,unit2,unitprice2,dec2,desamount2,amount2,item3name,qty3,unit3,unitprice3,dec3,desamount3,amount3,item4name,qty4,unit4,unitprice4,dec4,desamount4,amount4,item5name,qty5,unit5,unitprice5,dec5,desamount5,amount5,item6name,qty6,unit6,unitprice6,dec6,desamount6,amount6,item7name,qty7,unit7,unitprice7,dec7,desamount7,amount7,item8name,qty8,unit8,unitprice8,dec8,desamount8,amount8,item9name,qty9,unit9,unitprice9,dec9,desamount9,amount9,item10name,qty10,unit10,unitprice10,dec10,desamount10,amount10) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     (
 
                         self.partyname_entry.get(),
                         self.phonenumber_entry.get(),
                         self.gstin_entry.get(),
+                        self.drname_entry.get(),
                         crstete,
                         self.invoice_entry.get(),
                         self.date_entry.get(),
@@ -884,7 +914,7 @@ class saleClass(customtkinter.CTk):
                 self.invoice_updator()
                 self.invoice_genrator()
                 self.update_iqt()
-                self.invoice_event()
+                self.Invoice_send()
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
     def add_amount(self):
@@ -938,12 +968,13 @@ class saleClass(customtkinter.CTk):
                 messagebox.showerror("Error", "Please select at list one item!", parent=self)
             else:
                 cur.execute("Select * from invosale where sid=1")
-                cur.execute("Update invosale set partyname=?,phonenumber=?,gstin=?,invoiceno=?,invoicedate=?,steteofsuply=?,paymentype=?,refreceno=?,total=?,totaldic=?,netam=?,received=?,balance=?,totaltac=?,totaldec=?,totalqty=?,item1name=?,qty1=?,unit1=?,unitprice1=?,dec1=?,desamount1=?,amount1=?,item2name=?,qty2=?,unit2=?,unitprice2=?,dec2=?,desamount2=?,amount2=?,item3name=?,qty3=?,unit3=?,unitprice3=?,dec3=?,desamount3=?,amount3=?,item4name=?,qty4=?,unit4=?,unitprice4=?,dec4=?,desamount4=?,amount4=?,item5name=?,qty5=?,unit5=?,unitprice5=?,dec5=?,desamount5=?,amount5=?,item6name=?,qty6=?,unit6=?,unitprice6=?,dec6=?,desamount6=?,amount6=?,item7name=?,qty7=?,unit7=?,unitprice7=?,dec7=?,desamount7=?,amount7=?,item8name=?,qty8=?,unit8=?,unitprice8=?,dec8=?,desamount8=?,amount8=?,item9name=?,qty9=?,unit9=?,unitprice9=?,dec9=?,desamount9=?,amount9=?,item10name=?,qty10=?,unit10=?,unitprice10=?,dec10=?,desamount10=?,amount10=?",
+                cur.execute("Update invosale set partyname=?,phonenumber=?,gstin=?,drname=?,invoiceno=?,invoicedate=?,steteofsuply=?,paymentype=?,refreceno=?,total=?,totaldic=?,netam=?,received=?,balance=?,totaltac=?,totaldec=?,totalqty=?,item1name=?,qty1=?,unit1=?,unitprice1=?,dec1=?,desamount1=?,amount1=?,item2name=?,qty2=?,unit2=?,unitprice2=?,dec2=?,desamount2=?,amount2=?,item3name=?,qty3=?,unit3=?,unitprice3=?,dec3=?,desamount3=?,amount3=?,item4name=?,qty4=?,unit4=?,unitprice4=?,dec4=?,desamount4=?,amount4=?,item5name=?,qty5=?,unit5=?,unitprice5=?,dec5=?,desamount5=?,amount5=?,item6name=?,qty6=?,unit6=?,unitprice6=?,dec6=?,desamount6=?,amount6=?,item7name=?,qty7=?,unit7=?,unitprice7=?,dec7=?,desamount7=?,amount7=?,item8name=?,qty8=?,unit8=?,unitprice8=?,dec8=?,desamount8=?,amount8=?,item9name=?,qty9=?,unit9=?,unitprice9=?,dec9=?,desamount9=?,amount9=?,item10name=?,qty10=?,unit10=?,unitprice10=?,dec10=?,desamount10=?,amount10=?",
                     (
 
                         self.partyname_entry.get(),
                         self.phonenumber_entry.get(),
                         self.gstin_entry.get(),
+                        self.drname_entry.get(),
                         self.invoice_entry.get(),
                         self.date_entry.get(),
                         self.state_menu.get(),
@@ -954,13 +985,13 @@ class saleClass(customtkinter.CTk):
                         self.Totalnet_entry.get(),
                         self.Received_entry.get(),
                         self.balence,
-                        self.diccc,
+                        self.Total_disc_entry.get(),
                         self.kk,
                         self.allqty,
 
                         self.no1_item_entry.get(),
                         self.no1_qty_entry.get(),
-                        self.no1_free_entry.get(),
+                        self.no1_unit_entry.get(),
                         self.no1_unitprice_entry.get(),
                         self.no1_dec_percentagee_entry.get(),
                         self.no1_dec_amount_entry.get(),
@@ -968,7 +999,7 @@ class saleClass(customtkinter.CTk):
 
                         self.no2_item_entry.get(),
                         self.no2_qty_entry.get(),
-                        self.no2_free_entry.get(),
+                        self.no2_unit_entry.get(),
                         self.no2_unitprice_entry.get(),
                         self.no2_dec_percentagee_entry.get(),
                         self.no2_dec_amount_entry.get(),
@@ -976,7 +1007,7 @@ class saleClass(customtkinter.CTk):
 
                         self.no3_item_entry.get(),
                         self.no3_qty_entry.get(),
-                        self.no3_free_entry.get(),
+                        self.no3_unit_entry.get(),
                         self.no3_unitprice_entry.get(),
                         self.no3_dec_percentagee_entry.get(),
                         self.no3_dec_amount_entry.get(),
@@ -984,7 +1015,7 @@ class saleClass(customtkinter.CTk):
 
                         self.no4_item_entry.get(),
                         self.no4_qty_entry.get(),
-                        self.no4_free_entry.get(),
+                        self.no4_unit_entry.get(),
                         self.no4_unitprice_entry.get(),
                         self.no4_dec_percentagee_entry.get(),
                         self.no4_dec_amount_entry.get(),
@@ -992,7 +1023,7 @@ class saleClass(customtkinter.CTk):
 
                         self.no5_item_entry.get(),
                         self.no5_qty_entry.get(),
-                        self.no5_free_entry.get(),
+                        self.no5_unit_entry.get(),
                         self.no5_unitprice_entry.get(),
                         self.no5_dec_percentagee_entry.get(),
                         self.no5_dec_amount_entry.get(),
@@ -1000,7 +1031,7 @@ class saleClass(customtkinter.CTk):
 
                         self.no6_item_entry.get(),
                         self.no6_qty_entry.get(),
-                        self.no6_free_entry.get(),
+                        self.no6_unit_entry.get(),
                         self.no6_unitprice_entry.get(),
                         self.no6_dec_percentagee_entry.get(),
                         self.no6_dec_amount_entry.get(),
@@ -1008,7 +1039,7 @@ class saleClass(customtkinter.CTk):
 
                         self.no7_item_entry.get(),
                         self.no7_qty_entry.get(),
-                        self.no7_free_entry.get(),
+                        self.no7_unit_entry.get(),
                         self.no7_unitprice_entry.get(),
                         self.no7_dec_percentagee_entry.get(),
                         self.no7_dec_amount_entry.get(),
@@ -1016,7 +1047,7 @@ class saleClass(customtkinter.CTk):
 
                         self.no8_item_entry.get(),
                         self.no8_qty_entry.get(),
-                        self.no8_free_entry.get(),
+                        self.no8_unit_entry.get(),
                         self.no8_unitprice_entry.get(),
                         self.no8_dec_percentagee_entry.get(),
                         self.no8_dec_amount_entry.get(),
@@ -1024,7 +1055,7 @@ class saleClass(customtkinter.CTk):
 
                         self.no9_item_entry.get(),
                         self.no9_qty_entry.get(),
-                        self.no9_free_entry.get(),
+                        self.no9_unit_entry.get(),
                         self.no9_unitprice_entry.get(),
                         self.no9_dec_percentagee_entry.get(),
                         self.no9_dec_amount_entry.get(),
@@ -1032,7 +1063,7 @@ class saleClass(customtkinter.CTk):
 
                         self.no10_item_entry.get(),
                         self.no10_qty_entry.get(),
-                        self.no10_free_entry.get(),
+                        self.no10_unit_entry.get(),
                         self.no10_unitprice_entry.get(),
                         self.no10_dec_percentagee_entry.get(),
                         self.no10_dec_amount_entry.get(),
@@ -1047,14 +1078,34 @@ class saleClass(customtkinter.CTk):
         except Exception as ex:
             print(ex)
             # messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
-    def invoice_event(self):
-        call(["python", "Sale_Invoice.py"])
+    # def invoice_event(self):
+    #     call(["python", "Sale_Invoice.py"])
     def savedata(self):
         self.add_invoice_event()
 
 
     def change_appearance_mode_event(self, new_appearance_mode):
         print(new_appearance_mode)
+
+    def get_Dr_data(self):
+
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+
+            cur.execute("select partyname from partydata")
+            rows = cur.fetchall()
+            # self.productTable.delete(*self.productTable.get_children())
+
+            for row in rows:
+                for i in row:
+                    m = str(i)
+                    if "dr" in m.lower():
+                       self.Drnameslist.append(i)
+
+
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
     def get_party_data(self):
 
@@ -1068,7 +1119,9 @@ class saleClass(customtkinter.CTk):
 
             for row in rows:
                 for i in row:
-                    self.Partynames.append(i)
+                    m = str(i)
+                    if "dr" not in m.lower():
+                         self.Partynames.append(i)
 
 
         except Exception as ex:
@@ -1861,12 +1914,35 @@ class saleClass(customtkinter.CTk):
         except Exception as ex:
               messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
+    def updateDr(self, *args):
+        self.Drnameslist.clear()
+        self.Drnameslist.append("")
 
+        Drname = self.drname_var.get()
+
+        con = sqlite3.connect(database=r'DataBase/ims.db')
+        cur = con.cursor()
+        try:
+
+            cur.execute("select partyname from partydata")
+            rows = cur.fetchall()
+
+            for row in rows:
+                for i in row:
+                    m = str(i)
+                    if Drname.lower() in m.lower() and "dr" in m.lower():
+                        self.Drnameslist.append(i)
+            self.drname_entry.configure(values=self.Drnameslist)
+            self.Drnameslist.append("None")
+            self.Drnameslist.append("-")
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)
 
     def updateparty(self,*args):
         self.Partynames.clear()
         self.Partynames.append("")
-        name=self.Party_var.get()
+        name = self.Party_var.get()
+
 
         con = sqlite3.connect(database=r'DataBase/ims.db')
         cur = con.cursor()
@@ -1879,10 +1955,12 @@ class saleClass(customtkinter.CTk):
                 for i in row:
 
                     m=str(i)
-                    if name.lower() in m.lower():
+                    if name.lower() in m.lower() and "dr" not in m.lower():
 
                         self.Partynames.append(i)
+
             self.partyname_entry.configure(values=self.Partynames)
+
 
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self)

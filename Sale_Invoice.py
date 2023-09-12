@@ -80,7 +80,7 @@ def get_partybi_data():
     cur=con.cursor()
     try:
 
-        cur.execute("select partyname,phonenumber,gstin,cashorcr,invoiceno,invoicedate,steteofsuply,paymentype,refreceno,total,received,balance,totaltac,totaldec,totalqty from invosale where sid=1")
+        cur.execute("select partyname,phonenumber,gstin,cashorcr,invoiceno,invoicedate,steteofsuply,paymentype,refreceno,total,received,balance,totaltac,totaldec,totalqty,drname from invosale where sid=1")
         rows=cur.fetchall()
 
         for row in rows:
@@ -104,6 +104,14 @@ def get_item1_data():
             for r in row:
                 item_list1.append(r)
 
+        itemnames = item_list1[0]
+        cur.execute(f"select  exdate,unit from itemdata where itemname = ? ", (itemnames,))
+        rows = cur.fetchall()
+
+        for row in rows:
+            for r in row:
+                item_list1.append(r)
+
 
     except Exception as ex:
         print(ex)
@@ -114,6 +122,14 @@ def get_item2_data():
 
         cur.execute("select item2name,qty2,unit2,unitprice2,dec2,desamount2,amount2 from invosale where sid=1")
         rows=cur.fetchall()
+
+        for row in rows:
+            for r in row:
+                item_list2.append(r)
+
+        itemnames = item_list2[0]
+        cur.execute(f"select  exdate,unit from itemdata where itemname = ? ", (itemnames,))
+        rows = cur.fetchall()
 
         for row in rows:
             for r in row:
@@ -135,6 +151,13 @@ def get_item3_data():
             for r in row:
                 item_list3.append(r)
 
+        itemnames = item_list3[0]
+        cur.execute(f"select  exdate,unit from itemdata where itemname = ? ", (itemnames,))
+        rows = cur.fetchall()
+
+        for row in rows:
+            for r in row:
+                item_list3.append(r)
 
     except Exception as ex:
         print(ex)
@@ -146,6 +169,14 @@ def get_item4_data():
 
         cur.execute("select item4name,qty4,unit4,unitprice4,dec4,desamount4,amount4 from invosale where sid=1")
         rows=cur.fetchall()
+
+        for row in rows:
+            for r in row:
+                item_list4.append(r)
+
+        itemnames = item_list4[0]
+        cur.execute(f"select  exdate,unit from itemdata where itemname = ? ", (itemnames,))
+        rows = cur.fetchall()
 
         for row in rows:
             for r in row:
@@ -167,6 +198,14 @@ def get_item5_data():
             for r in row:
                 item_list5.append(r)
 
+        itemnames = item_list5[0]
+        cur.execute(f"select  exdate,unit from itemdata where itemname = ? ", (itemnames,))
+        rows = cur.fetchall()
+
+        for row in rows:
+            for r in row:
+                item_list5.append(r)
+
 
     except Exception as ex:
         print(ex)
@@ -178,6 +217,14 @@ def get_item6_data():
 
         cur.execute("select item6name,qty6,unit6,unitprice6,dec6,desamount6,amount6 from invosale where sid=1")
         rows=cur.fetchall()
+
+        for row in rows:
+            for r in row:
+                item_list6.append(r)
+
+        itemnames = item_list6[0]
+        cur.execute(f"select  exdate,unit from itemdata where itemname = ? ", (itemnames,))
+        rows = cur.fetchall()
 
         for row in rows:
             for r in row:
@@ -198,6 +245,14 @@ def get_item7_data():
             for r in row:
                 item_list7.append(r)
 
+        itemnames = item_list7[0]
+        cur.execute(f"select  exdate,unit from itemdata where itemname = ? ", (itemnames,))
+        rows = cur.fetchall()
+
+        for row in rows:
+            for r in row:
+                item_list7.append(r)
+
     except Exception as ex:
         print(ex)
 
@@ -208,6 +263,14 @@ def get_item8_data():
 
         cur.execute("select item8name,qty8,unit8,unitprice8,dec8,desamount8,amount8 from invosale where sid=1")
         rows=cur.fetchall()
+
+        for row in rows:
+            for r in row:
+                item_list8.append(r)
+
+        itemnames = item_list8[0]
+        cur.execute(f"select  exdate,unit from itemdata where itemname = ? ", (itemnames,))
+        rows = cur.fetchall()
 
         for row in rows:
             for r in row:
@@ -228,6 +291,14 @@ def get_item9_data():
             for r in row:
                 item_list9.append(r)
 
+        itemnames = item_list9[0]
+        cur.execute(f"select  exdate,unit from itemdata where itemname = ? ", (itemnames,))
+        rows = cur.fetchall()
+
+        for row in rows:
+            for r in row:
+                item_list9.append(r)
+
 
     except Exception as ex:
         print(ex)
@@ -242,7 +313,14 @@ def get_item10_data():
 
         for row in rows:
             for r in row:
+                item_list10.append(r)
 
+        itemnames = item_list10[0]
+        cur.execute(f"select  exdate,unit from itemdata where itemname = ? ", (itemnames,))
+        rows = cur.fetchall()
+
+        for row in rows:
+            for r in row:
                 item_list10.append(r)
 
     except Exception as ex:
@@ -591,20 +669,17 @@ get_item8_data()
 get_item9_data()
 get_item10_data()
 
-gatpartyam()
 
+gatpartyam()
 get_hsn()
 addlist()
-
-totalinword = num2words(partydata_list[9])
+totalinword = num2words(partydata_list[11])
 tta = capwords(totalinword)
-
 get_item_data()
-print(partyam)
-# doc.render({"company" : "VEDIKA MEDICAL", "phone" : "9049054282", "nam" : partydata_list[0],"partynumber" : partydata_list[1],"invoice":partydata_list[4],"date":partydata_list[5],"tota":partydata_list[9],"total":partyam[0],"disc":partydata_list[10],"final":partyam[1],"totalqty":partydata_list[14],"item_list":item_list,"amtinword":tta})
-# doc.save("DataBase/Invoice/new_sale_sampleinvoice.docx")
-# filename = f"SaleInvoice/{partydata_list[0]}_{partydata_list[4]}.pdf"
-# path = f"SaleInvoice/{partydata_list[0]}_{partydata_list[4]}.pdf"
-# convert("DataBase/Invoice/new_sale_sampleinvoice.docx", filename)
-# subprocess.Popen([path], shell=True)
-#
+doc.render({"company" : "VEDIKA MEDICAL", "phone" : "9049054282", "nam" : partydata_list[0],"partynumber" : partydata_list[1],"invoice":partydata_list[4],"date":partydata_list[5],"tota":partydata_list[9],"total":partyam[0],"disc":partydata_list[12],"final":partydata_list[11],"totalqty":partydata_list[14],"drname":partydata_list[15],"item_list":item_list,"amtinword":tta})
+doc.save("DataBase/Invoice/new_sale_sampleinvoice.docx")
+filename = f"SaleInvoice/{partydata_list[0]}_{partydata_list[4]}.pdf"
+path = f"SaleInvoice/{partydata_list[0]}_{partydata_list[4]}.pdf"
+convert("DataBase/Invoice/new_sale_sampleinvoice.docx", filename)
+subprocess.Popen([path], shell=True)
+

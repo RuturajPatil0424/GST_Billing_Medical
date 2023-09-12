@@ -201,8 +201,8 @@ class supplierClass(customtkinter.CTk):
                     self.gstinn = self.gstn_entry.get()
                 cur.execute("Select * from partydata where gstin=?",(self.gstn_entry.get(),))
                 row = cur.fetchone()
-                if row != None:
-                    messagebox.showerror("Error","This GSTIN no. already assigned, try different",parent=self)
+                # if row != None:
+                #     messagebox.showerror("Error","This GSTIN no. already assigned, try different",parent=self)
 
                 cur.execute("Select * from partydata where phonenumber=?", (self.number_entry.get(),))
                 rowf = cur.fetchone()
